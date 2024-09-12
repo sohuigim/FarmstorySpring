@@ -67,6 +67,8 @@
     border-bottom: 1px solid #EEEEEE;
 }
 
+.product_table .td_first {height: 38px; color: #888; text-align: center; }
+
 .product_table tr:nth-of-type(2),
 .product_table tr:nth-of-type(3),
 .product_table tr:nth-of-type(4){
