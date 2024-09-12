@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmStory</title>
+    <title>인사말</title>
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
-    <link rel="stylesheet" th:href="@{/css/reset.css}">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/introduction/introduction.css}">
+    <!-- 화면당 적용할 CSS만 추가하면됨 -->
 </head>
 <body>
 <div id="wrapper">
-    <th:block th:include ="/_header.html"/>
+    <th:block th:include ="/grid/_header.html"/>
     <main id="main" class="cf">
         <section class="mainIn cf">
             <div class="sub_bg">
-                <span class="sub_tit"><img src="../images/sub_top_tit1.png" alt=""></span><!-- .sub_tit -->
+                <span class="sub_tit"><img th:src="@{/images/sub_top_tit1.png}" alt=""></span><!-- .sub_tit -->
             </div><!-- .sub_bg -->
 
             <aside class="aside">
                 <div class="sidebar">
                     <div class="aside_cate">
-                        <img src="../images/sub_aside_cate1_tit.png" alt="Buying in the Market 장보기">
+                        <img th:src="@{/images/sub_aside_cate1_tit.png}" alt="Buying in the Market 장보기">
                     </div><!-- .aside_cate -->
                     <div class="aside_bg">
                         <ul class="cate_lnb1">
-                            <li><a href="/FarmStory/intro/introduction.do" class="lnb1">인사말</a></li>
-                            <li><a href="/FarmStory/intro/direction.do" class="lnb2">찾아오시는길</a></li>
+                            <li><a th:href="@{/introduction/Introduction}" class="lnb1">인사말</a></li>
+                            <li><a th:href="@{/introduction/IntroDirection}" class="lnb2">찾아오시는길</a></li>
                         </ul><!-- .cate_lnb -->
                     </div><!-- .aside_bg -->
                 </div><!-- .sidebar -->
@@ -43,7 +43,7 @@
                             <strong>인사말</strong>
                         </p>
                     </nav>
-                    <a href="#"><img src="../images/sub_page1_article_txt.png" alt="건강한 먹거리"class="content"></a>
+                    <img src="../images/sub_page1_article_txt.png" alt="건강한 먹거리"class="content">
                     <div class="txt">
                         <p>항상 저희 팜스토리를 성원해 주시고 관심을 가져주시는 모든 분들께 감사의 인사를 드리며<br>
                         가정에 건강과 행복이 가득하시길 기원합니다.</p><br>
@@ -63,7 +63,7 @@
 
         </section>
     </main><!-- #main -->
-    <th:block th:include ="/_footer.html"/>
+    <th:block th:include ="/grid/_footer.html"/>
 </div><!-- warapper end -->
 </body>
 </html>
