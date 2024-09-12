@@ -10,8 +10,4 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping(value = {"/market/marketList"})
-    public String marketList(){
-        return "/market/MarketList";
-    }
 }

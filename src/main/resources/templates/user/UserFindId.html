@@ -1,11 +1,11 @@
-<%@ include file="./_header.jsp" %>
+<th:block th:include="user/User_header.html"/>
 
 <title>아이디찾기</title>
-<link rel="stylesheet" href="../css/user/findid.css">
+<link rel="stylesheet" th:href="@{/css/user/findid.css}">
         <main>
             <div class="mainIn">
             <div class="container">
-		            <form action="/FarmStory/member/findIdResult.do" method="post" enctype="multipart/form-data">
+		            <form action="#" method="post" enctype="multipart/form-data">
 		                <section>
 		                    <div class="headtxt">
 		                        <span>아이디 찾기</span>
@@ -50,5 +50,5 @@
             </div>
         </main>
 
-	<%@ include file="./_footer.jsp" %>
+	<th:block th:include="user/User_footer.html"/>
 
