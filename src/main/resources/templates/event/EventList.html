@@ -1,47 +1,54 @@
-<%@ include file="./Event_header.jsp" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트</title>
+    <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/event.css}">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                selectable: true,
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today'
+                    //right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }
+                //클릭 이벤트들
+                // dateClick: function(info) {
+                //     alert('clicked ' + info.dateStr);
+                // },
+                // select: function(info) {
+                //     alert('selected ' + info.startStr + ' to ' + info.endStr);
+                // }
+            });
+
+            calendar.render();
+        });
+    </script>
+    <!-- 화면당 적용할 CSS만 추가하면됨 -->
+</head>
+<body>
+<div id="wrapper">
+    <th:block th:include ="/grid/_header.html"/>
+    <th:block th:include ="/grid/_aside_et.html"/>
 <title>글목록</title>
 <link rel="stylesheet" href="../css/event.css">
-<%@ include file="../_aside_et.jsp" %>
   						<div id="container">
-                            <section class="list">
-                                <h3>글목록</h3>
-                                <article>
-                                    <table border="0">
-                                        <tr>
-                                            <th>번호</th>
-                                            <th>제목</th>
-                                            <th>글쓴이</th>
-                                            <th>날짜</th>
-                                            <th>조회</th>
-                                    	 </tr>
-                                        <c:forEach var="board" items="${boards}">
-                                        <tr>
-                                            <td>${board.no}</td>
-                                            <td><a href="/FarmStroy/event/view.do?no=${board.no}">${board.title}</a>&nbsp;[${board.comment}]</td>
-                                            <td>${board.nick}</td>
-                                            <td>>${board.rdate}</td>
-                                            <td>${board.hit}</td>
-                                        </tr>
-                                        </c:forEach>
-                                    </table>
-                                </article>
-                
-                                <!-- 페이지 네비게이션 -->
-                                <div class="paging">
-                                    <a href="#" class="prev">이전</a>
-                                    <a href="#" class="num current">1</a>                
-                                    <a href="#" class="num">2</a>                
-                                    <a href="#" class="num">3</a>                
-                                    <a href="#" class="next">다음</a>
-                                </div>
-                
-                                <!-- 글쓰기 버튼 -->
-                               <a href="/FarmStroy/event/write.do" class="btnWrite">글쓰기</a>
+                            <section class="calendar">
+                                <div id='calendar'></div>
+
                             </section>
                          </div>
                     </div><!-- .articleIn -->
                 </article><!-- .article -->
             </section>
         </main><!-- #main -->
-     
-     <%@ include file="./Event_footer.jsp" %>
+    <th:block th:include ="/grid/_footer.html"/>
+</body>
