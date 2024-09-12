@@ -1,4 +1,4 @@
-<%@ include file="./_header.jsp" %>
+<th:block th:include="user/User_header.html"/>
 <title>회원가입::이용약관</title>
         <main>
             <div class="mainIn">
@@ -26,13 +26,10 @@
                         </tr>
                     </table>
                     <div>
-                        <a href="/FarmStory/member/login.do" class="btnCancel">취소</a>
-                        <a href="#" class="btnNext">다음</a>
+                        <a th:href="@{/}" class="btnCancel">취소</a>
+                        <a th:href="@{/user/UserRegister}" class="btnNext">다음</a>
                     </div>
                 </section>
             </div>
         </main><!-- main end -->
-<%@ include file="./_footer.jsp" %>
-    
-</body>
-</html>
+<th:block th:include = "user/User_footer.html"/>
