@@ -4,10 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class UserLoginController {
+public class UserFindPassResultController {
 
-    @GetMapping("user/UserLogin")
-    public String UserLogin(){
-        return "user/UserLogin";
+    @GetMapping("user/UserFindPassResult")
+    public String UserFindPassResult(){
+        return "user/UserFindPassResult";
     }
 }
