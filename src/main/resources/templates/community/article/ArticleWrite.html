@@ -1,5 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../../_header.jsp" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글보기</title>
+    <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/community.css}">
+    <!-- 화면당 적용할 CSS만 추가하면됨 -->
+</head>
+<body>
+<div id="container">
+    <th:block th:include ="/grid/_header.html"/>
+    <th:block th:include ="/grid/_aside_ct.html"/>
+    <!--
 <title>글쓰기</title>
 <link rel="stylesheet" href="../../css/community.css">
 <c:choose>
@@ -12,7 +25,8 @@
 		<link rel="stylesheet" href="../../css/event.css">
 	</c:when>
 	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>
-</c:choose> 
+</c:choose>
+-->
                 <section class="write">
                 	<h3>글쓰기</h3>
                 	<article>
@@ -53,4 +67,4 @@
                 </article><!-- .article -->
             </section>
         </main><!-- #main -->
-<%@ include file="../../_footer.jsp" %>
+<th:block th:include ="/grid/_footer.html"/>
