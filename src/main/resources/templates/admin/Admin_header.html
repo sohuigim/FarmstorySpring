@@ -20,8 +20,8 @@
             </div>
             <div class="utill">
                 <ul>
-                    <li><a th:href="@{/admin/AdminIndex.html}" class="util_home">HOME</a></li>
-                    <li><a th:href="@{member/logout.html}" class="util_logout">로그아웃</a></li>
+                    <li><a th:href="@{/admin/AdminIndex}" class="util_home">HOME</a></li>
+                    <li><a th:href="@{index}" class="util_logout">로그아웃</a></li>
                     <li><a th:href="@{/community/notice/list.do?group=community&cate=b104}" class="util_cs">고객센터</a></li>
                 </ul>
             </div>
@@ -39,19 +39,19 @@
                         <ul>
                             <li>상품관리
                                 <ul>
-                                    <li><a th:href="@{/admin/product/ProductList.html}">상품목록</a></li>
-                                    <li><a th:href="@{/admin/product/ProductRegister.html}">상품등록</a></li>
+                                    <li><a th:href="@{/admin/ProductList}">상품목록</a></li>
+                                    <li><a th:href="@{/admin/ProductRegister}">상품등록</a></li>
                                 </ul>
                             </li>
 
                             <li>주문관리
                                 <ul>
-                                    <li><a th:href="@{/admin/order/OrderList.html}">주문목록</a></li>
+                                    <li><a th:href="@{/admin/OrderList}">주문목록</a></li>
                                 </ul>
                             </li>
                             <li>회원관리
                                 <ul>
-                                    <li><a th:href="@{/admin/user/UserList.html}">회원목록</a></li>
+                                    <li><a th:href="@{/admin/UserList}">회원목록</a></li>
                                 </ul>
                             </li>
                         </ul>
