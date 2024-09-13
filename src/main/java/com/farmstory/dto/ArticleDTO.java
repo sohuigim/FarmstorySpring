@@ -1,24 +1,20 @@
-package com.farmstory.entity;
+package com.farmstory.dto;
 
-import com.farmstory.dto.ArticleDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.farmstory.entity.Article;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
-@Entity                 // 엔티티 객체 정의
-@Table(name = "article")
-public class Article {
 
-    @Id
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ArticleDTO {
+
     private int artNo;
     private int artComment;
     private String artCate;
@@ -27,15 +23,15 @@ public class Article {
     private String artWriter;
     private int artFile;
     private int artHit;
+
     private String artRegip;
 
     @CreationTimestamp
     private LocalDateTime artRdate;
     private String artNick;
 
-
-    public ArticleDTO toDTO(){
-        return ArticleDTO.builder()
+    public Article toEntity(){
+        return Article.builder()
                 .artNo(artNo)
                 .artComment(artComment)
                 .artCate(artCate)
@@ -48,5 +44,7 @@ public class Article {
                 .artRdate(artRdate)
                 .artNick(artNick)
                 .build();
+
     }
+
 }

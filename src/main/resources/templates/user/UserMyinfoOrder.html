@@ -1,0 +1,102 @@
+<th:block th:include ="/user/User_myinfo_header.html"/>
+<title>장바구니</title>
+<link rel="stylesheet" th:href="@{/css/user/myInfoOrder.css}">
+<!-- #main -->
+<main id="main" class="cf">
+    <section class="mainIn cf">
+        <div class="sub_bg">
+            <img th:src="@{/images/sub_top_tit2.png}" alt="MARKET" class="sub_tit">
+        </div><!-- .sub_bg -->
+        <aside class="aside">
+            <div class="sidebar">
+                <div class="aside_cate">
+                    <img th:src="@{/images/myinfo/myinfo_menu_tit.png}" alt="Buying in the Market 장보기">
+                </div><!-- .aside_cate -->
+                <div class="aside_bg">
+                    <ul class="cate_lnb_real">
+                        <li> <a href="#">장바구니</a></li>
+                        <li> <a href="#">주문정보</a></li>
+                        <li> <a href="#">정보수정</a></li>
+                    </ul><!-- .cate_lnb -->
+                </div><!-- .aside_bg -->
+            </div><!-- .sidebar -->
+        </aside><!-- .aside -->
+        <article class="article">
+            <div class="articleIn cf">
+                <nav>
+                    <h2><img th:src="@{/images/myinfo/myinfo_nav_tit1.png}" alt="장보기"></h2>
+                    <p class="location">
+                        <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME </span>
+                        <span>장보기 </span>
+                        <strong>장보기</strong>
+                    </p><!-- .location -->
+                </nav>
+
+                <h3 class="tb_tit">장바구니 전체</h3><!-- .tb_tit -->
+                <table class="tb1">
+                    <colgroup>
+                        <col style="width: 11%">
+                        <col style="width: 5%">
+                        <col style="width: 10%">
+                        <col style="width: 15%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                    </colgroup>
+                    <tr>
+                        <th>주문번호</th>
+                        <th>이미지</th>
+                        <th>상품명</th>
+                        <th>판매가격</th>
+                        <th>수량</th>
+                        <th>합계</th>
+                        <th>주문자</th>
+                        <th>주문일</th>
+                        <th>확인</th>
+                    </tr>
+                    <tr th:if="${prodCartDto == null}">
+                        <td colspan="10" class="td_first">주문한 상품이 없습니다.</td>
+                    </tr>
+                    <tr th:each="prodCartDto:${prodCartDto}" th:if="${prodCartDto != null}">
+                        <td><input type="checkbox" class="checkbox" onclick=""  value="${prodCartDto.cartNo}"/></td>
+                        <td><img th:src="@{/thumbs/product/${prodCartDto.sName}}" alt="사과 샘플"/></td>
+                        <td>${prodCartDto.prodPrice}</td>
+                        <td>${prodCartDto.prodName}</td>
+                        <td>${prodCartDto.prodQty}</td>
+                        <td>${prodCartDto.discount}%</td>
+                        <td>${prodCartDto.point}p</td>
+                        <td>${prodCartDto.price}</td>
+                        <td><a th:href="@{#}">[상세확인]</a></td>
+                    </tr>
+                </table><!-- .tb1 -->
+                <div class="pages">
+                    <ul>
+                        <li>
+                            <!--                                	<c:set var="page" value="1"/>-->
+                            <!--                                	<c:if test="${page ne pageGroupP.start}">-->
+                            <a href="/FarmStory/market/list.do?pg=${pageGroupP.start - 1}" class="no current">이전</a>
+                            <!--                           			</c:if>-->
+                        </li>
+                        <li>
+                            <!--                                	<c:forEach var="i" begin="${pageGroupP.start}" end="${pageGroupP.end}">-->
+                            <a href="/FarmStory/market/list.do?pg=${i}&&" class="no">[${i}]</a>
+                            <!--                                	</c:forEach>-->
+                        </li>
+                        <li>
+                            <!--                                	<c:set var="page" value="${lastPageNum}" />-->
+                            <!--                                	<c:if test="${page > pageGroupP.end }">-->
+                            <a href="/FarmStory/market/list.do?pg=${pageGroupP.end + 1}" class="no last_no">다음</a>
+                            <!--                               		</c:if>-->
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- .articleIn -->
+        </article><!-- .article -->
+    </section>
+</main><!-- #main -->
+
+<th:block th:include ="/user/User_footer.html"/>
+

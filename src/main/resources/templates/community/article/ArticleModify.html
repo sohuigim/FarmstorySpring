@@ -9,30 +9,17 @@
 	<!-- 화면당 적용할 CSS만 추가하면됨 -->
 </head>
 <body>
-<div id="container">
-	<th:block th:include ="/grid/_header.html"/>
-	<th:block th:include ="/grid/_aside_ct.html"/>
 
-<!--
-<%@ include file="../../_header.jsp" %>
-<title>글수정</title>
-<link rel="stylesheet" href="../../css/community.css">
-<c:choose>
-	<c:when test="${group eq 'croptalk'}">
-		<%@ include file="../../_aside_ct.jsp" %>
-		<link rel="stylesheet" href="../../css/croptalk.css">
-	</c:when>
-	<c:when test="${group eq 'event'}">
-		<%@ include file="../../_aside_et.jsp" %>
-		<link rel="stylesheet" href="../../css/event.css">
-	</c:when>
-	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>
-</c:choose>
--->
                          <section class="modify">
 			                <h3>글수정</h3>
 			                <article>
 			                    <form action="/community/notice/modify.do" method="post" enctype="multipart/form-data">
+<div id="wrapper">
+	<th:block th:include ="/grid/_header.html"/>
+                         <section class="modify">
+			                <h3>글수정</h3>
+			                <article>
+			                    <form action="community/notice/modify.do" method="post" enctype="multipart/form-data">
 			                        <input type="hidden" name="b_writer" value="${sessUser.uid}">
 			                        <table>
 			                            <tr>
@@ -76,3 +63,5 @@
             </section>
 	</div>
 	<th:block th:include ="/grid/_footer.html"/>
+
+
