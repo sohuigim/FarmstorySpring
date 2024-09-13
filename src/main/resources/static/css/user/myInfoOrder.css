@@ -5,7 +5,7 @@
 .tb_tit {height: 14px; line-height: 14.52px; letter-spacing: 0; margin: 41px 0 12px 0;}
 
 /* 테이블 */
-.tb1 {width: 762px; height: auto; border-top: 1px solid #111; box-sizing: border-box; border-collapse: collapse; border-bottom: 1px solid #111;}
+.tb1 {width: 762px; height: auto; border-top: 1px solid #111; box-sizing: border-box; border-collapse: collapse;}
 
 /* th 영역 */
 .tb1 th {height: 38px; box-sizing: border-box; background-color: #E5ECEF; line-height: 14.52px; color: #000;}
@@ -50,7 +50,8 @@
 .pages{
     width: auto;
     height: 35px;
-    margin: 10px auto;
+    margin-top: 20px;
+    margin-bottom: 50px;
 }
 
 .pages ul {
@@ -84,13 +85,6 @@
     color: #fff;
 }
 
-
-
-/* aside 영역 (왼쪽) -------------------------------------------------- */
-.aside{position: relative; float: left; width: 179px; box-sizing: border-box;
-    width: 176px; height: 650px; background: url('../images/sub_aside_bg_line.png') right 0 no-repeat;}
-.aside_cate{
-    width: 103px; height: 45px; margin:16px 0 0 16px;
-    /* position: absolute; top: 16px; left: 16px;  */ /* 포지션으로 위치 잡을 경우 위치 값 */
+.tb1{
+    margin: 40px 0;
 }
-.aside_bg{width: 176px; height: 650px; background: url('../images/sub_aside_bg_lnb.png') 0 20px no-repeat;}
