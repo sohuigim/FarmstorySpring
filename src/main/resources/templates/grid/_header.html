@@ -13,9 +13,10 @@
         </div><!-- .logo -->
         <ul class="utill">
             <li><a th:href="@{/}">HOME</a></li>
-            <li><a th:href="@{/user/login}">로그인</a></li>
-            <li><a th:href="@{/user/register}">회원가입</a></li>
-            <li><a th:href="@{/}">고객센터</a></li>
+
+            <li><a th:href="@{/user/UserLogin}">로그인</a></li>
+            <li><a th:href="@{/user/UserRegister}">회원가입</a></li>
+            <li><a th:href="@{/cummunity/CommunityCs}">고객센터</a></li>
         </ul><!-- .utill -->
         <div class="h_txt">
             <img th:src="@{/images/head_txt_img.png}" alt="3만원이상 무료배송·팜카드 10%적립">
@@ -23,7 +24,7 @@
         <nav class="gnb_wrap">
             <ul class="gnb">
                 <li><a th:href="@{/introduction/Introduction}"><img th:src="@{/images/head_menu1.png}" alt="팜스토리소개"></a></li>
-                <li><a th:href="@{/market/cart}">
+                <li><a th:href="@{/market/MarketList}">
                     <img th:src="@{/images/head_menu_badge.png}" alt="30%" class="discount"/>
                     <img th:src="@{/images/head_menu2.png}" alt="장보기">
                 </a></li>
