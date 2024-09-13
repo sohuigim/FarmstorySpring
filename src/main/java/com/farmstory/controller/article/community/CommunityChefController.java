@@ -11,5 +11,4 @@ public class CommunityChefController {
     public String CommunityChef() {
         return "/community/CommunityChef";
     }
-
 }
