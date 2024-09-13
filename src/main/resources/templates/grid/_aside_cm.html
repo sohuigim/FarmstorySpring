@@ -39,7 +39,8 @@
                     <c:if test="${name eq '홍길동'}">   
                         <c:out value="${str}"/>
                     </c:if>
-                    <!-- <h2>
+
+                        <h2>
                          <c:choose>
                              <c:when test="${cate eq 'b101'}">
                                  <img src="/images/sub_nav_tit_cate5_tit1.png" alt="공지사항">
@@ -58,7 +59,9 @@
                              </c:otherwise>
                          </c:choose>
                      </h2>
-                    -->
+
+                    <!-- 나중에 개발할 부분 영역 -->
+                    <!--
                     <h2>
                         <img th:if="@{/community/CommunityNotice}" th:src="@{/images/sub_nav_tit_cate5_tit1.png}"
                              alt="공지사항"/>
@@ -71,12 +74,13 @@
                         <img th:if="@{/community/CommunityFaq}" th:src="@{/images/sub_nav_tit_cate5_tit5.png}"
                              alt="자주묻는질문"/>
                     </h2>
+                    -->
 
                     <p class="location">
                         <img src="/images/sub_page_nav_ico.gif" alt="메뉴">
                         <span>HOME </span>
                         <span>커뮤니티 </span>
-                        <!--
+
                         <c:choose>
                             <c:when test="${cate eq 'b101'}">
                                 <strong>공지사항</strong>
@@ -94,12 +98,14 @@
                                 <strong>자주묻는질문</strong>
                         </c:otherwise>
                     </c:choose>
-                    -->
+                        <!-- 나중에 개발할 부분 영역 -->
+                        <!--
                         <strong th:text="${cate == 'b101' ? '공지사항' :
                                 cate == 'b102' ? '오늘의식단' :
                                 cate == 'b103' ? '나도요리사' :
                                 cate == 'b104' ? '1:1고객문의' : '자주묻는질문'}">
                         </strong>
+                        -->
                     </p>
                     </p>
                 </nav>

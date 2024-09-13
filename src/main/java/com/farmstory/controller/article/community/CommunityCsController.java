@@ -12,5 +12,4 @@ public class CommunityCsController {
         return "/community/CommunityCs";
     }
 
-
 }
