@@ -10,4 +10,14 @@ public class UserMyinfoController {
     public String UserMyinfo(){
         return "user/UserMyinfo";
     }
+
+    @GetMapping("user/UserMyinfoCart")
+    public String UserMyinfoCart(){
+        return "user/UserMyinfoCart";
+    }
+
+    @GetMapping("user/UserMyinfoOrder")
+    public String UserMyinfoOrder(){
+        return "user/UserMyinfoOrder";
+    }
 }
