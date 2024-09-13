@@ -15,6 +15,7 @@
 			                <h3>글수정</h3>
 			                <article>
 			                    <form action="community/notice/modify.do" method="post" enctype="multipart/form-data">
+
 			                        <input type="hidden" name="b_writer" value="${sessUser.uid}">
 			                        <table>
 			                            <tr>
@@ -40,7 +41,7 @@
 												<c:if test="${boardDTO.b_fNo > 0}">
 				                                	<c:forEach var="file" items="${boardDTO.boardFiles}">
 					                                	<p style="margin: 4px 0">
-															${file.b_oName} <a href="/FarmStory/community/notice/BoardFileDelete.do?b_fNo=${file.b_fNo}" style="color:red;">X</a>
+															${file.b_oName} <a href="/community/notice/BoardFileDelete.do?b_fNo=${file.b_fNo}" style="color:red;">X</a>
 														</p>
 				                                	</c:forEach>
 			                                	</c:if>
