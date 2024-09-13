@@ -1,7 +1,9 @@
 package com.farmstory.controller.article.crop;
 
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -14,6 +16,5 @@ public class CropGardenController {
         model.addAttribute("str1", str1);
         return "/crop/CropGarden";
     }
-
 
 }
