@@ -10,5 +10,4 @@ public class ArticleListController {
     public String EventList(){
         return "/event/EventList";
     }
-
 }
