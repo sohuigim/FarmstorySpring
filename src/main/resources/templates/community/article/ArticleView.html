@@ -5,27 +5,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>글보기</title>
 	<link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
-	<link rel="stylesheet" th:href="@{/css/community.css}">
+	<link rel="stylesheet" th:href="@{/css/user/introduction.css}">
 	<!-- 화면당 적용할 CSS만 추가하면됨 -->
 </head>
 <body>
-<div id="container">
+<div id="wrapper">
 	<th:block th:include ="/grid/_header.html"/>
-	<th:block th:include ="/grid/_aside_ct.html"/>
-<!--
-<c:choose>
-	<c:when test="${group eq 'croptalk'}">
-		<%@ include file="../../_aside_ct.jsp" %>
-		<link rel="stylesheet" href="../../css/croptalk.css">
-	</c:when>
-	<c:when test="${group eq 'event'}">
-		<%@ include file="../../_aside_et.jsp" %>
-		<link rel="stylesheet" href="../../css/event.css">
-	</c:when>
-	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>
-</c:choose>
--->
-  
+
                  	<section class="view">
 				<h3>글보기</h3>
 				<table>
@@ -108,4 +94,9 @@
 			</section>
         </main><!-- #main -->
         <!-- footer -->
-	<th:block th:include ="/grid/_footer.html"/>
+
+<th:block th:include ="/grid/_footer.html"/>
+</div><!-- warapper end -->
+</body>
+</html>
+

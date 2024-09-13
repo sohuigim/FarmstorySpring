@@ -12,14 +12,4 @@ public class ArticleListController {
         return "/event/EventList";
     }
 
-    //커뮤니티
-    @GetMapping("/community/CommunityNotice")
-    public String CommunityNotice(){
-        return "/community/CommunityNotice";
-    }
-
-
-
-
-
 }
