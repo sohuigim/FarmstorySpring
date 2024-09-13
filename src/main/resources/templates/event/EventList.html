@@ -1,52 +1,45 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이벤트</title>
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/event.css}">
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' />
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',  // 월간 뷰
                 selectable: true,
+                dayMaxEventRows: true,
+                googleCalendarApiKey: 'AIzaSyBuZSoGqnsiPkvHBCRjqV8FOQ7O_3OXS4s',  // Google API 키
 
-                dayMaxEventRows: true, // for all non-TimeGrid views
-                googleCalendarApiKey: 'AIzaSyC2lsCQQHs9FrEcDnGhbBj2kVYhSKS6QoE',
                 eventSources: [
                     {
-                        googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
-                        className: '대한민국의 휴일',
-                        //color: '#e70000', //rgb,#ffffff 등의 형식으로 할 수 있어요.
-                        //textColor: 'black'
+                        googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',  // 대한민국 공휴일 캘린더
+                        className: 'korea',  // 스타일 지정
+                        color: '#e70000',  // 이벤트 색상
+                        textColor: 'black'  // 텍스트 색상
                     },
                     {
-                        googleCalendarId: '689703ab7777f007cee66cfa6434061bb5f6eab9b05bbbf4a465010c41e6c7b1@group.calendar.google.com',
-                        className: 'Farmstory',
-                        //color: '#3fb193', //rgb,#ffffff 등의 형식으로 할 수 있어요.
-                        //textColor: 'black'
-                    }],
+                        googleCalendarId: '689703ab7777f007cee66cfa6434061bb5f6eab9b05bbbf4a465010c41e6c7b1@group.calendar.google.com',  // 팜스토리
+                        className: 'farmstory',  // 스타일 지정
+                        color: '#3fb193',  // 이벤트 색상
+                        textColor: 'black'  // 텍스트 색상
+                    },
 
-                },
-                //클릭 이벤트들
-                dateClick: function(info) {
-                    alert('clicked ' + info.dateStr);
-                },
+                ]
+            });
 
-                // select: function(info) {
-                //     alert('selected ' + info.startStr + ' to ' + info.endStr);
-                // }
-                views: {
-                    timeGrid: {
-                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
-                    }
-                }
-                    //right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                }
+            calendar.render();
+        });
+
+
+                // right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 //클릭 이벤트들
                 // dateClick: function(info) {
                 //     alert('clicked ' + info.dateStr);
@@ -55,10 +48,6 @@
                 //     alert('selected ' + info.startStr + ' to ' + info.endStr);
                 // }
 
-            });
-
-            calendar.render();
-        });
     </script>
     <!-- 화면당 적용할 CSS만 추가하면됨 -->
 </head>

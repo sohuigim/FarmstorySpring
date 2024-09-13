@@ -6,16 +6,34 @@
 	<title>글수정</title>
 	<link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 	<link rel="stylesheet" th:href="@{/css/community.css}">
+	<link rel="stylesheet" th:href="@{/css/croptalk.css}">
 	<!-- 화면당 적용할 CSS만 추가하면됨 -->
 </head>
 <body>
-<div id="wrapper">
+<div id="container">
 	<th:block th:include ="/grid/_header.html"/>
+	<th:block th:include ="/grid/_aside_ct.html"/>
+
+<!--
+<%@ include file="../../_header.jsp" %>
+<title>글수정</title>
+<link rel="stylesheet" href="../../css/community.css">
+<c:choose>
+	<c:when test="${group eq 'croptalk'}">
+		<%@ include file="../../_aside_ct.jsp" %>
+		<link rel="stylesheet" href="../../css/croptalk.css">
+	</c:when>
+	<c:when test="${group eq 'event'}">
+		<%@ include file="../../_aside_et.jsp" %>
+		<link rel="stylesheet" href="../../css/event.css">
+	</c:when>
+	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>
+</c:choose>
+-->
                          <section class="modify">
 			                <h3>글수정</h3>
 			                <article>
-			                    <form action="community/notice/modify.do" method="post" enctype="multipart/form-data">
-
+			                    <form action="/community/notice/modify.do" method="post" enctype="multipart/form-data">
 			                        <input type="hidden" name="b_writer" value="${sessUser.uid}">
 			                        <table>
 			                            <tr>
@@ -51,15 +69,11 @@
 			                           	</tr> 
 			                        </table>
 			                        <div>
-										<a th:href="@{/community/CommunityNotice}" class="btnCancel">취소</a>
-<!--			                            <a href="/FarmStory/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>-->
+			                            <a href="/FarmStory/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>
 			                            <input type="submit"  class="btnWrite" value="수정완료">
 			                        </div>
 			                    </form>
 			                </article>
             </section>
-        </main><!-- #main -->
-<th:block th:include ="/grid/_footer.html"/>
-</div><!-- warapper end -->
-</body>
-</html>
+	</div>
+	<th:block th:include ="/grid/_footer.html"/>

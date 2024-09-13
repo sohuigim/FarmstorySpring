@@ -9,7 +9,9 @@
 main input{
     width: 162px;
     height: 24px;
+
      text-indent: 6px;
+
 
 }
 table tr:nth-of-type(1){
@@ -37,7 +39,7 @@ table, th, td {
     box-sizing: border-box;
     border-left: 1px solid #E9E9E9;
     border-right:1px solid #E9E9E9;;
-   border-bottom: 1px solid #E9E9E9;;
+    border-bottom: 1px solid #E9E9E9;;
 }
 
 table, th{
@@ -48,10 +50,10 @@ table{
 }
 
 .form_group {
-display: flex;
-align-items: center;
-flex-wrap: wrap;
-gap:0px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:0px;
 
 }
 .form_group > .address{
@@ -83,7 +85,7 @@ gap:0px;
 
 }
 .form td {
-   box-sizing: border-box;
+    box-sizing: border-box;
     padding-left: 12.5px;
     padding-top: 6.5px;
     padding-bottom: 6.5px;
@@ -107,7 +109,7 @@ table:nth-child(2){
 
 }
 .form span {
-	line-height : 24px;
+    line-height : 24px;
 }
 #zip {
     width: 162px;
@@ -184,7 +186,9 @@ button{
     background-color: white;
 }
 .auth{
-	margin-top:3px;
+
+    margin-top:3px;
+
 }
 
 .btn_auth .icon {
@@ -278,4 +282,8 @@ button{
 
 .button_container button:hover {
     opacity: 0.8;
+}
+
+.article{
+
 }
