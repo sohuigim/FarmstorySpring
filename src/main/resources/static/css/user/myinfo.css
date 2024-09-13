@@ -9,7 +9,9 @@
 main input{
     width: 162px;
     height: 24px;
-    text-indent: 6px;
+
+     text-indent: 6px;
+
 
 }
 table tr:nth-of-type(1){
@@ -28,6 +30,7 @@ table tr:nth-of-type(1){
     height: 507px;
     box-sizing: border-box;
     margin-top: 20px;
+
 }
 table > tr {
     box-sizing: border-box;
@@ -133,7 +136,7 @@ button{
     height: 27px;
     border: 1px solid #E9E9E9;
     background-color: #2E658A;
-    color: FFFFFF;
+    color: #FFFFFF;
     margin-top: 0px;
 }
 
@@ -183,7 +186,9 @@ button{
     background-color: white;
 }
 .auth{
+
     margin-top:3px;
+
 }
 
 .btn_auth .icon {
