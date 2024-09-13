@@ -14,10 +14,37 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 selectable: true,
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'today'
+
+                dayMaxEventRows: true, // for all non-TimeGrid views
+                googleCalendarApiKey: 'AIzaSyC2lsCQQHs9FrEcDnGhbBj2kVYhSKS6QoE',
+                eventSources: [
+                    {
+                        googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+                        className: '대한민국의 휴일',
+                        //color: '#e70000', //rgb,#ffffff 등의 형식으로 할 수 있어요.
+                        //textColor: 'black'
+                    },
+                    {
+                        googleCalendarId: '689703ab7777f007cee66cfa6434061bb5f6eab9b05bbbf4a465010c41e6c7b1@group.calendar.google.com',
+                        className: 'Farmstory',
+                        //color: '#3fb193', //rgb,#ffffff 등의 형식으로 할 수 있어요.
+                        //textColor: 'black'
+                    }],
+
+                },
+                //클릭 이벤트들
+                dateClick: function(info) {
+                    alert('clicked ' + info.dateStr);
+                },
+
+                // select: function(info) {
+                //     alert('selected ' + info.startStr + ' to ' + info.endStr);
+                // }
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                    }
+                }
                     //right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 }
                 //클릭 이벤트들
@@ -27,6 +54,7 @@
                 // select: function(info) {
                 //     alert('selected ' + info.startStr + ' to ' + info.endStr);
                 // }
+
             });
 
             calendar.render();
