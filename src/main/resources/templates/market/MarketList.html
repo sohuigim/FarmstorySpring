@@ -61,15 +61,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${products == null || products.isEmpty()}">
+                    <tr th:if="${page.content == null || page.content.isEmpty()}">
                         <td colspan="7" class="td_first" style="width: 100%">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr th:each="product:${products}" th:if="${product != null}">
+                    <tr th:each="product:${page.content}" th:if="${product != null}">
                         <td class="pic"><img src="#" alt="사과 500g"></td>
-                        <td class="type">${product.prodCateType}</td>
-                        <td class="pro_name"><a th:href="@{/market/MarketView}">${product.prodName}</a></td>
-                        <td class="sale">${product.prodDiscount}%</td>
-                        <td class="point">${product.prodPoint}p</td>
+                        <td class="type">[[${product.prodCateType}]]</td>
+                        <td class="pro_name"><a th:href="@{/market/MarketView}">[[${product.prodName}]]</a></td>
+                        <td class="sale">[[${product.prodDiscount}]]%</td>
+                        <td class="point">[[${product.prodPoint}]]p</td>
                         <td class="price">
                             <strong>
                                 <!--									        <fmt:formatNumber value="${service.disPrice(productDto)}" pattern="#,###"/>원-->
@@ -84,21 +84,15 @@
                 <div class="pages">
                     <ul>
                         <li>
-                            <!--                                	<c:set var="page" value="1"/>-->
-                            <!--                                	<c:if test="${page ne pageGroupP.start}">-->
-                            <a href="/market/list.do?pg=${pageGroupP.start - 1}" class="no current">&#60;</a>
-                            <!--                           			</c:if>-->
+                            <a th:href="@{/market/MarketList(page=${page.number - 1}, size=${page.size})}" th:if="${page.hasPrevious()}" class="no current">&#60;</a>
                         </li>
                         <li>
-                            <!--                                	<c:forEach var="i" begin="${pageGroupP.start}" end="${pageGroupP.end}">-->
-                            <a href="/market/list.do?pg=${i}&&" class="no">[${i}]</a>
-                            <!--                                	</c:forEach>-->
+                            <!--<c:forEach var="i" begin="${pageGroupP.start}" end="${pageGroupP.end}">-->
+<!--                             <span th:text="'Page ' + ${page.number} + ' of ' + ${page.totalPages}"></span>-->
+                            <a th:href="@{/market/list}" class="no">[[${page.number} + 1]]</a>
                         </li>
                         <li>
-                            <!--                                	<c:set var="page" value="${lastPageNum}" />-->
-                            <!--                                	<c:if test="${page > pageGroupP.end }">-->
-                            <a href="/market/list.do?pg=${pageGroupP.end + 1}" class="no last_no">&#62;</a>
-                            <!--                               		</c:if>-->
+                            <a th:href="@{/market/MarketList(page=${page.number + 1}, size=${page.size})}" th:if="${page.hasNext()}" class="no last_no">&#62;</a>
                         </li>
                     </ul>
                 </div>
