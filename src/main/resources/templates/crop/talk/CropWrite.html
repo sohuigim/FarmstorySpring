@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>글쓰기</title>
+<link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 <link rel="stylesheet" th:href="@{/css/community.css}">
+    <link rel="stylesheet" th:href="@{/css/croptalk.css}">
 <!--<c:choose>-->
 <!--	<c:when test="${group eq 'croptalk'}">-->
 <!--		<%@ include file="../../_aside_ct.jsp" %>-->
@@ -21,6 +23,7 @@
     <div id="container">
     <th:block th:include ="/grid/_header.html"/>
     <th:block th:include ="/grid/_aside_ct.html"/>
+
                 <section class="write">
                 	<h3>글쓰기</h3>
                 	<article>
@@ -51,7 +54,7 @@
                             </tr>
                         </table>
                         <div>
-                            <a href="/FarmStory/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>
+                            <a href="/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>
                             <input type="submit"  class="btnWrite" value="작성완료">
                         </div>
                     </form>

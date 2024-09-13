@@ -3,8 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>글쓰기</title>
+	<title>글보기</title>
 	<link rel="stylesheet" th:href="@{/css/community.css}">
+	<link rel="stylesheet" th:href="@{/css/croptalk.css}">
+</head>
+<body>
+<div id="container">
+	<th:block th:include ="/grid/_header.html"/>
+	<th:block th:include ="/grid/_aside_ct.html"/>
 
 <!--<%@ include file="../../_header.jsp" %>-->
 <!--<title>글보기</title>-->
@@ -38,7 +44,7 @@
 							<td>
 								<c:forEach var="file" items="${boardDTO.boardFiles}">
 										<p style="margin: 4px 0">
-											<a href="/FarmStory/community/notice/BoardFileDownload.do?b_fNo=${file.b_fNo}">${file.b_oName}</a>
+											<a href="#">${file.b_oName}</a>
 											<span>${file.b_download}회 다운로드</span>
 										</p>
 								</c:forEach>
