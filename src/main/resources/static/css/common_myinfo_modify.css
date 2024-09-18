@@ -52,7 +52,6 @@
 
 /* article 영역 (오른쪽)  ---------------------------------------------- */
 .article{position: relative;  width: 802px; height: 650px;
-    display: flex;
     top: -650px;
     left: 170px;
 }
@@ -75,7 +74,3 @@ h2::after{display: block; content: ""; clear: both; width: 762px; height: 1px; b
 
 /* location 현재페이지 강조 */
 .location strong{color:#91ba15; font-weight: 700;}
-#footer{
-    position: relative;
-    top: -550px;
-}
