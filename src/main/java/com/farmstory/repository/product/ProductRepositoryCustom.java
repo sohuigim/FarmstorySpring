@@ -1,6 +1,5 @@
 package com.farmstory.repository.product;
 
-import com.farmstory.dto.ProductDTO;
 import com.farmstory.entity.Product;
 
 import java.util.List;
