@@ -33,7 +33,7 @@
                          <section class="modify">
 			                <h3>글수정</h3>
 			                <article>
-			                    <form action="/community/notice/modify.do" method="post" enctype="multipart/form-data">
+			                    <form th:action="@{/crop/CropModify}" method="post" enctype="multipart/form-data">
 			                        <input type="hidden" name="b_writer" value="${sessUser.uid}">
 			                        <table>
 			                            <tr>

@@ -27,19 +27,23 @@
                 <section class="write">
                 	<h3>글쓰기</h3>
                 	<article>
-                    <form action="/community/notice/write.do" method="post" enctype="multipart/form-data">
-                    	<input type="hidden" name="b_writer" value="${sessUser.uid}">
+                    <form th:action="@{/crop/CropWrite}" name="artForm" method="post" ModelAttribute="ArticleDTO">
+                    	<input type="hidden" name="b_writer" value="">
                         <table>
                             <tr>
                                 <td>제목</td>
-                                <input type="hidden" name="b_cateNo" value="${cate}"/>
-                                <input type="hidden" name="group" value="${group}"/>
-                                <td><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
+<!--&lt;!&ndash;                    <input type="hidden" name="b_cateNo" value="${cate}"/>&ndash;&gt;-->
+<!--                                <input type="hidden" name="artCate" id="artCate" value="${artCate}"/>-->
+                                <td><input type="text" name="artTitle" id="artTitle" placeholder="제목을 입력하세요."/></td>
+                            </tr>
+                            <tr>
+                                <td>카테고리</td>
+                                <td><input type="text" name="artCate" id="artCate" value="${artCate}"/></td>
                             </tr>
                             <tr>
                                 <td>내용</td>
                                 <td>
-                                    <textarea name="b_contents"></textarea>                                
+                                    <textarea name="b_contents"></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -54,7 +58,8 @@
                             </tr>
                         </table>
                         <div>
-                            <a href="/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>
+<!--                            <a href="/community/notice/list.do?group=${group}&cate=${cate}" class="btnCancel">취소</a>-->
+                            <a th:href="@{/crop/}+${cate}" class="btnCancel">취소</a>
                             <input type="submit"  class="btnWrite" value="작성완료">
                         </div>
                     </form>
