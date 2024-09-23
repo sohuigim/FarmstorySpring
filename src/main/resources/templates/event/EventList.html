@@ -61,13 +61,15 @@
                         },
                         eventClick: function(info) {
                             info.jsEvent.preventDefault();
+                            var startDate = info.event.start ? info.event.start.toISOString().slice(0, 16) : '';
+                            var endDate = info.event.end ? info.event.end.toISOString().slice(0, 16) : '';
 
                             selectedEvent = info.event;
                             $('#eventModal').modal('show');
                             $('#eventTitleInput').val(info.event.title);
                             $('#eventContentInput').val(info.event.extendedProps.content);
-                            $('#eventStartDateInput').val(info.event.start.toISOString().slice(0, 16));
-                            $('#eventEndDateInput').val(info.event.end ? info.event.end.toISOString().slice(0, 16) : '');
+                            $('#eventStartDateInput').val(startDate);
+                            $('#eventEndDateInput').val(endDate);
                         }
                     });
 
@@ -79,9 +81,12 @@
                 var newTitle = $('#eventTitleInput').val();
                 var newContent = $('#eventContentInput').val();
 
-                // 시간을 ISO 8601 형식으로 변환
-                var newStartDate = new Date($('#eventStartDateInput').val()).toISOString();
-                var newEndDate = new Date($('#eventEndDateInput').val()).toISOString();
+                // 시간을 ISO 8601 형식으로 변환 안하는게 좋음 pc시스템 데이터로 변경(2024-09-23)
+                //var newStartDate = new Date($('#eventStartDateInput').val()).toISOString();
+                var newStartDate = $('#eventStartDateInput').val()
+                //var newEndDate = new Date($('#eventEndDateInput').val()).toISOString();
+                var newEndDate = $('#eventEndDateInput').val()
+
 
                 if (selectedEvent) {
                     $.ajax({
@@ -100,7 +105,7 @@
                             selectedEvent.setExtendedProp('content', newContent);
                             selectedEvent.setStart(newStartDate);
                             selectedEvent.setEnd(newEndDate);
-
+                            alert('Event 수정이 완료되었습니다.')
                             $('#eventModal').modal('hide');
                         },
                         error: function(err) {
@@ -115,20 +120,30 @@
                         data: JSON.stringify({
                             title: newTitle,
                             content: newContent,
-                            start_date: newStartDate + 1,
+                            start_date: newStartDate,
                             end_date: newEndDate
                         }),
                         success: function(response) {
+                            console.log('서버응답 : ',response);
                             var newEvent = {
                                 id: response.id,
                                 title: response.title,
-                                start: response.start_date + 1,
+                                start: response.start_date,
                                 end: response.end_date,
                                 extendedProps: {
                                     content: response.content
                                 }
                             };
+                            console.log('추가될 이벤트:', newEvent);
                             calendar.addEvent(newEvent);
+
+                            calendar.render();
+                            if (calendar.render == true){
+                                console.log('정상작동합니다.');
+                            }else{
+                                console.log('랜더링 실패')
+                            }
+                            console.log(calendar.render());
                             $('#eventModal').modal('hide');
                             alert("신규 Event 생성이 완료되었습니다.");
                         },
@@ -136,6 +151,7 @@
                             console.error('creating error:', err);
                         }
                     });
+
                 }
             });
 

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -25,8 +26,8 @@ public class Event {
     private String title;
     private String content;
 
-    private LocalDateTime Start_date;
-    private LocalDateTime End_date;
+    private String Start_date;
+    private String End_date;
 
     public EventDTO toDTO(){
         return EventDTO.builder()
