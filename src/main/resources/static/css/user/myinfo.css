@@ -30,7 +30,6 @@ table tr:nth-of-type(1){
     height: 507px;
     box-sizing: border-box;
     margin-top: 20px;
-
 }
 table > tr {
     box-sizing: border-box;

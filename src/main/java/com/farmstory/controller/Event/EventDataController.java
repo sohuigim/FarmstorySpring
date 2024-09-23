@@ -29,9 +29,11 @@ public class EventDataController {
     // 이벤트 생성
     @Transactional
     @PostMapping("/create")
-    public void createEvent(@RequestBody EventDTO eventDTO) {
+    public EventDTO createEvent(@RequestBody EventDTO eventDTO) {
         Event newEvent = eventDTO.toEntity();
         eventRepository.save(newEvent);
+
+        return newEvent.toDTO();
     }
 
     // 이벤트 업데이트
@@ -45,6 +47,7 @@ public class EventDataController {
         existingEvent.setContent(eventDTO.getContent());
         existingEvent.setStart_date(eventDTO.getStart_date());
         existingEvent.setEnd_date(eventDTO.getEnd_date());
+
     }
 
     // 이벤트 삭제
