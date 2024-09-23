@@ -8,21 +8,24 @@
 
 
 /* 서브 이미지 */
+.sub_bg{position: relative; width: 980px; height: 184px; background: url('../images/myinfo/myinfo_top_bg.jpg') no-repeat center;}
 .sub_bg .sub_tit{position: absolute; top: 137px; left: 10px; height: 37px;}
 
 /* aside 영역 (왼쪽) -------------------------------------------------- */
-.aside{position: relative;
+.aside{
     float: left;
     width: 179px;
     box-sizing: border-box;
     width: 176px;
     height: 650px;
-    background: url('../images/sub_aside_bg_line.png') right 0 no-repeat;}
+    background: url('../images/sub_aside_bg_line.png') right 0 no-repeat;
+}
 
 
 .aside_cate{
     width: 103px; height: 45px; margin:16px 0 0 16px;
     /* position: absolute; top: 16px; left: 16px;  */ /* 포지션으로 위치 잡을 경우 위치 값 */
+
 }
 .aside_bg{width: 176px; height: 650px; background: url('../images/sub_aside_bg_lnb.png') 0 20px no-repeat;}
 
@@ -32,8 +35,8 @@
 .aside_bg .cate_lnb li{}
 
 .aside_bg .cate_lnb_real{
-    position: absolute;
-    top: 100px;
+    position: relative;
+    top: 40px;
 }
 
 .aside_bg .cate_lnb_real li a{
@@ -47,10 +50,17 @@
 .aside_bg .cate_lnb_real li:nth-child(2) a:hover{background: url('../images/myinfo/myinfo_menu2_ov.png') no-repeat; }
 .aside_bg .cate_lnb_real li:nth-child(3) a:hover{background: url('../images/myinfo/myinfo_menu3_ov.png') no-repeat; }
 
-
 /* article 영역 (오른쪽)  ---------------------------------------------- */
-.article{position: relative; float:left; width: 802px; height: auto;}
-.articleIn{width: 802px; margin-left: 40px;}
+.article{position: relative;  width: 802px; height: 650px;
+    top: -650px;
+    left: 170px;
+}
+
+.infotable{
+    border: 1px solid #fff;
+}
+.articleIn{width: 802px; margin-left: 40px;
+}
 
 /* article 타이틀 */
 h2{margin-top: 43px; }

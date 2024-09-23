@@ -8,105 +8,107 @@
 	<link rel="stylesheet" th:href="@{/css/croptalk.css}">
 </head>
 <body>
-<div id="container">
-	<th:block th:include ="/grid/_header.html"/>
-	<th:block th:include ="/grid/_aside_ct.html"/>
+	<div id="container">
+		<th:block th:include ="/grid/_header.html"/>
+		<th:block th:include ="/grid/_aside_ct.html"/>
 
-<!--<%@ include file="../../_header.jsp" %>-->
-<!--<title>글보기</title>-->
-<!--<link rel="stylesheet" href="../../css/community.css">-->
-<!--<c:choose>-->
-<!--	<c:when test="${group eq 'croptalk'}">-->
-<!--		<%@ include file="../../_aside_ct.jsp" %>-->
-<!--		<link rel="stylesheet" href="../../css/croptalk.css">-->
-<!--	</c:when>-->
-<!--	<c:when test="${group eq 'event'}">-->
-<!--		<%@ include file="../../_aside_et.jsp" %>-->
-<!--		<link rel="stylesheet" href="../../css/event.css">-->
-<!--	</c:when>-->
-<!--	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>-->
-<!--</c:choose> -->
-  
-                 	<section class="view">
-				<h3>글보기</h3>
-				<table>
+		<!--<%@ include file="../../_header.jsp" %>-->
+		<!--<title>글보기</title>-->
+		<!--<link rel="stylesheet" href="../../css/community.css">-->
+		<!--<c:choose>-->
+		<!--	<c:when test="${group eq 'croptalk'}">-->
+		<!--		<%@ include file="../../_aside_ct.jsp" %>-->
+		<!--		<link rel="stylesheet" href="../../css/croptalk.css">-->
+		<!--	</c:when>-->
+		<!--	<c:when test="${group eq 'event'}">-->
+		<!--		<%@ include file="../../_aside_et.jsp" %>-->
+		<!--		<link rel="stylesheet" href="../../css/event.css">-->
+		<!--	</c:when>-->
+		<!--	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>-->
+		<!--</c:choose> -->
+
+		<section class="view">
+			<h3>글보기</h3>
+			<table>
+				<tr>
+					<td>제목</td>
+					<input type="hidden" name="b_cateNo" value="${cate}"/>
+					<input type="hidden" name="group" value="${group}"/>
+					<td><input type="text" name="title"
+							   value="${boardDTO.title}" readonly /></td>
+				</tr>
+				<!-- 첨부파일이 있으면 나타나게끔  -->
+				<c:if test="${boardDTO.b_fNo > 0}">
 					<tr>
-						<td>제목</td>
-						<input type="hidden" name="b_cateNo" value="${cate}"/>
-                       	<input type="hidden" name="group" value="${group}"/>
-						<td><input type="text" name="title"
-							value="${boardDTO.title}" readonly /></td>
-					</tr>
-					<!-- 첨부파일이 있으면 나타나게끔  -->
-					<c:if test="${boardDTO.b_fNo > 0}">
-						<tr>
-							<td>첨부파일</td>
-							<td>
-								<c:forEach var="file" items="${boardDTO.boardFiles}">
-										<p style="margin: 4px 0">
-											<a href="#">${file.b_oName}</a>
-											<span>${file.b_download}회 다운로드</span>
-										</p>
-								</c:forEach>
-							</td>
-						</tr>
-					</c:if>
-					<tr>
-						<td>내용${boardDTO.b_fNo }</td>
+						<td>첨부파일</td>
 						<td>
-							<textarea name="b_contents" readonly>${boardDTO.b_contents}</textarea>
+							<c:forEach var="file" items="${boardDTO.boardFiles}">
+								<p style="margin: 4px 0">
+									<a href="#">${file.b_oName}</a>
+									<span>${file.b_download}회 다운로드</span>
+								</p>
+							</c:forEach>
 						</td>
 					</tr>
-				</table>
-				 <div>
-					 <c:if test="${sessUser.uid eq boardDTO.b_writer}">
-	                    <a href="/FarmStory/community/notice/delete.do?boardNo=${boardDTO.boardNo}&group=${group}&cate=${cate}" class="btnDelete"">삭제</a>
-	                    <a href="/FarmStory/community/notice/modify.do?boardNo=${boardDTO.boardNo}&group=${group}&cate=${cate}" class="btnModify"">수정</a>
-                     </c:if>
-	                    <a href="/FarmStory/community/notice/list.do?pg=${pg}&group=${group}&cate=${cate}" class="btnList">목록</a>
-	                 
-                </div>  
+				</c:if>
+				<tr>
+					<td>내용${boardDTO.b_fNo }</td>
+					<td>
+						<textarea name="b_contents" readonly>${boardDTO.b_contents}</textarea>
+					</td>
+				</tr>
+			</table>
 
-				 <!-- 댓글리스트 -->
-                <section class="commentList">
-                    <h3>댓글목록</h3>
-                    <c:forEach var="comment" items="${comments}">
-	                    <article class="comment">
+			<div>
+				<c:if test="${sessUser.uid eq boardDTO.b_writer}">
+					<a href="/community/notice/delete.do?boardNo=${boardDTO.boardNo}&group=${group}&cate=${cate}" class="btnDelete">삭제</a>
+					<a href="/community/notice/modify.do?boardNo=${boardDTO.boardNo}&group=${group}&cate=${cate}" class="btnModify">수정</a>
+				</c:if>
+				<a href="/community/notice/list.do?pg=${pg}&group=${group}&cate=${cate}" class="btnList">목록</a>
+
+			</div>
+			<!-- 댓글리스트 -->
+			<section class="commentList">
+				<h3>댓글목록</h3>
+				<c:forEach var="comment" items="${comments}">
+					<article class="comment">
 		                   		 <span>
 		                            <span>${comment.nick}</span>
 		                            <span>${comment.com_rdate}</span>
 		                        </span>
-	                        <textarea name="comment" readonly>${comment.com_content}</textarea>
-	                        
-	                        <c:if test="${sessUser.uid eq comment.com_writer}">
-		                        <div>
-		                        	<!-- HTML 사용자 정의 속성을 이용한 삭제/수정 -->
-		                            <a href="#" class="commentRemove" data-no="${comment.comNo}">삭제</a>
-		                            <a href="#" class="commentModify" data-no="${comment.comNo}">수정</a>
-		                            <a href="#" class="commentUpdate" data-no="${comment.comNo}" style="display:none;">수정완료</a>
-		                        </div>
-	                        </c:if>
-	                    </article>
-                    </c:forEach>
-                    <c:if test="${empty comments}">
-	                    <p class="empty">등록된 댓글이 없습니다.</p>
-                    </c:if>
-				</section>
+						<textarea name="comment" readonly>${comment.com_content}</textarea>
 
-				<!-- 댓글입력폼 -->
-				<section class="commentForm">
-					<h3>댓글쓰기</h3>
-					<form name="commentForm">
-						<input type="hidden" name="com_parent" value="${boardDTO.boardNo}" /> <input
-							type="hidden" name="com_writer" value="${sessUser.uid}" />
-						<textarea name="comment"></textarea>
-						<div>
-							<a href="#" class="btnCancel">취소</a> 
-							<input type="submit" class="btnWrite" value="작성완료" />
-						</div>
-					</form>
-				</section>
+						<c:if test="${sessUser.uid eq comment.com_writer}">
+							<div>
+								<!-- HTML 사용자 정의 속성을 이용한 삭제/수정 -->
+								<a href="#" class="commentRemove" data-no="${comment.comNo}">삭제</a>
+								<a href="#" class="commentModify" data-no="${comment.comNo}">수정</a>
+								<a href="#" class="commentUpdate" data-no="${comment.comNo}" style="display:none;">수정완료</a>
+							</div>
+						</c:if>
+					</article>
+				</c:forEach>
+				<c:if test="${empty comments}">
+					<p class="empty">등록된 댓글이 없습니다.</p>
+				</c:if>
 			</section>
-        </main><!-- #main -->
-        <!-- footer -->
-	<th:block th:include ="/grid/_footer.html"/>
+
+			<!-- 댓글입력폼 -->
+			<section class="commentForm">
+				<h3>댓글쓰기</h3>
+				<form name="commentForm">
+					<input type="hidden" name="com_parent" value="${boardDTO.boardNo}" /> <input
+						type="hidden" name="com_writer" value="${sessUser.uid}" />
+					<textarea name="comment"></textarea>
+					<div>
+						<a href="#" class="btnCancel">취소</a>
+						<input type="submit" class="btnWrite" value="작성완료" />
+					</div>
+				</form>
+			</section>
+
+		</section>
+		</main><!-- #main -->
+
+			<!-- footer -->
+<th:block th:include ="/grid/_footer.html"/>
