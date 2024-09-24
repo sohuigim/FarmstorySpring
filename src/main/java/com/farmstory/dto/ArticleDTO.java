@@ -4,6 +4,7 @@ import com.farmstory.entity.Article;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -28,7 +29,7 @@ public class ArticleDTO {
     private String artRegip;
 
     @CreationTimestamp
-    private LocalDateTime artRdate;
+    private LocalDate artRdate;
     private String artNick;
 
     public Article toEntity(){
