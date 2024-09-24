@@ -9,8 +9,6 @@ import java.util.List;
 @Repository
 public interface EventRepositoryCustom {
 
-
-
     public void createEvent(EventDTO eventDTO);
     public List<Event> selectEvents();
     public void updateEvent(EventDTO eventDTO);
