@@ -1,4 +1,8 @@
 package com.farmstory.repository.article;
 
-public interface ArticleRepository {
+import com.farmstory.entity.Article;
+import org.hibernate.type.descriptor.converter.spi.JpaAttributeConverter;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ArticleRepository extends JpaRepository<Article, String> {
 }
