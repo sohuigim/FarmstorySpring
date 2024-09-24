@@ -110,3 +110,23 @@
         </main><!-- #main -->
         <!-- footer -->
 	<th:block th:include ="/grid/_footer.html"/>
+			<!-- 댓글입력폼 -->
+			<section class="commentForm">
+				<h3>댓글쓰기</h3>
+				<form name="commentForm">
+					<input type="hidden" name="com_parent" value="${boardDTO.boardNo}" /> <input
+						type="hidden" name="com_writer" value="${sessUser.uid}" />
+					<textarea name="comment"></textarea>
+					<div>
+<!--						<a href="#" class="btnCancel">취소</a>-->
+						<a th:href="@{/crop/}+${cate}" class="btnCancel">취소</a>
+						<input type="submit" class="btnWrite" value="작성완료" />
+					</div>
+				</form>
+			</section>
+
+		</section>
+		</main><!-- #main -->
+
+			<!-- footer -->
+<th:block th:include ="/grid/_footer.html"/>

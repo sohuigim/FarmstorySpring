@@ -1,9 +1,7 @@
 package com.farmstory.entity;
 
 import com.farmstory.dto.FileDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,7 +15,9 @@ import org.hibernate.annotations.CreationTimestamp;
 public class File {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fileNo;
+
     private int artNo;
     private String fileoName;
     private String filesName;
