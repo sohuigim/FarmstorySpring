@@ -12,5 +12,4 @@ public class CommunityFaqController {
         return "/community/CommunityFaq";
     }
 
- 
 }

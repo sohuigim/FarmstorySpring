@@ -25,28 +25,24 @@
 					<tr th:if="${userDto == null}">
 						<td colspan="10" style="width: 100%;">등록된 회원이 없습니다.</td>
 					</tr>
-					<tr th:each="userDto:${userDto}" th:if="userDto!=null">
+					<tr th:each="user:${userDto}">
 						<td><input type="checkbox" name="uid_list_checkbox"	id="plcheck"></td>
-						<td>${userDto.uid}</td>
-						<td>${userDto.name}</td>
-						<td>${userDto.nick}</td>
-						<td>${userDto.email}</td>
-						<td>${userDto.hp}</td>
-						<td><select name="grade" id="grade">
-							<option value="11"></option>
-							<!--											${userDto.gradeNo == 11 ? 'selected="selected"' : ''}>1</option>-->
-							<option value="22"></option>
-							<!--											${userDto.gradeNo == 22 ? 'selected="selected"' : ''}>2</option>-->
-							<option value="33"></option>
-							<!--											${userDto.gradeNo == 33 ? 'selected="selected"' : ''}>3</option>-->
-							<option value="44"></option>
-							<!--											${userDto.gradeNo == 44 ? 'selected="selected"' : ''}>4</option>-->
-							<option value="55"></option>
-							<!--											${userDto.gradeNo == 55 ? 'selected="selected"' : ''}>5</option>-->
-							<option value="00"></option>
-							<!--											${userDto.gradeNo == 00 ? 'selected="selected"' : ''}>0</option>-->
-						</select>
-						<td>${userDto.regDate}</td>
+						<td th:text="${user.userUid}"></td>
+						<td th:text="${user.userName}"></td>
+						<td th:text="${user.userNick}"></td>
+						<td th:text="${user.userEmail}"></td>
+						<td th:text="${user.userHp}"></td>
+						<td>
+							<select name="grade" id="grade">
+								<option value="11" th:selected="${user.userGrade == 11}">1</option>
+								<option value="22" th:selected="${user.userGrade == 22}">2</option>
+								<option value="33" th:selected="${user.userGrade == 33}">3</option>
+								<option value="44" th:selected="${user.userGrade == 44}">4</option>
+								<option value="55" th:selected="${user.userGrade == 55}">5</option>
+								<option value="00" th:selected="${user.userGrade == 0}">0</option>
+							</select>
+						</td>
+						<td th:text="${user.userRegDate}"></td>
 						<td><a href="#">[상세확인]</a></td>
 					</tr>
 					</tbody>

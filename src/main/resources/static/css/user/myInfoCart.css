@@ -1,4 +1,3 @@
-
 /* 장보기 > 장바구니 */
 
 /* 테이블 타이틀(h3) - 장바구니 전체(10) */
@@ -43,3 +42,6 @@
 
 /* 주문하기 버튼 영역 */
 .btn_order {margin-top: 10px; width: 291px; height: 37px; background-color: #960d1a; color: #fff; border: none;}
+.order_final{
+    margin-bottom: 50px;
+}

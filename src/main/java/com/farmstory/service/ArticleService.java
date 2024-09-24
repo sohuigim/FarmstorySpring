@@ -1,5 +1,6 @@
 package com.farmstory.service;
 
+
 import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
 import com.farmstory.repository.article.ArticleRepository;
@@ -53,5 +54,6 @@ public class ArticleService {
         Article article = articleDTO.toEntity();
         articleRepository.save(article);
     }
+
 
 }

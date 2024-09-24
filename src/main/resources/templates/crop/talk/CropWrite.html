@@ -27,15 +27,18 @@
                 <section class="write">
                 	<h3>글쓰기</h3>
                 	<article>
+
                     <form name="artForm" method="post" ModelAttribute="ArticleDTO" th:action="@{/crop/CropWrite}" enctype="multipart/form-data">
                         <input type="hidden" name="artCate" th:value="${artCate}">
                         <input type="hidden" name="b_writer" value="">
+
                         <table>
                             <tr>
                                 <td>제목</td>
 <!--&lt;!&ndash;                    <input type="hidden" name="b_cateNo" value="${cate}"/>&ndash;&gt;-->
 <!--                                <input type="hidden" name="artCate" id="artCate" value="${artCate}"/>-->
                                 <td><input type="text" name="artTitle" id="artTitle" placeholder="제목을 입력하세요."/></td>
+
                             </tr>
 <!--                            <tr>-->
 <!--                                <td>카테고리</td>-->
@@ -44,8 +47,9 @@
                             <tr>
                                 <td>내용</td>
                                 <td>
+
                                     <textarea name="artContent"></textarea>
-                                </td>
+                </td>
                             </tr>
                             <tr>
                                 <td>첨부</td>
@@ -59,7 +63,9 @@
                             </tr>
                         </table>
                         <div>
+
                             <a th:href="|/crop/${cate}|">취소</a>
+
                             <input type="submit"  class="btnWrite" value="작성완료">
                         </div>
                     </form>
