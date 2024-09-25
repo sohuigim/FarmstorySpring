@@ -1,6 +1,22 @@
 <title>상품상세보기</title>
 <link rel="stylesheet" th:href="@{/css/style_market_view.css}">
 <th:block th:include ="/grid/_header.html"/>
+
+<script>
+    window.onload = function() {
+
+        const numberInput = document.getElementById('numberInput');
+        const totalPrice = document.getElementById('totalPrice');
+
+        numberInput.addEventListener('input', () => {
+
+            const inNum = numberInput.value;
+
+            totalPrice.innerText = inNum * [[${product.prodPrice - (product.prodPrice * product.prodDiscount / 100)}]] +"원"
+            ;
+        });
+    }
+</script>
 <!-- #main -->
 <main id="main" class="cf">
     <section class="mainIn cf">
@@ -39,22 +55,22 @@
                         <table>
                             <tr>
                                 <th>상품명</th>
-                                <td class="product">${productDto.pName}</td>
+                                <td class="product">[[${product.prodName}]]</td>
                             </tr>
                             <tr>
                                 <th>상품코드</th>
-                                <td class="product">${productDto.pNo}</td>
+                                <td class="product">[[${product.prodNo}]]</td>
                             </tr>
                             <tr>
                                 <th>배송비</th>
                                 <td class="deliver">
-                                    <!--										<fmt:formatNumber value="${productDto.delivery}" type="number" groupingUsed="true"/>원<span>&nbsp3만원 이상 무료배송</span>-->
+                                    [[${product.prodDelivery}]]원 <span style="">&nbsp3만원 이상 무료배송</span>
                                 </td>
                             </tr>
                             <tr>
                                 <th>판매가격</th>
                                 <td class="sell_price">
-                                    <!--                                    	<fmt:formatNumber value="${productDto.price}" type="number" groupingUsed="true"/>원-->
+                                    [[${product.prodPrice - (product.prodPrice * product.prodDiscount / 100)}]]원
                                 </td>
                             </tr>
                             <tr>
@@ -66,7 +82,7 @@
                             <tr>
                                 <th>합계</th>
                                 <td class="sum" id="totalPrice">
-                                    <!--                                    	<fmt:formatNumber value="${productDto.price}" type="number" groupingUsed="true"/>원-->
+                                    [[${product.prodPrice - (product.prodPrice * product.prodDiscount / 100)}]]원
                                 </td>
                             </tr>
                         </table>
