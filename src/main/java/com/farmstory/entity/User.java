@@ -29,7 +29,6 @@ public class User {
     private String userRegip;
     private String userRole;
 
-    @CreationTimestamp
     private String userRegDate;
     private String userLeaveDate; // 탈퇴 버튼이 후 떠나는 일자를 확정가능
     private int userTotalPoint;
@@ -47,6 +46,7 @@ public class User {
                 .userAddr2(userAddr2)
                 .userRegip(userRegip)
                 .userRole(userRole)
+                .userRegDate(userRegDate)
                 .build();
     }
 }
