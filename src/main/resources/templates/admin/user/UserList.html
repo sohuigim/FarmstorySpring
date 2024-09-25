@@ -34,12 +34,12 @@
 						<td th:text="${user.userHp}"></td>
 						<td>
 							<select name="grade" id="grade">
-								<option value="11" th:selected="${user.userGrade == 11}">1</option>
-								<option value="22" th:selected="${user.userGrade == 22}">2</option>
-								<option value="33" th:selected="${user.userGrade == 33}">3</option>
-								<option value="44" th:selected="${user.userGrade == 44}">4</option>
-								<option value="55" th:selected="${user.userGrade == 55}">5</option>
-								<option value="00" th:selected="${user.userGrade == 0}">0</option>
+								<option value="1" th:selected="${user.userGrade}==1">1</option>
+								<option value="2" th:selected="${user.userGrade}==2">2</option>
+								<option value="3" th:selected="${user.userGrade}==3">3</option>
+								<option value="4" th:selected="${user.userGrade}==4">4</option>
+								<option value="5" th:selected="${user.userGrade}==5">5</option>
+								<option value="0" th:selected="${user.userGrade}==0">0</option>
 							</select>
 						</td>
 						<td th:text="${user.userRegDate}"></td>
