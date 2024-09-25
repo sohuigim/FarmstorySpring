@@ -25,16 +25,20 @@
                                         <th>날짜</th>
                                         <th>조회</th>
                                     </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><a th:href="@{#}">테스트 제목입니다.</a>&nbsp;[3]</td>
-                                        <td>길동이</td>
-                                        <td>20-05-12</td>
-                                        <td>12</td>
+                                    <tr th:each="article : ${articles}">
+                                        <td>[[${article.artNo}]]</td>
+                                        <td><a th:href="@{/crop/CropGarden/CropView}">[[${article.artTitle}]]&nbsp;&#91;[[${article.artComment}]]&#93;</a></td>
+                                        <td>[[${article.artNick}]]</td>
+                                        <td>[[${article.artRdate}]]</td>
+                                        <td>[[${article.artHit}]]</td>
                                     </tr>
                                 </table>
                             </article>
-            
+                            <form action="#">
+                                <input type="text" name="search" placeholder="제목 키워드, 글쓴이 검색">
+                                <input type="submit" value="검색">
+                            </form>
+
                             <!-- 페이지 네비게이션 -->
                             <div class="paging">
                                 <a href="#" class="prev">이전</a>

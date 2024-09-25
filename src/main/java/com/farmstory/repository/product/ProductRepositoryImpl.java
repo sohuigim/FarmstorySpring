@@ -1,7 +1,9 @@
 package com.farmstory.repository.product;
 
+import com.farmstory.dto.MarketPageRequestDTO;
 import com.farmstory.entity.Product;
 import com.farmstory.entity.QProduct;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -35,30 +37,66 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         return null;
     }
 
-    public Page<Product> findAllWithPaging(Pageable pageable) {
+    @Override
+    public Page<Tuple> selectProductAllForList(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable, int catetype) {
 
-        JPAQuery<Product> query = queryFactory
-                .selectFrom(qProduct)
-                .orderBy(qProduct.prodNo.asc()); // 정렬 조건 예시
+        List<Tuple> content = null;
+        long total = 0;
 
-        // 페이징 적용
-        List<Product> products = query
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        if(catetype == 0) {
+            content = queryFactory.select(qProduct, qProduct)
+                    .from(qProduct)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .orderBy(qProduct.prodNo.desc())
+                    .fetch();
+            total = queryFactory
+                    .select(qProduct.count())
+                    .from(qProduct)
+                    .fetchOne();
+        }else if(catetype == 1) {
+            content = queryFactory.select(qProduct, qProduct)
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(1))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .orderBy(qProduct.prodNo.desc())
+                    .fetch();
+            total = queryFactory
+                    .select(qProduct.count())
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(1))
+                    .fetchOne();
+        }else if(catetype == 2) {
+            content = queryFactory.select(qProduct, qProduct)
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(2))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .orderBy(qProduct.prodNo.desc())
+                    .fetch();
+            total = queryFactory
+                    .select(qProduct.count())
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(2))
+                    .fetchOne();
+        }else if(catetype == 3) {
+            content = queryFactory.select(qProduct, qProduct)
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(3))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .orderBy(qProduct.prodNo.desc())
+                    .fetch();
+            total = queryFactory
+                    .select(qProduct.count())
+                    .from(qProduct)
+                    .where(qProduct.prodCateType.eq(3))
+                    .fetchOne();
+        }
 
-        // 총 개수 조회
-        long total = queryFactory
-                .selectFrom(qProduct)
-                .fetchCount();
-
-        return new PageImpl<>(products, pageable, total);
-
-    }
-
-    private BooleanExpression isAvailable() {
-        // 예시 조건: product.isAvailable이 true일 때만 조회
-        return qProduct.isNotNull();
+        // 페이징 처리를 위해 page 객체 리턴
+        return new PageImpl<Tuple>(content, pageable, total);
     }
 
 }

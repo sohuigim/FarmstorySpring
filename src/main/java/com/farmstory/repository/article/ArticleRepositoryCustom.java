@@ -1,5 +1,12 @@
 package com.farmstory.repository.article;
 
-public interface ArticleRepositoryCustom {
+import com.farmstory.entity.Article;
+
+import java.util.List;
+
+public interface ArticleRepositoryCustom  {
+
+    public List<Article> selectArticles (String cate);
+    public Article selectArticle (int no);
 
 }

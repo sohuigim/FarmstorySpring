@@ -33,7 +33,7 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final NumberPath<Integer> artNo = createNumber("artNo", Integer.class);
 
-    public final DateTimePath<java.time.LocalDateTime> artRdate = createDateTime("artRdate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> artRdate = createDate("artRdate", java.time.LocalDate.class);
 
     public final StringPath artRegip = createString("artRegip");
 
