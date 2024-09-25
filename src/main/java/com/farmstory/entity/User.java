@@ -27,7 +27,7 @@ public class User {
     private String userAddr1;
     private String userAddr2;
     private String userRegip;
-    private String userGrade;
+    private String userRole;
 
     @CreationTimestamp
     private String userRegDate;
@@ -46,7 +46,7 @@ public class User {
                 .userAddr1(userAddr1)
                 .userAddr2(userAddr2)
                 .userRegip(userRegip)
-                .userGrade(userGrade)
+                .userRole(userRole)
                 .build();
     }
 }

@@ -14,12 +14,9 @@ import java.util.stream.Collectors;
 public class TermsService {
     private final TermsRepository termsRepository;
 
-    public List<TermsDTO> selectTerms(){
-        List<Terms> termsall = termsRepository.findAll();
-        List<TermsDTO> termsDTO = termsall
-                .stream()
-                .map(entity -> entity.toDTO())
-                .collect(Collectors.toList());
+    public TermsDTO selectTerms(){
+        Terms terms = termsRepository.findterms();
+        TermsDTO termsDTO = terms.toDTO();
         return termsDTO;
     }
 }

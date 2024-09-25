@@ -21,9 +21,11 @@ public class UserDTO {
     private String userAddr1;
     private String userAddr2;
     private String userRegip;
-    private String userGrade;
 
-    @CreationTimestamp
+    @Builder.Default
+    private String userRole = "USER";
+
+
     private String userRegDate;
     private String userLeaveDate; // 탈퇴 버튼이 후 떠나는 일자를 확정가능
     private int userTotalPoint;
@@ -41,7 +43,7 @@ public class UserDTO {
                 .userAddr1(userAddr1)
                 .userAddr2(userAddr2)
                 .userRegip(userRegip)
-                .userGrade(userGrade)
+                .userRole(userRole)
                 .userRegDate(userRegDate)
                 .userLeaveDate(userLeaveDate)
                 .userTotalPoint(userTotalPoint)
