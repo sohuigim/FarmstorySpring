@@ -18,6 +18,8 @@ public class CartDTO {
     @CreationTimestamp
     private String cartProdDate;
 
+    private ProductDTO prodDTO;
+
     public Cart toEntity() {
         return Cart.builder()
                 .cartNo(cartNo)

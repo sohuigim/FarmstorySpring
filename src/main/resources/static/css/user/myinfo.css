@@ -20,7 +20,7 @@ table tr:nth-of-type(1){
 }
 
 
-.infotable {
+. {
     width: auto;
     height: auto;
     box-sizing: border-box;

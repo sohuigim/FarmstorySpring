@@ -1,9 +1,7 @@
 package com.farmstory.entity;
 
 import com.farmstory.dto.CartDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,6 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Cart {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartNo;
     private String userId;
     private int prodNo;
