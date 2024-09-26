@@ -26,6 +26,9 @@ public class ProductDTO {
     @CreationTimestamp
     private String prodRegDate;
 
+    // 추가 필드
+    private int cartProdCount;
+
     public ProductDTO toEntity() {
         return ProductDTO.builder()
                 .prodNo(prodNo)
