@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Log4j2
 @RequiredArgsConstructor
 @Controller
@@ -24,6 +25,7 @@ public class AdminProdRegisterController {
         log.info("AdminProdRegister" + productDTO);
         productService.insertProduct(productDTO);
         return "redirect:/admin/ProductRegister";
+
     }
 
 }

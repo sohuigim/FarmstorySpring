@@ -32,7 +32,7 @@ public class SecurityConfig {
         //로그인 설정
         http.formLogin(login -> login.loginPage("/user/UserLogin")
                 .defaultSuccessUrl("/")//컨트롤러 요청 주소
-                .failureUrl("/user/login?success=100")
+                .failureUrl("/user/UserLogin?success=100")
                 .usernameParameter("uid")
                 .passwordParameter("pass"));
 
@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/user/login?success=101"));
+                .logoutSuccessUrl("/user/UserLogin?success=101"));
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
