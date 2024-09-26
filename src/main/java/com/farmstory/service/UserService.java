@@ -8,8 +8,8 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,6 +63,7 @@ public class UserService {
         //Entity 삭제 (데이터베이스 Delete)
         userRepository.deleteById(uid);
     }
+
     public int selectCountUser(String type, String value){
 
         int count = 0;
@@ -79,8 +80,9 @@ public class UserService {
         return count;
     }
 
-    //@Value(${spring.mail.username})//
+    @Value("${spring.mail.username}")
     private String sender;
+
     public void sendEmailCode(HttpSession session, String receiver){
 
 

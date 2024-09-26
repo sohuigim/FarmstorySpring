@@ -3,7 +3,8 @@
 <title>회원가입</title>
 <script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
 <script th:src="@{/js/postcode.js}"></script>
-<!--<script th:src="@{/js/validation.js}"></script>-->
+<script th:src="@{/js/utils.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
         <!-- main -->
         <main>
             <div class="mainIn">
@@ -15,16 +16,14 @@
                                 <td>아이디</td>
                                 <td>
                                     <input type="text" name="userUid" placeholder="아이디 입력"/>
-                                    <button type="button" id="btnCheckUid"><img th:src="@{/images/user/chk_id.gif}" alt="중복확인" ></button>
+                                    <button type="button" id="btnCheckUid" name="uidbtn" data-type="uid" ><img th:src="@{/images/user/chk_id.gif}" alt="중복확인" ></button>
                                     <span class="resultId"></span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>비밀번호
-                                    <input type="text" name="userPass" />
-                                </td>
+                                <td>비밀번호</td>
                                 <td>
-                                    <input type="password" name="pass1" placeholder="비밀번호 입력"/>
+                                    <input type="password" name="userPass" placeholder="비밀번호 입력"/>
                                 </td>
                             </tr>
                             <tr>
@@ -49,7 +48,7 @@
                                 <td>
                                     <p>공백없이 한글, 영문, 숫자만 입력가능</p>
                                     <input type="text" name="userNick" placeholder="별명 입력"/>
-                                    <button type="button" id="btnCheckNick"><img th:src="@{/images/user/chk_id.gif}" alt="중복확인"/></button>
+                                    <button type="button" id="btnCheckNick" name="btnnick" data-type="nick"><img th:src="@{/images/user/chk_id.gif}" alt="중복확인"/></button>
                                     <span class="resultNick"></span>
                                 </td>
                             </tr>
@@ -57,10 +56,10 @@
                                 <td>E-Mail</td>
                                 <td>
                                     <input type="email" name="userEmail" placeholder="이메일 입력"/>
-			                        <button type="button" id="btnSendEmail"><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
-			                        <span class="resultEmail"></span>
+			                        <button type="button" id="btnSendEmail" name="btnEmail" data-type="email"><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
+			                        <span id="resultEmail"></span>
 			                        <div class="auth" style="display:none">
-			                            <input type="text" name="auth" placeholder="인증번호 입력" />
+			                            <input type="text" name="userauth" class="userauth" placeholder="인증번호 입력" />
 			                            <button type="button" id="btnAuthEmail"  ><img th:src="@{/images/user/chk_confirm.gif}" alt="확인"/></button>
 			                        </div>
                                 </td>

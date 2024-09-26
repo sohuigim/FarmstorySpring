@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +34,7 @@ public class UserRegisterController {
     }
 
     @ResponseBody
-    @GetMapping("/user/{type}/{value}")
+    @GetMapping("user/UserRegister/{type}/{value}")
     public ResponseEntity<?> checkUser(HttpSession session,
                                        @PathVariable("type")  String type,
                                        @PathVariable("value") String value){
@@ -59,10 +56,11 @@ public class UserRegisterController {
 
         return ResponseEntity.ok().body(resultMap);
     }
-    /*
+
+
     // 이메일 인증 코드 검사
     @ResponseBody
-    @PostMapping("/email")
+    @PostMapping("user/UserRegister/email")
     public ResponseEntity<?> checkEmail(HttpSession session, @RequestBody Map<String, String> jsonData){
 
         log.info("checkEmail code : " + jsonData);
@@ -87,5 +85,4 @@ public class UserRegisterController {
         }
     }
 
-     */
 }
