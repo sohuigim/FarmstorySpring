@@ -3,6 +3,7 @@ package com.farmstory.service;
 
 import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
+import com.farmstory.entity.File;
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -51,7 +52,11 @@ public class ArticleService {
 
     public ArticleDTO getArticle(int artNo) {
         Optional<Article> articleOpt = articleRepository.findById(artNo);
-        return articleOpt.map(Article::toDTO).orElse(null);
+        ArticleDTO articleDTO = articleOpt.map(Article::toDTO).orElse(null);
+        for (File file : articleOpt.get().getFiles()) {
+            articleDTO.getFileList().add(file.toDTO());
+        }
+        return articleDTO;
     }
 
     public void deleteArticle(int artNo) {
