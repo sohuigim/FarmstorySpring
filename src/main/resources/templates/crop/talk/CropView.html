@@ -6,16 +6,61 @@
 	<title>글보기</title>
 	<link rel="stylesheet" th:href="@{/css/community.css}">
 	<link rel="stylesheet" th:href="@{/css/croptalk.css}">
+	<script th:src="@{/js/utils.js}"></script>
 </head>
 <body>
 	<div id="container">
 		<th:block th:include ="/grid/_header.html"/>
 		<th:block th:include ="/grid/_aside_ct.html"/>
+		<script>
+			window.onload = function () {
+
+				const btnComplete = document.getElementById('btnComplete');
+				const commentForm = document.commentForm;
+				const commentList = document.getElementsByClassName('commentList')[0];
+
+				btnComplete.onclick = async function (e) {
+					e.preventDefault();
+
+					const jsonData = {
+						// "userUid": commentForm.writer.value,
+
+						"artNo": commentForm.artNo.value,
+						"content": commentForm.content.value
+					}
+
+					// fetchPost는 async 함수로 async 함수를 호출할때는 반드시 await 키워드 붙여서 호출
+					// await 함수를 호출하는 상위 함수에서는 async 키워드를 붙여서 함수 정의
+					const data = await fetchPost('/comment/write', jsonData)
+
+					console.log(data);
+
+					if (data != null) {
+						alert('댓글이 등록 되었습니다.');
+
+						// 동적 태그 생성
+						const commentArticle = `<article>
+                                                <span class="nick">${data.user.userUid}</span>
+                                                <span class="date">${data.commentRegDate}</span>
+                                                <p class="content">${data.content}</p>
+                                                <div>
+                                                    <a href="#" class="remove">삭제</a>
+                                                    <a href="#" class="modify">수정</a>
+                                                </div>
+                                            </article>`;
+
+						commentList.insertAdjacentHTML('beforeend', commentArticle);
+					}
+				}
+			}
+		</script>
+
 		<section class="view">
 			<h3>글보기</h3>
 			<table>
 				<tr>
 					<td>제목</td>
+					<td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
 <!--					<input type="hidden" th:name="b_cateNo" th:value="" />-->
 <!--					<input type="hidden" th:name="group" th:value="" />-->
 <!--					<td>-->
@@ -24,34 +69,41 @@
 				</tr>
 
 				<!-- 첨부파일이 있으면 나타나게끔  -->
-				<th:if test="${boardDTO.b_fNo > 0}">
+<!--				<th:if test="${boardDTO.b_fNo > 0}">-->
+				<tr th:if="${articleDTO.artFile > 0}">
 					<tr>
 						<td>첨부파일</td>
+<!--						<td>-->
+<!--							<th:Each var="file" items="${boardDTO.boardFiles}">-->
+<!--								<p style="margin: 4px 0">-->
+<!--									<a href="#">${file.b_oName}</a>-->
+<!--									<span>${file.b_download}회 다운로드</span>-->
+<!--								</p>-->
+<!--							</th:Each>-->
+<!--						</td>-->
 						<td>
-							<th:Each var="file" items="${boardDTO.boardFiles}">
-								<p style="margin: 4px 0">
-									<a href="#">${file.b_oName}</a>
-									<span>${file.b_download}회 다운로드</span>
-								</p>
-							</th:Each>
+							<th:block th:each="file:${articleDTO.fileList}">
+								<a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드<br>
+							</th:block>
 						</td>
 					</tr>
 				</th:if>
 				<tr>
-					<td>내용${boardDTO.b_fNo }</td>
-					<td>
-						<textarea name="b_contents" readonly>${boardDTO.b_contents}</textarea>
-					</td>
+<!--					<td>내용${boardDTO.b_fNo }</td>-->
+						<td>내용</td>
+						<td>
+							<textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea>
+						</td>
 					</tr>
 					</table>
 
 					<div>
-						<th:if test="${sessUser.uid eq boardDTO.b_writer}">
-							<a href="/community/notice/delete.do?boardNo=${boardDTO.boardNo}&group=${group}&cate=${cate}" class="btnDelete">삭제</a>
+						<th:if test="${sessUser.uid eq articleDTO.artWriter}">
+							<a class="btnDelete">삭제</a>
 							<a th:href="@{/crop/talk/CropView}" class="btnModify">수정</a>
-				</th:if>
-				<a href="/community/notice/list.do?pg=${pg}&group=${group}&cate=${cate}" class="btnList">목록</a>
-			</div>
+							<a th:href="|/crop/${cate}|" class="btnList">목록</a>
+						</th:if>
+					</div>
 			<!-- 댓글리스트 -->
 			<section class="commentList">
 				<h3>댓글목록</h3>
@@ -76,6 +128,20 @@
 				<th:if test="${empty comments}">
 					<p class="empty">등록된 댓글이 없습니다.</p>
 				</th:if>
+			</section>
+
+			<!-- 댓글쓰기 -->
+			<section class="commentForm">
+				<h3>댓글쓰기</h3>
+				<form th:action="@{/comment/write}" name="commentForm" method="post">
+					<input type="hidden" name="artNo" th:value="${articleDTO.artNo}"/>
+<!--					<input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}"/>-->
+					<textarea name="content">댓글내용 입력</textarea>
+					<div>
+						<a th:href="@{#}" class="btn btnCancel">취소</a>
+						<input type="submit" value="작성완료" id="btnComplete" class="btn btnComplete"/>
+					</div>
+				</form>
 			</section>
 
         </main><!-- #main -->

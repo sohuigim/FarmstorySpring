@@ -5,6 +5,7 @@ import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
 import com.farmstory.repository.article.ArticleRepository;
 import com.farmstory.service.ArticleService;
+import com.farmstory.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CropController {
     private final ArticleService articleService;
     private ArticleRepository articleRepository;
+    private CommentService commentService;
 
     public CropController(ArticleService articleService) {
         this.articleService = articleService;
@@ -27,16 +29,15 @@ public class CropController {
     @GetMapping("/crop/{cate}")
     public String cropStory(@PathVariable String cate, Model model) {
         String str1 = "";
-        if(cate.equals("CropStory")) {
+        if (cate.equals("CropStory")) {
             str1 = "b201";
-        } else if(cate.equals("CropGarden")) {
+        } else if (cate.equals("CropGarden")) {
             str1 = "b202";
-        } else if(cate.equals("CropReturnfarm")) {
+        } else if (cate.equals("CropReturnfarm")) {
             str1 = "b203";
         }
 
         model.addAttribute("str1", str1);
-
 
 
         List<Article> articles = articleService.selectArticles(cate);
@@ -52,9 +53,13 @@ public class CropController {
 
 
         String str1 = "";
-        if (cate.equals("CropStory")){str1 = "b201";}
-        else if (cate.equals("CropGarden")) {str1 = "b202";}
-        else if (cate.equals("CropReturnfarm")) {str1 = "b203";}
+        if (cate.equals("CropStory")) {
+            str1 = "b201";
+        } else if (cate.equals("CropGarden")) {
+            str1 = "b202";
+        } else if (cate.equals("CropReturnfarm")) {
+            str1 = "b203";
+        }
 
 
         model.addAttribute("str1", str1);
@@ -86,18 +91,23 @@ public class CropController {
     }
 
     //글보기
-    @GetMapping("/crop/{cate}/CropView")
-    public String CropStoryView(Model model, @PathVariable("cate") String cate) {
+    @GetMapping("/crop/{cate}/CropView/{artNo}")
+    public String CropStoryView(Model model, @PathVariable("cate") String cate, @PathVariable("artNo") int artNo) {
         String str1 = "";
-        if(cate.equals("CropStory")) {
+        if (cate.equals("CropStory")) {
             str1 = "b201";
-        } else if(cate.equals("CropGarden")) {
+        } else if (cate.equals("CropGarden")) {
             str1 = "b202";
-        } else if(cate.equals("CropReturnfarm")) {
+        } else if (cate.equals("CropReturnfarm")) {
             str1 = "b203";
         }
 
+        ArticleDTO articleDTO = articleService.getArticle(artNo);
+//        commentService.
+        model.addAttribute(articleDTO);
+
         model.addAttribute("str1", str1);
+
 
         System.out.println(str1);
         System.out.println(cate);
@@ -105,14 +115,23 @@ public class CropController {
     }
 
     //글수정
-    @GetMapping("/crop/{cate}/CropModify")
-    public String CropStoryModify(Model model, @PathVariable String cate) {
+    @GetMapping("/crop/{cate}/CropModify/{artNo}")
+    public String CropStoryModify(Model model, @PathVariable String cate, @PathVariable("artNo") int artNo) {
         String str1 = "";
         System.out.println(cate);
-        if (cate.equals("CropStory")) {str1 = "b201";}
-        else if (cate.equals("CropGarden")) {str1 = "b202";}
-        else if (cate.equals("CropReturnfarm")) {str1 = "b203";}
+        if (cate.equals("CropStory")) {
+            str1 = "b201";
+        } else if (cate.equals("CropGarden")) {
+            str1 = "b202";
+        } else if (cate.equals("CropReturnfarm")) {
+            str1 = "b203";
+        }
+
+        ArticleDTO articleDTO = articleService.getArticle(artNo);
+        model.addAttribute(articleDTO);
+
         model.addAttribute("str1", str1);
+
         return "/crop/talk/CropModify";
     }
 }
