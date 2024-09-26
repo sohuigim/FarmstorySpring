@@ -21,7 +21,7 @@ public class AdminUserListController {
     @GetMapping("/admin/UserList")
     public String AdminUser(Model model) {
         List<UserDTO> userDto = userService.selectUsers();
-        log.info("=============" + userDto);
+        log.info(userDto);
         model.addAttribute("userDto", userDto);
         return "/admin/user/UserList";
     }

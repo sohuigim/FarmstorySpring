@@ -2,6 +2,7 @@ package com.farmstory.dto;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public class ProductDTO {
     private String prodImage1;
     private String prodImage2;
     private String prodImage3;
+    private MultipartFile prodImageName1;
+    private MultipartFile prodImageName2;
+    private MultipartFile prodImageName3;
     private int prodPoint;
     private String prodEtc;
     private int prodDelivery;
