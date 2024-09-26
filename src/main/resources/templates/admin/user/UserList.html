@@ -33,13 +33,15 @@
 						<td th:text="${user.userEmail}"></td>
 						<td th:text="${user.userHp}"></td>
 						<td>
-							<select name="grade" id="grade">
-								<option value="1" th:selected="${user.userGrade}==1">1</option>
-								<option value="2" th:selected="${user.userGrade}==2">2</option>
-								<option value="3" th:selected="${user.userGrade}==3">3</option>
-								<option value="4" th:selected="${user.userGrade}==4">4</option>
-								<option value="5" th:selected="${user.userGrade}==5">5</option>
-								<option value="0" th:selected="${user.userGrade}==0">0</option>
+
+							<select name="Role" id="Role">
+								<option value="1" th:selected="${user.userRole}==1">1</option>
+								<option value="2" th:selected="${user.userRole}==2">2</option>
+								<option value="3" th:selected="${user.userRole}==3">3</option>
+								<option value="4" th:selected="${user.userRole}==4">4</option>
+								<option value="5" th:selected="${user.userRole}==5">5</option>
+								<option value="0" th:selected="${user.userRole}==0">0</option>
+
 							</select>
 						</td>
 						<td th:text="${user.userRegDate}"></td>

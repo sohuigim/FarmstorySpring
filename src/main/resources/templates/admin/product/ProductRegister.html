@@ -3,7 +3,7 @@
 	<section>
 		<div class="main_container">
 			<div class="main_top"><h2>상품등록</h2></div>
-			<form th:action="@{/admin/product/register}" method="post" enctype="multipart/form-data">
+			<form th:action="@{/admin/ProductRegister}" method="post" enctype="multipart/form-data">
 				<div class="reg_table">
 					<table id="product">
 						<tr>
@@ -14,9 +14,11 @@
 							<th>종류</th>
 							<td>
 								<select name="prodCateType" id="prodtype" >
-									<option value="p101">과일</option>
-									<option value="p102">야채</option>
-									<option value="p103">곡류</option>
+
+									<option value="1">과일</option>
+									<option value="2">야채</option>
+									<option value="3">곡류</option>
+
 								</select>
 
 							</td>
@@ -71,7 +73,9 @@
 									<div class="file_group">
 										<label for="product_list_image">상품목록 이미지(약 120 × 120)</label>
 										<div class="cf_input">
-											<input type="file" class="ci" id="product_list_image" name="prodImage1" onchange="showFileName(this, 'product_list_image_name')">
+
+											<input type="file" class="ci" id="product_list_image" name="prodImageName1" onchange="showFileName(this, 'product_list_image_name')">
+
 											<span>Choose File</span>
 											<p id="product_list_image_name">No file chosen</p>
 										</div>
@@ -80,7 +84,8 @@
 									<div class="file_group">
 										<label for="basic_info_image">기본정보 이미지(약 240 × 240)</label>
 										<div class="cf_input">
-											<input type="file" id="basic_info_image" name="prodImage2" onchange="showFileName(this, 'basic_info_image_name')">
+											<input type="file" id="basic_info_image" name="prodImageName2" onchange="showFileName(this, 'basic_info_image_name')">
+
 											<span>Choose File</span>
 											<p id="basic_info_image_name">No file chosen</p>
 										</div>
@@ -89,7 +94,9 @@
 									<div class="file_group">
 										<label for="product_description_image">상품설명 이미지(약 750 × Auto)</label>
 										<div class="cf_input">
-											<input type="file" id="product_description_image" name="prodImage3" onchange="showFileName(this, 'product_description_image_name')">
+
+											<input type="file" id="product_description_image" name="prodImageName3" onchange="showFileName(this, 'product_description_image_name')">
+
 											<span>Choose File</span>
 											<p id="product_description_image_name">No file chosen</p>
 										</div>

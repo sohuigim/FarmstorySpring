@@ -29,22 +29,21 @@
                 <div class="logo">
                     <a th:href="@{/index}"><img th:src="@{/images/logo.png}" alt="farmStory logo"></a>
                 </div><!-- .logo -->
-
                 <ul class="utill">
-                    <li><a th:href="@{/index}" id="home">HOME</a></li>
-                    <li th:if="${sessUser != null}">
-                        <a th:href="@{/logout}" id="login">로그아웃</a>
+                    <li><a th:href="@{/}" id="home">HOME</a></li>
+                    <li th:if="${isAuthenticated == true}">
+                        <a th:href="@{/user/logout}" id="login">로그아웃</a>
                     </li>
-                    <li th:unless="${sessUser != null}">
+                    <li th:if="${isAuthenticated != true}">
                         <a th:href="@{/user/UserLogin}" id="login">로그인</a>
                     </li>
-                    <li th:if="${sessUser != null && sessUser.gradeNo == '00'}">
+                    <li th:if="${isAuthenticated == true && role == 'ADMIN'}">
                         <a th:href="@{/admin/index}" id="register">관리자</a>
                     </li>
-                    <li th:if="${sessUser != null && sessUser.gradeNo != '00'}">
+                    <li th:if="${isAuthenticated == true}">
                         <a th:href="@{/user/UserMyinfo}" id="register">마이페이지</a>
                     </li>
-                    <li th:unless="${sessUser != null}">
+                    <li th:if="${isAuthenticated  != true}">
                         <a th:href="@{/user/UserTerms}" id="register">회원가입</a>
                     </li>
                     <li><a th:href="@{/community/CommunityCs}" id="cs">고객센터</a></li>

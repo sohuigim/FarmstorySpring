@@ -58,19 +58,29 @@
                         <th>가격</th>
                         <th>소계</th>
                     </tr>
-                    <tr th:if="${prodCartDto == null}">
+                    <tr th:if="${products == null}">
                         <td colspan="10" class="td_first">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr th:each="prodCartDto:${prodCartDto}" th:if="${prodCartDto != null}">
+                    <tr th:each="product:${products}">
                         <td><input type="checkbox" class="checkbox" onclick=""  value="${prodCartDto.cartNo}"/></td>
-                        <td><img th:src="@{/thumbs/product/${prodCartDto.sName}}" alt="사과 샘플"/></td>
-                        <td>${prodCartDto.prodCateName}</td>
-                        <td>${prodCartDto.prodName}</td>
-                        <td>${prodCartDto.prodQty}</td>
-                        <td>${prodCartDto.discount}%</td>
-                        <td>${prodCartDto.point}p</td>
-                        <td>${prodCartDto.price}</td>
-                        <td><strong>${service.total(prodCartDto)}</strong>원</td>
+                        <td><img src="#" alt="사과 샘플"/></td>
+                        <td>
+                            <th:block th:if="${product.prodCateType == 1}">
+                                과일
+                            </th:block>
+                            <th:block th:if="${product.prodCateType == 2}">
+                                곡류
+                            </th:block>
+                            <th:block th:if="${product.prodCateType == 3}">
+                                야채
+                            </th:block>
+                        </td>
+                        <td>[[${product.prodName}]]</td>
+                        <td>[[${product.cartProdCount}]]</td>
+                        <td>[[${product.prodDiscount}]]%</td>
+                        <td>[[${product.prodPoint}]]p</td>
+                        <td>[[${product.prodPrice}]]원</td>
+                        <td><strong>[[${(product.prodPrice - (product.prodPrice * product.prodDiscount / 100)) * product.cartProdCount}]]</strong>원</td>
                     </tr>
                 </table><!-- .tb1 -->
                 <button class="btnSD"><a href="#">선택삭제</a></button>
