@@ -347,3 +347,23 @@ h2::after{display: block; content: ""; clear: both; width: 762px; height: 1px; b
 .btnDelete { display: inline-block; padding: 8px; border: 1px solid #bebebe; background: #fdfdfd; color: #111;}
 .btnModify { display: inline-block; padding: 8px; border: 1px solid #bebebe; background: #fdfdfd; color: #111;}
 .btnList   { display: inline-block; padding: 8px; border: 1px solid #bebebe; background: #fdfdfd; color: #111;}
+
+/* 하단 검색 기능 */
+form {
+    text-align: center;
+}
+
+form > input[name=search]{
+    width: 200px;
+    height: 26px;
+    text-indent: 6px;
+    border: 1px solid #d7d7d7;
+}
+
+form > input[type=submit]{
+    margin-top: 10px;
+    border: 1px solid #d7d7d7;
+    background: #f2f2f2;
+    color: #111;
+    padding: 6px;
+}
