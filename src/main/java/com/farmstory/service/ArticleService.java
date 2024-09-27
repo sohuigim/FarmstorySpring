@@ -3,12 +3,14 @@ package com.farmstory.service;
 
 import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
+
 import com.farmstory.entity.File;
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.FileRepository;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

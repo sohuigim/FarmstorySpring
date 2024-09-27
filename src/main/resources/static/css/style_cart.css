@@ -43,3 +43,15 @@
 
 /* 주문하기 버튼 영역 */
 .btn_order {margin-top: 10px; width: 291px; height: 37px; background-color: #960d1a; color: #fff; border: none;}
+
+/* pages */
+.pages{
+    width: 784px;
+    height: 35px;
+    text-align: center;
+}
+
+.pages ul li{
+    display: inline-flex;
+    text-align: center;
+}
