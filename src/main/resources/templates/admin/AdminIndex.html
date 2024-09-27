@@ -1,14 +1,24 @@
-<th:block th:include ="admin/Admin_header.html"/>
-<div class="section">
-    <section>
-        <div class="main_container">
-            <div class="main_top"><span>관리자 메인</span></div>
-            <div class="status_table">
-                <div class="tbname">
-                    <span>상품현황</span>
-                    <span><a th:href="@{/admin/ProductList}">더보기</a></span>
-                </div>
-                <table class="product">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+    <link rel="stylesheet" th:href="@{/css/style_admin.css}">
+</head>
+<body>
+<div id="wrap">
+    <th:block th:include="/admin/Admin_header"/>
+    <main>
+        <th:block th:include="/admin/Admin_aside"/>
+        <section>
+            <h3>관리자 메인</h3>
+            <article>
+                <h3>
+                    <a th:href="@{/admin/ProductList}">상품현황</a>
+                    <a th:href="@{/admin/ProductList}" class="more">더보기</a>
+                </h3>
+                <table>
                     <thead>
                     <tr>
                         <th>상품번호</th>
@@ -19,29 +29,28 @@
                         <th>등록일</th>
                     </tr>
                     </thead>
+
                     <tbody>
-                    <tr th:if="${products ==null }">
-                        <td colspan="7" style="width: 100%;">등록된 상품이 없습니다.</td>
+                    <tr th:if="${#lists.isEmpty(productDTOs)}">
+                        <td colspan="10" style="width: 100%;">등록된 상품이 없습니다.</td>
                     </tr>
-                    <tr th:each="product:${products}" th:if="product != null">
-                        <td>${product.pNo }</td>
-                        <td>${product.pName }</td>
-                        <td>${product.prodCateNo }</td>
-                        <td>${product.price }</td>
-                        <td>${product.stock }</td>
-                        <td>${product.rdate }</td>
-                    </tr>
-
+                        <tr th:each="product : ${productDTOs}">
+                            <td>[[${product.prodNo}]]</td>
+                            <td>[[${product.prodName}]]</td>
+                            <td>[[${product.prodCateType}]]</td>
+                            <td class="price" >[[${product.prodPrice}]]원</td>
+                            <td>[[${product.prodStock}]]</td>
+                            <td>[[${product.prodRegDate}]]</td>
+                        </tr>
                     </tbody>
-
                 </table>
-            </div>
-            <div class="status_table">
-                <div class="tbname">
-                    <span>주문현황</span>
-                    <span><a th:href="@{/admin/OrderList}">더보기</a></span>
-                </div>
-                <table class="order">
+            </article>
+            <article>
+                <h3>
+                    <a th:href="@{/admin/OrderList}">주문현황</a>
+                    <a th:href="@{/admin/OrderList}" class="more">더보기</a>
+                </h3>
+                <table>
                     <thead>
                     <tr>
                         <th>주문번호</th>
@@ -55,29 +64,27 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${orderitems == null }">
-                        <td colspan="9" style="width: 100%;">등록된 주문이 없습니다.</td>
-                    </tr>
-                    <tr th:each="orderitem:${orderitems}" th:if="orderitem != null">
-                        <td>${orderitem.OrderNo }</td>
-                        <td>${orderitem.pName }</td>
-                        <td>${orderitem.itemPrice }</td>
-                        <td>${orderitem.itemQty }</td>
-                        <td>${orderitem.o_delivery }</td>
-                        <td>${orderitem.OrderItemTotal }</td>
-                        <td>${orderitem.name }</td>
-                        <td>${orderitem.rdate }</td>
-                    </tr>
-                    <!--                                        </c:forEach>-->
+<!--                    <c:forEach var="order" items="${orders}">-->
+<!--                        <tr>-->
+<!--                            <td>${order.orderno}</td>-->
+<!--                            <td>${order.orderproname}</td>-->
+<!--                            <td class="price">${order.orderproprice}</td>-->
+<!--                            <td class="stock">${order.orderstock}</td>-->
+<!--                            <td class="price">${order.orderprodeliveryfee}</td>-->
+<!--                            <td class="price">${order.orderpayment}</td>-->
+<!--                            <td>${order.orderusername}</td>-->
+<!--                            <td>${order.orderdate}</td>-->
+<!--                        </tr>-->
+<!--                    </c:forEach>-->
                     </tbody>
                 </table>
-            </div>
-            <div class="status_table">
-                <div class="tbname">
-                    <span>회원현황</span>
-                    <span><a th:href="@{/admin/UserList}">더보기</a></span>
-                </div>
-                <table class="customer">
+            </article>
+            <article>
+                <h3>
+                    <a th:href="@{/admin/UserList}">회원현황</a>
+                    <a th:href="@{/admin/UserList}" class="more">더보기</a>
+                </h3>
+                <table>
                     <thead>
                     <tr>
                         <th>회원아이디</th>
@@ -85,36 +92,29 @@
                         <th>닉네임</th>
                         <th>휴대폰</th>
                         <th>이메일</th>
-                        <th>등급 </th>
+                        <th>등급</th>
                         <th>회원가입일</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${userDto == null}">
-                        <td colspan="8" style="width: 100%;">등록된 회원이 없습니다.</td>
+                    <tr th:if="${userDtos == null}">
+                        <td colspan="10" style="width: 100%;">등록된 회원이 없습니다.</td>
                     </tr>
-                    <tr th:each="userDto:${userDto}" th:if="userDto!=null">
-                        <td>${userDto.uid}</td>
-                        <td>${userDto.name}</td>
-                        <td>${userDto.nick}</td>
-                        <td>${userDto.email}</td>
-                        <td>${userDto.hp}</td>
-                        <td>${userDto.gradeNo }</td>
-                        <td>${userDto.regDate}</td>
+                    <tr th:each="user:${userDtos}">
+                        <td th:text="${user.userUid}"></td>
+                        <td th:text="${user.userName}"></td>
+                        <td th:text="${user.userNick}"></td>
+                        <td th:text="${user.userHp}"></td>
+                        <td th:text="${user.userEmail}"></td>
+                        <td th:text="${user.userRole}"></td>
+                        <td th:text="${user.userRegDate}"></td>
                     </tr>
-                    <!--                                      </c:forEach>-->
                     </tbody>
                 </table>
-            </div>
-        </div><!--main-container-->
-    </section><!-- section end-->
-</div><!-- .section end-->
-
-</div><!--mainIn-->
-</main><!--main end-->
-
-<th:block th:include ="admin/Admin_footer.html"/>
-
-</div> <!--wrapper end-->
+            </article>
+        </section>
+    </main>
+</div>
+<th:block th:replace="/admin/Admin_footer.html"/>
 </body>
 </html>

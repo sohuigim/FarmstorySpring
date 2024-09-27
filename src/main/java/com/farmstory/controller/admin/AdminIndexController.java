@@ -25,7 +25,7 @@ public class AdminIndexController {
         model.addAttribute("productDTOs",productDTO);
         List<UserDTO> userDto = userService.selectUsers();
         log.info(userDto);
-        model.addAttribute("userDto", userDto);
+        model.addAttribute("userDtos", userDto);
         return "/admin/AdminIndex";
     }
 }
