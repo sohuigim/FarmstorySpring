@@ -15,6 +15,8 @@ public class CommentDTO {
     private int artNo;
     private String userUid;
     private String commentRegIp;
+    private String content;
+    private String nick;
 
     @CreationTimestamp
     private String commentRegDate;
@@ -23,8 +25,6 @@ public class CommentDTO {
     public Comment toEntity() {
         return Comment.builder()
                 .commentNo(commentNo)
-                .artNo(artNo)
-                .userUid(userUid)
                 .commentRegIp(commentRegIp)
                 .commentRegDate(commentRegDate)
                 .build();

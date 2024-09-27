@@ -1,9 +1,7 @@
 package com.farmstory.entity;
 
 import com.farmstory.dto.CommentDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,21 +15,33 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentNo;
-    private int artNo;
-    private String userUid;
     private String commentRegIp;
+    private String content;
 
     @CreationTimestamp
     private String commentRegDate;
 
+    @ManyToOne
+    @JoinColumn(name = "writer")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "artNo")
+    private Article article;
+
     public CommentDTO toDTO() {
         return CommentDTO.builder()
                 .commentNo(commentNo)
-                .artNo(artNo)
-                .userUid(userUid)
+                .artNo(article.getArtNo())
                 .commentRegIp(commentRegIp)
                 .commentRegDate(commentRegDate)
                 .build();
     }
+
+    public void registerUser(User user) {
+        this.user = user;
+    };
+    public void registerArticle(Article article) {this.article = article;};
 }

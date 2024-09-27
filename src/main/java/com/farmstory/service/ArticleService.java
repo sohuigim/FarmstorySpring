@@ -3,9 +3,18 @@ package com.farmstory.service;
 
 import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
+<<<<<<< HEAD
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+=======
+import com.farmstory.entity.File;
+import com.farmstory.entity.QArticle;
+import com.farmstory.repository.FileRepository;
+import com.farmstory.repository.article.ArticleRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+>>>>>>> 42451f685fcb9c2bb278b9e96b68e2704b17fcd6
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +25,18 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    @Autowired
     private final ArticleRepository articleRepository;
+<<<<<<< HEAD
+=======
+    private final FileRepository fileRepository;
+
+>>>>>>> 42451f685fcb9c2bb278b9e96b68e2704b17fcd6
     private JPAQueryFactory queryFactory;
     private QArticle article = QArticle.article;
 
-    public ArticleService(ArticleRepository articleRepository) {this.articleRepository = articleRepository; }
 
     public Article saveArticle(ArticleDTO articleDTO) {
 
@@ -51,7 +64,12 @@ public class ArticleService {
 
     public ArticleDTO getArticle(int artNo) {
         Optional<Article> articleOpt = articleRepository.findById(artNo);
-        return articleOpt.map(Article::toDTO).orElse(null);
+        ArticleDTO articleDTO = articleOpt.map(Article::toDTO).orElse(null);
+        List<File> files = fileRepository.findAllByArticle(articleOpt.get());
+        for (File file : files) {
+            articleDTO.getFileList().add(file.toDTO());
+        }
+        return articleDTO;
     }
 
     public void deleteArticle(int artNo) {

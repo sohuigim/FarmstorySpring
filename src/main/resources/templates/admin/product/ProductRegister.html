@@ -1,122 +1,105 @@
-<th:block th:include ="/admin/Admin_header.html"/>
-<div class="section list">
-	<section>
-		<div class="main_container">
-			<div class="main_top"><h2>상품등록</h2></div>
-			<form th:action="@{/admin/product/register}" method="post" enctype="multipart/form-data">
-				<div class="reg_table">
-					<table id="product">
-						<tr>
-							<th>상품명</th>
-							<td><input type="text" name="prodName" ></td>
-						</tr>
-						<tr>
-							<th>종류</th>
-							<td>
-								<select name="prodType" id="prodtype" >
-									<option value="p101">과일</option>
-									<option value="p102">야채</option>
-									<option value="p103">곡류</option>
-								</select>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Administrator</title>
+	<link rel="stylesheet" th:href="@{/css/style_admin.css}">
+</head>
+<body>
+<div id="wrap">
+	<th:block th:include="/admin/Admin_header"/>
+	<main>
+		<th:block th:include="/admin/Admin_aside"/>
+		<section class="prodReg">
+			<section>
+				<h3>상품등록</h3>
+				<article>
+					<form th:action="@{/admin/ProductRegister}" method="post" enctype="multipart/form-data">
+						<table>
+							<tbody>
+							<tr>
+								<td>상품명</td>
+								<td><input type="text" name="prodName" ></td>
+							</tr>
+							<tr>
+								<td>종류</td>
+								<td>
+									<select name="prodCateType">
+										<option selected disabled>종류</option>
+										<option value="1">과일</option>
+										<option value="2">야채</option>
+										<option value="3">곡류</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>가격</td>
+								<td><input type="number" name="prodPrice" required></td>
+							</tr>
+							<tr>
+								<td>포인트</td>
+								<td><input type="number" name="prodPoint" required>&nbsp;포인트는 가격의 1%</td>
+							</tr>
+							<tr>
+								<td>할인</td>
+								<td>
+									<select name="prodDiscount">
+										<option value="0">없음</option>
+										<option value="5" >5%</option>
+										<option value="10">10%</option>
+										<option value="15">15%</option>
+										<option value="20">20%</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>배송비</td>
+								<td>
+									<label><input type="radio" name="prodDelivery" value="2000" checked> 2,000원</label>&nbsp;
+									<label><input type="radio" name="prodDelivery" value="3000"> 3,000원</label>&nbsp;
+									<label><input type="radio" name="prodDelivery" value="5000"> 5,000원</label>&nbsp;
+									<label><input type="radio" name="prodDelivery" value="0"> 무료</label>
+								</td>
+							</tr>
+							<tr>
+								<td>재고</td>
+								<td><input type="number" name="prodStock" required></td>
+							</tr>
+							<tr>
+								<td>상품이미지</td>
+								<td>
+									<p>상품목록 이미지(약 120 x 120)</p>
+									<input type="file" name="prodImageName1" required>
+									<p>기본정보 이미지(약 240 x 240)</p>
+									<input type="file" name="prodImageName2" required>
+									<p>상품설명 이미지(약 750 x auto)</p>
+									<input type="file" name="prodImageName3" required>
 
-							</td>
-						</tr>
-						<tr>
-							<th>가격</th>
-							<td><input type="text" name="price" class="price" ></td>
-						</tr>
-						<tr>
-							<th>포인트</th>
-							<td> <input type="number" name="point" id="pointInput" placeholder="" >포인트 가격의 1%</td>
-						</tr>
-						<tr>
-							<th>할인</th>
-							<td>
-								<select name="discount" id="discount">
-									<option value="0">0%</option>
-									<option value="5">5%</option>
-									<option value="10">10%</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th>배송비</th>
-							<td>
-								<label for="dfee1" class="checklb">
-									<input type="radio" name="deliverfee" id="dfee1" value="2000">2,000원
-								</label>
-								<label for="dfee2" class="checklb">
-									<input type="radio" name="deliverfee" id="dfee2" value="3000">3,000원
-								</label>
-								<label for="dfee3" class="checklb">
-									<input type="radio" name="deliverfee" id="dfee3" value="5000">5,000원
-								</label>
-								<label for="dfee4" class="checklb">
-									<input type="radio" name="deliverfee" id="dfee4" value="free">무료
-								</label>
-							</td>
-						</tr>
-						<tr>
-							<th>재고</th>
-							<td><input type="text" name="stock" ></td>
-						</tr>
-						<tr>
-							<th>기타</th>
-							<td><input type="text" name="pDesc" ></td>
-						</tr>
-						<tr class="file_upload_tr">
-							<th>상품이미지</th>
-							<td>
-								<div class="file_upload_form">
-									<div class="file_group">
-										<label for="product_list_image">상품목록 이미지(약 120 × 120)</label>
-										<div class="cf_input">
-											<input type="file" class="ci" id="product_list_image" name="product_list_image" onchange="showFileName(this, 'product_list_image_name')">
-											<span>Choose File</span>
-											<p id="product_list_image_name">No file chosen</p>
-										</div>
-									</div>
-
-									<div class="file_group">
-										<label for="basic_info_image">기본정보 이미지(약 240 × 240)</label>
-										<div class="cf_input">
-											<input type="file" id="basic_info_image" name="basic_info_image" onchange="showFileName(this, 'basic_info_image_name')">
-											<span>Choose File</span>
-											<p id="basic_info_image_name">No file chosen</p>
-										</div>
-									</div>
-
-									<div class="file_group">
-										<label for="product_description_image">상품설명 이미지(약 750 × Auto)</label>
-										<div class="cf_input">
-											<input type="file" id="product_description_image" name="product_description_image" onchange="showFileName(this, 'product_description_image_name')">
-											<span>Choose File</span>
-											<p id="product_description_image_name">No file chosen</p>
-										</div>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<!--						<script>-->
-						<!--							function showFileName(input, targetId) {-->
-						<!--							    const fileName = input.files.length > 0 ? input.files[0].name : "No file chosen";-->
-						<!--							    document.getElementById(targetId).textContent = fileName;-->
-						<!--							}-->
-						<!--						</script>-->
-					</table>
-					<div class="btn_group_register">
-						<button type="submit" class="insertbtn">상품등록</button>
-						<a th:href="@{/admin/product/ProductList.html}"  class="cancelbtn">취소</a>
-					</div><!--btn_group end-->
-
-				</div><!--status-table end-->
-			</form>
-
-		</div><!--main-container-->
-	</section><!-- section end-->
-</div><!-- .section end-->
-
-</div><!--mainIn-->
-</main><!--main end-->
-
+								</td>
+							</tr>
+							<tr>
+								<td>기타</td>
+								<td><textarea name="etc"></textarea></td>
+							</tr>
+							</tbody>
+						</table>
+						<h3>
+							<a th:href="@{/admin/AdminIndex}" class="cancelbtn">취소</a>
+							<input type="submit" value="상품등록"></input>
+						</h3>
+					</form>
+				</article>
+			</section>
+		</section>
+	</main>
+</div>
 <th:block th:include ="/admin/Admin_footer.html"/>
+</body>
+<script>
+	const now = document.querySelector('a#prodreg[href]');
+	if (now) {
+		now.classList.add("now");
+	}
+</script>
+</html>

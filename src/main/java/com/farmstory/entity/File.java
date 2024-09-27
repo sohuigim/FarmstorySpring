@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +20,13 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fileNo;
 
-    private int artNo;
     private String fileoName;
     private String filesName;
     private int fileDownload;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artNo")
+    private Article article;
 
     @CreationTimestamp
     private String fileRdate;
@@ -31,7 +36,7 @@ public class File {
     public FileDTO toDTO() {
         return FileDTO.builder()
                 .fileNo(fileNo)
-                .artNo(artNo)
+                .artNo(article.getArtNo())
                 .fileoName(fileoName)
                 .filesName(filesName)
                 .fileDownload(fileDownload)

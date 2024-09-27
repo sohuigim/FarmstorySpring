@@ -1,46 +1,142 @@
 package com.farmstory.service;
 
+import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.MarketPageResponseDTO;
 import com.farmstory.dto.ProductDTO;
 import com.farmstory.entity.Product;
 import com.farmstory.repository.product.ProductRepository;
-import com.farmstory.repository.product.ProductRepositoryImpl;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Log4j2
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
 
-    private final ProductRepositoryImpl productRepositoryImpl;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
+    @Value("${spring.servlet.multipart.location}")
+    private String uploadPath;
 
+    public ProductDTO selectProduct(int pNo) {
+        Optional<Product> opt = productRepository.findById(pNo);
 
+        Product product = null;
+
+        if (opt.isPresent()) {
+            product = opt.get();
+        }
+
+        return modelMapper.map(product, ProductDTO.class);
+
+    }
     public List<ProductDTO> selectProducts(){
 
-        List<Product> products = productRepositoryImpl.selectProducts();
-
-        System.out.println("111111111" + products);
+        List<Product> products = productRepository.selectProducts();
 
         List<ProductDTO> productDTOS = products
-                            .stream()
-                            .map(entity -> entity.toDTO())
-                            .collect(Collectors.toList());
+                .stream()
+                .map(entity -> entity.toDTO())
+                .collect(Collectors.toList());
 
         return productDTOS;
     }
 
-    public ProductService(ProductRepositoryImpl productRepository) {
-        this.productRepositoryImpl = productRepository;
+    public MarketPageResponseDTO selectProductAll(MarketPageRequestDTO marketPageRequestDTO, int catetype){
+        Pageable pageable = marketPageRequestDTO.getPageable("prodNo");
+
+        marketPageRequestDTO.setCateType(catetype);
+
+        Page<Tuple> pageProduct = productRepository.selectProductAllForList(marketPageRequestDTO, pageable, catetype);
+
+        List<ProductDTO> productList = pageProduct.getContent().stream().map(tuple -> {
+
+            Product product = tuple.get(0, Product.class);
+
+            return modelMapper.map(product, ProductDTO.class);
+
+        }).toList();
+
+        int total = (int) pageProduct.getTotalElements();
+
+        return MarketPageResponseDTO.builder()
+                .marketPageRequestDTO(marketPageRequestDTO)
+                .dtoList(productList)
+                .total(total)
+                .build();
     }
 
-    public Page<Product> getPagedProducts(Pageable pageable) {
-        return productRepositoryImpl.findAllWithPaging(pageable);
-    }
+    public void insertProduct(ProductDTO productDTO) {
 
+        // 파일 업로드 경로 파일 객체 생성
+        File fileUploadPath = new File(uploadPath);
+
+        //파일 업로드 디렉터리가 존재하지 않으면 디렉터리 생성
+        if(!fileUploadPath.exists()){
+            fileUploadPath.mkdirs();
+        }
+
+        //파일 업로드 시스템 경로 구하기
+        String path = fileUploadPath.getAbsolutePath();
+
+        log.info("pathpathpathpathpathpath :: "+path);
+
+        //파일 정보 객체 가져오기
+        List<MultipartFile> files = new ArrayList<>();  // ArrayList로 초기화
+        files.add(productDTO.getProdImageName1());
+        files.add(productDTO.getProdImageName2());
+        files.add(productDTO.getProdImageName3());
+
+        int i = 1;  // 이미지 번호를 매기기 위한 인덱스
+        for(MultipartFile file : files){
+            if(!file.isEmpty()){
+                // 원본 파일명 가져오기
+                String oName = file.getOriginalFilename();
+                // 파일 확장자 추출
+                String ext = oName.substring(oName.lastIndexOf("."));
+                // UUID를 사용하여 새로운 파일명 생성
+                String sName = UUID.randomUUID().toString() + ext;
+
+                // 파일 저장
+                try {
+                    file.transferTo(new File(path, sName));
+                    switch (i){
+                        case 1:
+                            productDTO.setProdImage1(sName);
+                            break;
+                        case 2:
+                            productDTO.setProdImage2(sName);
+                            break;
+                        case 3:
+                            productDTO.setProdImage3(sName);
+                            break;
+                    }
+                } catch (IOException e) {
+                    log.error(e);
+                }
+            }
+            i++;
+        }
+
+        Product product = modelMapper.map(productDTO, Product.class);
+
+        productRepository.save(product);
+    }
 }

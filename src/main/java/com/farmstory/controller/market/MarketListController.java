@@ -1,5 +1,7 @@
 package com.farmstory.controller.market;
 
+import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.MarketPageResponseDTO;
 import com.farmstory.dto.ProductDTO;
 import com.farmstory.entity.Product;
 import com.farmstory.service.ProductService;
@@ -24,17 +26,16 @@ public class MarketListController {
     private final ProductService productService;
 
     @GetMapping("/market/MarketList")
-    public String MarketList(
-            @RequestParam(defaultValue = "0") int page, // 시작 페이지 번호
-            @RequestParam(defaultValue = "5") int size,
-            Model model) {
+    public String MarketList(Model model, MarketPageRequestDTO marketPageRequestDTO, @RequestParam(value = "catetype", required=false) Integer catetype) {
 
+        List<ProductDTO> products = productService.selectProducts();
+        model.addAttribute("products", products);
 
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by("prodNo").ascending());
-        Page<Product> productPage = productService.getPagedProducts(pageable);
-        model.addAttribute("page", productPage);
-
+        if(catetype == null) {
+            catetype = 0;
+        }
+        MarketPageResponseDTO marketPageResponseDTO = productService.selectProductAll(marketPageRequestDTO, catetype);
+        model.addAttribute("marketPageResponseDTO", marketPageResponseDTO);
         return "/market/MarketList";
     }
 

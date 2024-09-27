@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -31,7 +33,8 @@ public class ArticleDTO {
     @CreationTimestamp
     private LocalDate artRdate;
     private String artNick;
-
+    @Builder.Default
+    private List<FileDTO> fileList=new ArrayList<>();
     public Article toEntity(){
         return Article.builder()
                 .artNo(artNo)

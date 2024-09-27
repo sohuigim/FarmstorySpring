@@ -55,18 +55,49 @@
                         <th>가격</th>
                         <th>소계</th>
                     </tr>
-                    <tr th:if="${prodCartDto == null}">
+                    <tr th:if="${product == null && carts == null}">
                         <td colspan="10" class="td_first">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr th:each="prodCartDto:${prodCartDto}" th:if="${prodCartDto == null}">
+                    <tr th:if="${carts == null && product != null}">
                         <td><img src="#" alt="사과 샘플"/></td>
-                        <td>${prodCartDto.prodCateName}</td>
-                        <td>${prodCartDto.prodName}</td>
-                        <td>${prodCartDto.prodQty}</td>
-                        <td>${prodCartDto.discount}%</td>
-                        <td>${prodCartDto.point}p</td>
-                        <td>${prodCartDto.price}</td>
-                        <td><strong>${service.total(prodCartDto)}</strong>원</td>
+                        <td>
+                            <th:block th:if="${product.prodCateType == 1}">
+                            과일
+                            </th:block>
+                            <th:block th:if="${product.prodCateType == 2}">
+                                곡류
+                            </th:block>
+                            <th:block th:if="${product.prodCateType == 3}">
+                                야채
+                            </th:block>
+                        </td>
+                        <td>[[${product.prodName}]]</td>
+                        <td>[[${product.cartProdCount}]]</td>
+                        <td>[[${product.prodDiscount}]]%</td>
+                        <td>[[${product.prodPoint}]]p</td>
+                        <td>[[${product.prodPrice}]]원</td>
+                        <td><strong>[[${(product.prodPrice - (product.prodPrice * product.prodDiscount / 100)) * product.cartProdCount}]]</strong>원</td>
+                    </tr>
+                    <tr th:each="cart:${carts}" th:if="${carts != null && product == null}">
+                        <td><img src="#" alt="사과 샘플"/></td>
+                        <td>
+                            <th:block th:if="${cart.prodDTO.prodCateType == 1}">
+                                과일
+                            </th:block>
+                            <th:block th:if="${cart.prodDTO.prodCateType == 2}">
+                                곡류
+                            </th:block>
+                            <th:block th:if="${cart.prodDTO.prodCateType == 3}">
+                                야채
+                            </th:block>
+                        </td>
+                        <td>[[${cart.prodDTO.prodName}]]</td>
+                        <td>[[${cart.prodDTO.cartProdCount}]]</td>
+                        <td>[[${cart.prodDTO.prodDiscount}]]%</td>
+                        <td>[[${cart.prodDTO.prodPoint}]]p</td>
+                        <td>[[${cart.prodDTO.prodPrice}]]원</td>
+                        <td><strong>[[${(cart.prodDTO.prodPrice - (cart.prodDTO.prodPrice * cart.prodDTO.prodDiscount / 100)) * cart.prodDTO.cartProdCount}]]</strong>원</td>
+                    </tr>
                     </tr>
                     </c:forEach>
                 </table><!-- .tb1 -->
@@ -82,19 +113,19 @@
                         <tr>
                             <th>주문자</th>
                             <td>
-                                <input type="text" class="uid" placeholder="0" readonly>
+                                <input type="text" class="uid" th:placeholder="${#authentication.principal.user.userName}" readonly>
                             </td>
                         </tr>
                         <tr>
                             <th>휴대폰</th>
                             <td>
-                                <input type="text" class="hp" placeholder="0" readonly>
+                                <input type="text" class="hp" th:placeholder="${#authentication.principal.user.userHp}" readonly>
                             </td>
                         </tr>
                         <tr class="use cf">
                             <th>포인트사용</th>
                             <td class="use_point cf">
-                                <input type="text" class="point" placeholder="0p 만큼 사용 가능합니다.">
+                                <input type="text" class="point" th:placeholder="${#authentication.principal.user.userTotalPoint}+'p 사용이 가능합니다.'">
                                 <a href="#" class="point_btn">사용하기</a><br>
                                 <div></div>
                             </td>
