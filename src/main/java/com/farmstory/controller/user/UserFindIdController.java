@@ -56,8 +56,8 @@ public class UserFindIdController {
 
             }else if( receivedUid != null && receivedUid.equals(uid) && receivedEmail.equals(email)){
                 userService.sendEmailCode(session, receivedEmail);
-                return ResponseEntity.ok().body(true);
-
+                session.setAttribute("uid", user.getUserUid());
+                return ResponseEntity.ok().body(user);
             }else{
                 return ResponseEntity.ok().body(false);
             }

@@ -4,7 +4,10 @@
 	<script th:src="@{/js/utils.js}"></script>
 
 	<script>
+		let isUidOk   = false;
+
 		window.onload = function (){
+
 			const form = document.getElementsByTagName('form')[0];
 			const btnSendEmail = document.querySelector('.btnSendEmail');
 			const resultEmail = document.querySelector('.resultEmail');
@@ -26,13 +29,14 @@
 
 				const data = await fetchPost(`/user/UserFindId/${type}/${value}`,jsonData);
 
-				if(!data){
+				console.log(data);
+
+				if(data==false){
 					showResultInvalid(resultEmail, '등록된 정보와 일치하지 않습니다.')
 				}else{
 					showResultValid(resultEmail,'이메일이 전송되었습니다.' );
-					console.log(data);
+					isUidOk = true;
 				}
-
 			});
 
 
@@ -62,7 +66,7 @@
 				const confirm = window.confirm("인증이 완료되었습니다. 비밀번호를 재설정하시겠습니까?");
 
 				if(confirm){
-					window.location.replace('/user/UserFindPassResult');
+					window.location.replace(`/user/UserFindPassResult`);
 				}else{
 					window.location.reload();
 				}
