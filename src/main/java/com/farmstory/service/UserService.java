@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,12 @@ public class UserService {
             user = userRepository.findByUserEmail(value);
         }
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    public void updateUserPass(UserDTO userDTO) {
+        String encoded = passwordEncoder.encode(userDTO.getUserPass());
+        userDTO.setUserPass(encoded);
+        userRepository.save(userDTO.toEntity());
     }
 
     //선택한 유저 정보 삭제
