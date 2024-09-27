@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,9 +18,11 @@ public class QFile extends EntityPathBase<File> {
 
     private static final long serialVersionUID = -1668875477L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QFile file = new QFile("file");
 
-    public final NumberPath<Integer> artNo = createNumber("artNo", Integer.class);
+    public final QArticle article;
 
     public final NumberPath<Integer> fileDownload = createNumber("fileDownload", Integer.class);
 
@@ -34,15 +37,24 @@ public class QFile extends EntityPathBase<File> {
     public final StringPath filesName = createString("filesName");
 
     public QFile(String variable) {
-        super(File.class, forVariable(variable));
+        this(File.class, forVariable(variable), INITS);
     }
 
     public QFile(Path<? extends File> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QFile(PathMetadata metadata) {
-        super(File.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QFile(PathMetadata metadata, PathInits inits) {
+        this(File.class, metadata, inits);
+    }
+
+    public QFile(Class<? extends File> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.article = inits.isInitialized("article") ? new QArticle(forProperty("article")) : null;
     }
 
 }

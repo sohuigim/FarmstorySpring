@@ -25,7 +25,6 @@ public class CommentDTO {
     public Comment toEntity() {
         return Comment.builder()
                 .commentNo(commentNo)
-                .artNo(artNo)
                 .commentRegIp(commentRegIp)
                 .commentRegDate(commentRegDate)
                 .build();

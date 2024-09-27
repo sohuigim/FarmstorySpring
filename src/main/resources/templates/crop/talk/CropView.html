@@ -45,7 +45,7 @@
                                                 <p class="content">${data.content}</p>
                                                 <div>
                                                     <a href="#" class="remove">삭제</a>
-                                                    <a href="#" class="modify">수정</a>
+                                                    <a href="#" class=" ">수정</a>
                                                 </div>
                                             </article>`;
 
@@ -107,24 +107,22 @@
 			<!-- 댓글리스트 -->
 			<section class="commentList">
 				<h3>댓글목록</h3>
-				<th:forEach var="comment" items="${comments}">
-					<article class="comment">
-		                   		 <span>
-		                            <span>${comment.nick}</span>
-		                            <span>${comment.com_rdate}</span>
-		                        </span>
-						<textarea style="resize: none" name="comment" readonly>${comment.com_content}</textarea>
+					<article th:each="comment : ${comments}" class="comment">
+<!--		                   		 <span>-->
+<!--		                            <span>${comment.nick}</span>-->
+<!--		                            <span>${comment.com_rdate}</span>-->
+<!--		                        </span>-->
+						<textarea style="resize: none" name="comment" readonly th:text="${comment.content}"></textarea>
 
-						<th:if test="${sessUser.uid eq comment.com_writer}">
-							<div>
-								<!-- HTML 사용자 정의 속성을 이용한 삭제/수정 -->
-								<a href="#" class="commentRemove" data-no="${comment.comNo}">삭제</a>
-								<a href="#" class="commentModify" data-no="${comment.comNo}">수정</a>
-								<a href="#" class="commentUpdate" data-no="${comment.comNo}" style="display:none;">수정완료</a>
-							</div>
-						</th:if>
+<!--						<th:if test="${sessUser.uid eq comment.com_writer}">-->
+<!--							<div>-->
+<!--								&lt;!&ndash; HTML 사용자 정의 속성을 이용한 삭제/수정 &ndash;&gt;-->
+<!--								<a href="#" class="commentRemove" data-no="${comment.comNo}">삭제</a>-->
+<!--								<a href="#" class="commentModify" data-no="${comment.comNo}">수정</a>-->
+<!--								<a href="#" class="commentUpdate" data-no="${comment.comNo}" style="display:none;">수정완료</a>-->
+<!--							</div>-->
+<!--						</th:if>-->
 					</article>
-				</th:forEach>
 				<th:if test="${empty comments}">
 					<p class="empty">등록된 댓글이 없습니다.</p>
 				</th:if>
