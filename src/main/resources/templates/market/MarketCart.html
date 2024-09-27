@@ -1,6 +1,74 @@
 <th:block th:include ="/grid/_header.html"/>
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/style_cart.css}">
+<script>
+
+    window.onload = function(){
+        let setDelete = new Set();
+        const btnSd = document.getElementsByClassName('btnSD')[0];
+
+        let chkboxes = document.querySelectorAll('.checkbox');
+
+        function checkboxAll(checkboxAll)  {
+            const checkboxes
+                = document.getElementsByClassName('checkbox');
+
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = checkboxAll.checked;
+            })
+        }
+
+
+        chkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('click', function() {
+                if(this.checked){
+                    setDelete.add(this.value);
+                }else{
+                    setDelete.delete(this.value);
+                }
+            });
+        });
+
+        btnSd.addEventListener('click',function(e){
+            e.preventDefault();
+
+            let arr = [];
+            setDelete.forEach(value => {
+                arr.push(value);
+            });
+
+            let formData = new FormData();
+
+            arr.forEach(val => {
+                formData.append("cart", val);
+            });
+            // for (let key of formData.keys()) {
+            // 	  console.log(key);
+            // 	}
+            formData.append("action", "delete");
+            fetch('/market/MarketCart', {
+                method: 'POST',
+                body: formData
+            })
+                .then(resp=>resp.json())
+                .then(data=>{
+                    console.log("확인해보기"+data);
+                    if(data.success){
+                        alert('삭제되었습니다!');
+                        location.reload();
+                    }else{
+                        alert('실패하였습니다!');
+                    }
+
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
+
+        });
+
+    }
+</script>
 <!-- #main -->
 <main id="main" class="cf">
     <section class="mainIn cf">
@@ -45,7 +113,7 @@
                         <col style="width: 10%">
                     </colgroup>
                     <tr>
-                        <th><input type="checkbox" class="checkbox"/></th>
+                        <th><input type="checkbox" class="checkboxAll" onclick="checkboxAll(this)"/></th>
                         <th>이미지</th>
                         <th>종류</th>
                         <th>상품명</th>
@@ -59,8 +127,8 @@
                         <td colspan="10" class="td_first">장바구니에 상품이 없습니다.</td>
                     </tr>
                     <tr th:each="cart:${carts}">
-                        <td><input type="checkbox" class="checkbox" onclick=""  value="${prodCartDto.cartNo}"/></td>
-                        <td><img src="#" alt="사과 샘플"/></td>
+                        <td><input type="checkbox" class="checkbox" onclick=""  th:value="${cart.cartNo}"/></td>
+                        <td class="pic"><img th:src="@{'/uploads/'+${cart.prodDTO.prodImage1}}" alt="제품 이미지 1"></td>
                         <td>
                             <th:block th:if="${cart.prodDTO.prodCateType == 1}">
                                 과일
