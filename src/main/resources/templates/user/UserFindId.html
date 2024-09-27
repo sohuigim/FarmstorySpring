@@ -1,5 +1,56 @@
 <th:block th:include="user/User_header.html"/>
+<script th:src="@{/js/utils.js}"></script>
+<script>
+	window.onload = function (){
+		const form = document.getElementsByTagName('form')[0];
+		const btnSendEmail = document.querySelector('.btnSendEmail');
+		const btnAuthEmail = document.querySelector('.btnAuthEmail');
+		const resultEmail = document.querySelector('.resultEmail');
+		const resultAuth = document.querySelector('.resultAuth');
 
+		btnSendEmail.onclick = async function (){
+
+			const jsonData = {
+				"userName" : form.userName.value,
+				"userEmail" : form.userEmail.value
+			};
+
+			console.log("json : "+jsonData)
+
+			const data = await fetchPost('/user/UserFindId',jsonData);
+
+			if(data){
+				showResultValid(resultEmail,'이메일이 전송되었습니다.' );
+			}else{
+				showResultInvalid(resultEmail, '등록된 정보와 일치하지 않습니다.')
+			}
+		}
+
+		btnAuthEmail.onclick = async function (){
+
+			const code = document.querySelector('#code').value;
+
+			console.log(code);
+
+			if(code == null || code === ""){
+				showResultInvalid(resultAuth,'인증번호를 입력해 주세요.');
+			}else{
+				const jsonData = {"code": code};
+				console.log(jsonData)
+
+				const data = await fetchPost('/user/UserRegister/email', jsonData);
+				console.log(data);
+				if(data.result){
+					showResultValid(resultAuth, '인증이 완료되었습니다.')
+				}else{
+					showResultInvalid(resultAuth,'인증번호가 일치하지 않습니다.');
+				}
+			}
+
+		}
+
+	}
+</script>
 <title>아이디찾기</title>
 <link rel="stylesheet" th:href="@{/css/user/findid.css}">
         <main>
@@ -14,20 +65,21 @@
 		                            <tr>
 		                                <td>이름</td>
 		                                <td>
-		                                    <input type="text" id="name" name="name"  placeholder="이름 입력">
+		                                    <input type="text" id="name" name="userName"  placeholder="이름 입력">
 		                                </td>
 		                            </tr>
 		                            <tr>
 		                                <td>이메일</td>
 		                                <td>
 		                                    <div class="form_group">
-		                                        <input type="email" name="email" id="email" placeholder="이메일 입력">
+		                                        <input type="email" name="userEmail" id="email" placeholder="이메일 입력">
 		                                        <button type="button" class="btnSendEmail" id="btnSendEmail">인증번호 받기</button>
 		                                  		<span class=resultEmail></span>
 		                                    </div>
 		                                    <div class="form_group">
 		                                        <input type="text" id="code" name="auth" placeholder="인증번호 입력">
 		                                        <button type="button" class="btnAuthEmail" id="btnAuthEmail">확인</button>
+												<span class="resultAuth" ></span>
 		                                    </div>
 		                                </td>
 		                            </tr>
