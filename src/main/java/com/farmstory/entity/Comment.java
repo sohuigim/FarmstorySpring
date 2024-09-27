@@ -17,7 +17,6 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentNo;
-    private int artNo;
     private String commentRegIp;
     private String content;
 
@@ -28,10 +27,14 @@ public class Comment {
     @JoinColumn(name = "writer")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "artNo")
+    private Article article;
+
     public CommentDTO toDTO() {
         return CommentDTO.builder()
                 .commentNo(commentNo)
-                .artNo(artNo)
+                .artNo(article.getArtNo())
                 .commentRegIp(commentRegIp)
                 .commentRegDate(commentRegDate)
                 .build();
@@ -40,4 +43,5 @@ public class Comment {
     public void registerUser(User user) {
         this.user = user;
     };
+    public void registerArticle(Article article) {this.article = article;};
 }

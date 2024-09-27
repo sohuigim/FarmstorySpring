@@ -22,7 +22,7 @@ public class QComment extends EntityPathBase<Comment> {
 
     public static final QComment comment = new QComment("comment");
 
-    public final NumberPath<Integer> artNo = createNumber("artNo", Integer.class);
+    public final QArticle article;
 
     public final NumberPath<Integer> commentNo = createNumber("commentNo", Integer.class);
 
@@ -52,6 +52,7 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.article = inits.isInitialized("article") ? new QArticle(forProperty("article")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 

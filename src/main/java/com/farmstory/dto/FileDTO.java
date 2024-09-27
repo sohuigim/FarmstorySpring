@@ -25,7 +25,6 @@ public class FileDTO {
     public File toEntity() {
         return File.builder()
                 .fileNo(fileNo)
-                .artNo(artNo)
                 .fileoName(fileoName)
                 .filesName(filesName)
                 .fileDownload(fileDownload)

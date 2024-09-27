@@ -30,10 +30,6 @@ public class Article {
     private int artHit;
     private String artRegip;
 
-    @OneToMany
-    @JoinColumn(name = "artNo")
-    private List<File> files;
-
     @CreationTimestamp
     private LocalDate artRdate;
     private String artNick;
