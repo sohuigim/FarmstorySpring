@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,21 +27,37 @@ public class UserFindIdController {
         return "user/UserFindId";
     }
 
-    @PostMapping("user/UserFindId")
+    @PostMapping("user/UserFindId/{type}/{value}")
     public ResponseEntity UserFindId( HttpSession session,
+                                      @PathVariable("type")  String type,
+                                      @PathVariable("value") String value,
                                       @RequestBody UserDTO userDTO){
+
         String receivedEmail = userDTO.getUserEmail();
         String receivedName = userDTO.getUserName();
+        String receivedUid = userDTO.getUserUid();
 
-        UserDTO user = userService.selectUserByEmail(receivedEmail);
+        UserDTO user = userService.selectUserForFindUser(type, value);
 
         try{
+
+            if(user == null){
+                return ResponseEntity.ok().body(false);
+            }
+
             String name = user.getUserName();
             String email = user.getUserEmail();
+            String uid = user.getUserUid();
 
-            if(receivedName.equals(name) && receivedEmail.equals(email)){
+            if(receivedName != null && receivedName.equals(name) && receivedEmail.equals(email)){
+                userService.sendEmailCode(session, receivedEmail);
+                user.setUserPass("");
+                return ResponseEntity.ok().body(user);
+
+            }else if( receivedUid != null && receivedUid.equals(uid) && receivedEmail.equals(email)){
                 userService.sendEmailCode(session, receivedEmail);
                 return ResponseEntity.ok().body(true);
+
             }else{
                 return ResponseEntity.ok().body(false);
             }
@@ -49,4 +66,5 @@ public class UserFindIdController {
             return ResponseEntity.ok().body(false);
         }
     }
+
 }
