@@ -41,4 +41,6 @@ public class MarketPageResponseDTO {
         this.next = total > this.end * this.size;
     }
 
+
+
 }

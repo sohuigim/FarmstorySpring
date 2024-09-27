@@ -3,6 +3,9 @@ package com.farmstory.controller.article.crop;
 import com.farmstory.dto.ArticleDTO;
 
 import com.farmstory.entity.Article;
+
+import com.farmstory.entity.Comment;
+
 import com.farmstory.entity.Comment;
 import com.farmstory.repository.article.ArticleRepository;
 import com.farmstory.service.ArticleService;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
@@ -21,11 +25,6 @@ public class CropController {
     private final ArticleService articleService;
     private final ArticleRepository articleRepository;
     private final CommentService commentService;
-
-    //농작물이야기 // 메인
-//    @GetMapping("/crop/CropStory")
-//    @GetMapping("/crop/CropGarden")
-//    @GetMapping("/crop/CropReturnfarm")
 
     @GetMapping("/crop/{cate}")
     public String cropStory(@PathVariable String cate, Model model) {
@@ -39,7 +38,6 @@ public class CropController {
         }
 
         model.addAttribute("str1", str1);
-
 
         List<Article> articles = articleService.selectArticles(cate);
         model.addAttribute("articles", articles);
@@ -76,7 +74,6 @@ public class CropController {
     @PostMapping("/crop/CropWrite")
 
     public String CropWrite(Model model, @ModelAttribute ArticleDTO articleDTO, String artCate) {
-
         String str1 = "";
         if (artCate.equals("CropStory")) {
             str1 = "b201";

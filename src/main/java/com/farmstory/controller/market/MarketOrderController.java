@@ -1,7 +1,6 @@
 package com.farmstory.controller.market;
 
-import com.farmstory.dto.CartDTO;
-import com.farmstory.dto.ProductDTO;
+import com.farmstory.dto.*;
 import com.farmstory.entity.Cart;
 import com.farmstory.service.CartService;
 import com.farmstory.service.ProductService;
@@ -14,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -38,18 +39,16 @@ public class MarketOrderController {
             product = cartDTO.getProdDTO();
             product.setCartProdCount(cartDTO.getCartProdCount());
 
-            log.info("ordercontroller. proddto : "+product);
-
-
         }
+        log.info("222222222222222"+carts);
 
-        model.addAttribute("products", product);
+        model.addAttribute("carts", carts);
 
         return "/market/MarketCart";
     }
 
     @PostMapping("/market/MarketCart")
-    public void MarketCart(CartDTO cartDTO){
+    public ResponseEntity<Map<String, Object>> MarketCart(CartDTO cartDTO){
 
         log.info(cartDTO);
 
@@ -61,12 +60,34 @@ public class MarketOrderController {
 
         log.info("ordercontroller. proddto : "+product);
 
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("cartItems", product);
+
+        return ResponseEntity.ok(response);
+
     }
 
 
     @GetMapping("/market/MarketOrder12")
-    public String MarketOrder12(){
+    public String MarketOrder12(@RequestParam(required = false) String userId, Model model) {
 
+        List<CartDTO> carts = cartService.selectCartAll(userId);
+
+        log.info("22221111112222"+carts);
+
+        for(CartDTO cartDTO : carts) {
+
+            cartDTO.setProdDTO(productService.selectProduct(cartDTO.getProdNo()));
+
+            ProductDTO product = cartDTO.getProdDTO();
+            product.setCartProdCount(cartDTO.getCartProdCount());
+
+        }
+        log.info("22221111112222"+carts);
+
+        model.addAttribute("carts", carts);
 
         return "/market/MarketOrder";
     }

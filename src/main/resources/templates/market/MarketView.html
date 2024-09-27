@@ -43,14 +43,17 @@
                 .then(resp => resp.json())
                 .then(data => {
                     console.log(data)
+                    if(data.success) {
+                        window.location.href = "/market/MarketCart?userId=" + userId;
+                    }
                 })
                 .catch(err =>{
                     console.log(err)
                 });
-                    location.href="/market/MarketCart?userId="+userId;
 
             }else{
-                alert("장바구니로 이동하지 않았습니다.")
+                alert("상품리스트로 돌아갑니다.")
+                location.href="/market/MarketList";
             }
 
         })

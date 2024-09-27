@@ -1,398 +1,385 @@
-/* layout style */
-/* reset */
-*{margin: 0; padding:0; font-family: "Inter", sans-serif; font-size: 12px; font-weight: 400;}
-html{color:#111; position:relative;}
-html, body{height:100%;}
-body{font-size:12px; line-height:18px; font-family: 'Noto Sans KR', sans-serif;}
-a, address, blockquote, br, fieldset, legend, label, form, input, select, textarea, button, cite, code, dl, dt, dd, h1, h2, h3, h4, h5, h6, p, div, iframe, ul, ol, li, hr, img {margin: 0; padding: 0;}
-a{color:#111; text-decoration: none;}
-img{border:none; vertical-align: top;}
-ul, ol{list-style:none;}
-address{font-style: normal;}
-
-/* hyper link */
-a, a:link, a:visited, a:active, a:hover{text-decoration: none; color: inherit;}
- 
-
-
-/* wrapper */
-#wrapper{
-    width: 100%;
-    height: auto;
-
+* {
+    padding: 0;
+    margin: 0;
+    font: normal 12px "noto sans korean";
 }
 
-header{
-    width: 100%;
-    height: auto;
-    background: url(/images/admin/admin_bg.jpg);
-    background-position: bottom;
+ul, ol {
+    list-style: none;
 }
 
-.headerIn{
+a, a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+header, footer {
+    background-image: url(../images/admin/admin_bg.jpg);
+    position: fixed;
+    width: auto;
+    left: 0;
+    right: 0;
+}
+
+header {
+    top: 0;
+}
+
+header>div {
     width: 980px;
     height: 60px;
     margin: 0 auto;
+    padding: 14px;
     box-sizing: border-box;
-
 }
 
-.top img{
-    margin-top: 12px;
-    margin-left: 12px;
+header .logo {
+    display: inline-block;
+    width: 170px;
+    height: 32px;
+    background-image: url(../images/admin/admin_logo.jpg);
 }
 
-/* utill */
-.utill{
-	font-weight: 400;
+header p {
+    width: auto;
     float: right;
-    margin-top: -32px;
 }
 
-.utill ul{
-    box-sizing: border-box;
-    display: inline-flex;
-    flex-direction: row;
-    color: white;
-}
-.utill ul li::after{
-    content: " |";
+header p, p>a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+    line-height: 24%;
 }
 
-.utill ul li:last-child::after{
-    content: " ";
-}
-
-.utill li{
-    margin-left: 4px;
-}
-
-
-/* main */
-
-main{
-    width: 100%;
-    height: auto;
-}
-
-
-/* mainIn */
-.mainIn{
+main {
     width: 980px;
-    height: 658px;
-    margin: 0 auto;
+    height: auto;
+    margin: 60px auto;
+    overflow: hidden;
     box-sizing: border-box;
 }
 
-.mainIn.list{
-    height: 400px;
+aside {
+    width: 175px;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    background-color: #fff;
 }
 
-
-.mainIn div{
-    display: inline-flex;
-    flex-direction: column;
-}
-/* aside */
-
-main .aside{
-  
-   width: 176px; 
-   height: 400px;
-}
-
-aside div{
-    display: flex;
-    flex-direction: row;
-}
-
-.sub_title{
-    width: 156px;
+.adNav>h3 {
+    width: auto;
     height: 30px;
-    margin: 0 auto;
-    border: 1px solid #CCCCCC;
-    border-radius: 20px;
-    line-height: 30px;
-    margin-top: 10px;
+    margin: 10px;
+    background-color: #e5e5e5;
+    border: 1px solid #ccc;
+    border-radius: 90px;
+    box-sizing: border-box;
+    padding: 7px 21px;
+    font-size: 14px;
+    line-height: 17px;
 }
 
-.sub_title span{
-    margin-left: 20px;
+ul.adNav {
+    margin: 10px;
+    padding: 16px;
+    font-weight: 700;
 }
 
-
-
-/* adm_list */
-.adm_list{
-    width: 156px;
-    height: 234px;
-    margin-left: 20px;
-    
+li {
+    margin: 4px;
 }
 
-.adm_list ul{
-    margin-bottom: 10px;
+aside * {
+    font-weight: 700;
 }
 
-.adm_list > ul > li:nth-child(1){
-    margin-top: 20px;
+li.adNav {
+    margin-bottom: 15px;
 }
 
-.adm_list > ul > li > ul > li:first-child{
-    margin-top: 5px;
+li.subNav {
+    margin: 10px;
+    font-weight: 700;
 }
 
-.adm_list > ul > li > ul > li::before{
-    content: "└";
+li.subNav>a[href]:hover {
+    background-color: #ddd;
 }
 
-.adm_list a:hover{
-	color: #000; /* Black color for the active link */
-    font-weight: bold;
+.now {
     text-decoration: underline;
 }
 
-/* section */
-
-main .section{
-    width: 804px;
-    height: 658px;
-    float: right;
+section {
+    float: left;
+    width: 805px;
+    padding-bottom: 40px;
     box-sizing: border-box;
+    padding-left: 10px;
 }
 
-.section.list{
-    height: 400px;
-}
-
-
-
-/* main_container */
-.main_container{
-    margin-left: 10px;
-}
-
-
-/* main_top */
-.main_top{
-    width: 100%;
-    height: 45px;
-    text-align: left;
-}
-
-.main_top span{
-    font-family: Inter;
+section>h3 {
+    clear: both;
     font-size: 17px;
+    margin: 12px 0;
     font-weight: 700;
-    color: #3F3F3F;
-    margin-top: 12px;
 }
 
-/* tbname */
-
-.tbname{
-    width: 784px;
-    height: 17px;
-    box-sizing: border-box;
+article {
+    overflow: hidden;
 }
 
-
-.tbname span{
-    width: 784px;
-    height: 17px;
-    line-height: 17px;
-    margin-bottom: 6px;
-    box-sizing: border-box;
-}
-
-.tbname span:nth-child(1){
-  
-    float: left;
-    
-}
-.tbname span:nth-child(2){
-    box-sizing: border-box;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    position: absolute;
-}
-
-/* table */
-
-.status_table{
-    margin-bottom: 12px;
-    box-sizing: border-box;
-    height: 193px;
-}
-
-.status_table.list{
-    height: 219px;
-}
-
-.status_table table{
-    width: 784px;
-    border-top : 2px solid #333333;
-}
-
-
-
-.status_table th{
-    height: 42px;
-}
-
-.status_table td{
-    height: 42px;
-    border-bottom: 1px dotted #999999;
-    text-align: center;
-}
-
-/* product - list.html  */
-#productList{
-    margin-bottom: 12px;
-    box-sizing: border-box;
-    height: 193px;
-}
-
-
-
-#productList table{
-    width: 784px;
-    border-top : 2px solid #333333;
-}
-
-
-
-#productList th{
-    height: 42px;
-}
-
-#productList td{
-    height: 42px;
-    border-bottom: 1px dotted #999999;
-    text-align: center;
-}
-
-#productList  tbody  tr{
-    height: 89px;
-}
-
-#product_img1{
-    width: 60px;
-    height: 60px;
-}
-
-
-
-
-
-/* btn- group */
-.status_table .btn_group {
-    width: 784px;
-    height: 51px;
-    box-sizing: border-box;
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.btn_group > .deletebtn{
-    width: 48px;
+article h3 {
+    margin: 10px 0;
     height: 14px;
-    width: auto;
-    float: left;
-    position: relative;
-    margin-top: 11px;
-    align-self: self-start;
+    color: #111;
 }
 
-.btn_group > .insertbtn {
-    width: 74px;
-    height: 31px;
-    box-sizing: border-box;
-    border-radius: 20px;
-    border: 1px solid #cccccc;
+article>p>a {
+    color: #111;
+}
+
+h3>a {
+    margin-top: 1px;
+}
+
+a.more::before {
+    content: "+ ";
+}
+
+a.more {
+    float: right;
+}
+
+table {
+    width: 795px;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    border-top: #333 solid 2px;
+}
+
+thead>tr>th {
+    background-color: #fbfbfb;
+}
+
+td {
+    border-bottom: dotted 1px #999;
+    height: 42px;
+    font-size: 12px;
     text-align: center;
-    line-height: 31px;
-    margin-top: 10px;
 }
 
-
-
-
-/* pages */
-.pages{
-    width: 784px;
-    height: 35px;
+th {
+    height: 36px;
     text-align: center;
 }
 
-.pages ul li{
-    display: inline-flex;
-    text-align: center;
-}
-
-
-
-
-
-
-
-
-
-/* footer */
-footer{
-    width: 100%;
-    height: auto;
-    background: #353535;
-}
-
-.fIn{
-    width: 980px;
+footer {
     height: 41px;
-    background:  #353535;
-    margin: 0 auto;
-    color: #ffffff;
-
-}
-
-.fttxt{
-    font-family: Inter;
-    font-size: 11.63px;
-    font-weight: 400;
-    line-height:12px;
-    text-align: left;
-    margin-left: 12px;
-    padding-top: 12px;
-}
-
-.fttxt span{
-    float: left;
-}
-
-.copy{
-    font-family: Inter;
-    font-size: 11.25px;
-    font-weight: 400;
-    line-height:13.62px;
-    text-align: left;
-
-}
-
-.copy p{
-    box-sizing: border-box;
+    bottom: 0;
+    color: #fff;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    position: relative;
+    align-items: center;
+    padding: 0 12px;
+}
+
+.copy {
+    position: absolute;
     right: 12px;
 }
 
-.copy p span::after{
-    content: "ⓒ";
+@media ( max-width : 980px) {
+    header>div {
+        width: 100%;
+    }
 }
-.copy p span{
-    margin-right: 2px;
+
+section>article:nth-child(2)>table {
+    margin-bottom: 0;
+}
+
+
+section>article:nth-child(2)>table img {
+    width: 60px;
+    height: 60px;
+}
+.paging {
+    overflow: hidden;
+    height: auto;
+}
+.paging > p {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.paging > p > a[href]{
+    margin: 5px;
+}
+.paging > p > a.current{
+    font-weight: bolder;
+    text-decoration: underline;
+}
+.userList tbody>tr,
+.userList table td{
+    height: 43px;
+    box-sizing: border-box;
+}
+.userList section>article:nth-child(3)>h3 {
+    overflow: hidden;
+    height: 50px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.userList section>article:nth-child(3)>h3>a[href]:nth-child(1) {
+    display: block;
+    width: 50px;
+    float: left;
+    height: 14px;
+}
+
+.userList section>article:nth-child(3)>p {
+    text-align: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.userList p>b {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.orderList section>article:nth-child(3)>h3 {
+    overflow: hidden;
+    height: 50px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.orderList section>article:nth-child(3)>h3>a[href]:nth-child(1) {
+    display: block;
+    width: 50px;
+    float: left;
+    height: 14px;
+}
+
+.orderList section>article:nth-child(3)>p {
+    text-align: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.orderList p>b {
+    text-decoration: underline;
+}
+
+.prodList section>article:nth-child(3)>h3 {
+    overflow: hidden;
+    height: 50px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.prodList tbody>tr {
+    height: 90px;
+}
+.prodList section>article:nth-child(3)>h3>a[href]:nth-child(1) {
+    display: block;
+    width: 50px;
+    float: left;
+    height: 14px;
+}
+
+.prodList section>article:nth-child(3)>h3>a[href]:nth-child(2) {
+    display: flex;
+    float: right;
+    width: 74px;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.prodList section>article:nth-child(3)>p {
+    text-align: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.prodList p>b {
+    font-weight: bold;
+}
+
+.prodReg form>h3 {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    height: 50px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.prodReg form>h3>a[href]:nth-child(1) {
+    display: flex;
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.prodReg form>h3>input {
+    width: 74px;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.prodReg section>article:nth-child(3)>p {
+    text-align: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.prodReg p>b {
+    font-weight: bold;
+}
+
+.prodReg td, .prodReg th {
+    text-align: left;
+}
+
+.prodReg tr:nth-of-type(8)>td:nth-child(2) {
+    height: 166px;
+}
+
+.prodReg tr:nth-of-type(8)>td:nth-child(2)>input {
+    padding-bottom: 4px;
+}
+
+.prodReg tr:nth-of-type(8)>td:nth-child(2)>* {
+    margin-bottom: 4px;
+    box-sizing: border-box;
+}
+
+.prodReg td {
+    padding-left: 12px;
+}
+
+.prodReg textarea {
+    width: 157px;
+    height: 32px;
+    resize: none;
+    margin-top: 12px;
+    margin-bottom: 16px;
 }
