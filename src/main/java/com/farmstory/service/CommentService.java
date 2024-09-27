@@ -42,6 +42,7 @@ public class CommentService {
         // dto 변환 후 반환
         CommentDTO dto = modelMapper.map(comment, CommentDTO.class);
 //        dto.setNick(user.getUserNick());
+
         return dto;
     }
 

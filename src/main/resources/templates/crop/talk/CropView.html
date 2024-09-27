@@ -123,9 +123,14 @@
 <!--							</div>-->
 <!--						</th:if>-->
 					</article>
-				<th:if test="${empty comments}">
-					<p class="empty">등록된 댓글이 없습니다.</p>
-				</th:if>
+
+				<th:block th:switch="${comments.size()}">
+					<p th:case="0">등록된 댓글이 없습니다.</p>
+				</th:block>
+
+<!--				<th:if test="${empty comments}">-->
+<!--					<p class="empty">등록된 댓글이 없습니다.</p>-->
+<!--				</th:if>-->
 			</section>
 
 			<!-- 댓글쓰기 -->
