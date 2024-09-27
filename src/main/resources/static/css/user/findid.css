@@ -157,9 +157,15 @@ button {
    
 
 }
+
+
+/**/
+
 .btns {
     text-align: right;
-    margin-top: 32px;
+    position: relative;
+    display: block;
+    z-index: 1; /* 모달보다 뒤에 위치 */
 }
 
 .btns > button{
@@ -190,3 +196,4 @@ button {
     text-align: center;
 
 }
+

@@ -61,13 +61,16 @@ public class UserService {
         return null;
     }
 
-    public UserDTO selectUserByEmail(String userEmail) {
-        User user = userRepository.findByUserEmail(userEmail);
+    public UserDTO selectUserForFindUser(String type, String value) {
 
-        if(user!=null) {
-            return modelMapper.map(user, UserDTO.class);
+        User user = null;
+
+        if(type.equals("uid")){
+            user = userRepository.findByUserUid(value);
+        }else if(type.equals("email")){
+            user = userRepository.findByUserEmail(value);
         }
-        return null;
+        return modelMapper.map(user, UserDTO.class);
     }
 
     //선택한 유저 정보 삭제
