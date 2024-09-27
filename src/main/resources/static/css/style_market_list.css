@@ -61,6 +61,7 @@
     margin-top: 12px;
     border-collapse: collapse;
     border-top: 1px solid #111111;
+    border-bottom: 1px solid #EEEEEE;
 }
 
 .row {

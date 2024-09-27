@@ -59,7 +59,7 @@
                         <td colspan="10" class="td_first">장바구니에 상품이 없습니다.</td>
                     </tr>
                     <tr th:if="${carts == null && product != null}">
-                        <td><img src="#" alt="사과 샘플"/></td>
+                        <td class="pic"><img th:src="@{'/uploads/'+${product.prodImage1}}" alt="제품 이미지 1"></td>
                         <td>
                             <th:block th:if="${product.prodCateType == 1}">
                             과일
@@ -79,7 +79,7 @@
                         <td><strong>[[${(product.prodPrice - (product.prodPrice * product.prodDiscount / 100)) * product.cartProdCount}]]</strong>원</td>
                     </tr>
                     <tr th:each="cart:${carts}" th:if="${carts != null && product == null}">
-                        <td><img src="#" alt="사과 샘플"/></td>
+                        <td class="pic"><img th:src="@{'/uploads/'+${cart.prodDTO.prodImage1}}" alt="제품 이미지 1"></td>
                         <td>
                             <th:block th:if="${cart.prodDTO.prodCateType == 1}">
                                 과일
