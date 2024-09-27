@@ -9,6 +9,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final ModelMapper modelMapper;
 
 
     //유저 정보 저장
@@ -58,6 +60,16 @@ public class UserService {
         }
         return null;
     }
+
+    public UserDTO selectUserByEmail(String userEmail) {
+        User user = userRepository.findByUserEmail(userEmail);
+
+        if(user!=null) {
+            return modelMapper.map(user, UserDTO.class);
+        }
+        return null;
+    }
+
     //선택한 유저 정보 삭제
     public void deleteUserById(String uid) {
         //Entity 삭제 (데이터베이스 Delete)
