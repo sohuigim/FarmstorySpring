@@ -97,6 +97,7 @@ public class UserService {
 
     public void sendEmailCode(HttpSession session, String receiver){
 
+
         // MimeMessage 생성
         MimeMessage message = mailSender.createMimeMessage();
 
