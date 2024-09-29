@@ -21,7 +21,7 @@ public class IndexController {
                         .replace("ROLE_", "");  // ROLE_ 접두사 제거
 
             model.addAttribute("isAuthenticated", true);
-            model.addAttribute("role",role);
+             model.addAttribute("role",role);
 
         }else {
             // 로그인 안했을 경우

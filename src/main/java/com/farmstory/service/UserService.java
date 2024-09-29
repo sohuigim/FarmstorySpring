@@ -74,10 +74,20 @@ public class UserService {
         return modelMapper.map(user, UserDTO.class);
     }
 
-    public void updateUserPass(UserDTO userDTO) {
-        String encoded = passwordEncoder.encode(userDTO.getUserPass());
-        userDTO.setUserPass(encoded);
-        userRepository.save(userDTO.toEntity());
+    public ResponseEntity updateUserPass(UserDTO userDTO) {
+
+        if(userDTO != null) {
+            String encoded = passwordEncoder.encode(userDTO.getUserPass());
+            userDTO.setUserPass(encoded);
+
+            User entity = modelMapper.map(userDTO, User.class);
+            userRepository.save(entity);
+
+            return ResponseEntity.ok().body(true);
+        }else{
+            return ResponseEntity.ok().body(false);
+        }
+
     }
 
     //선택한 유저 정보 삭제
