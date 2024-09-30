@@ -46,7 +46,7 @@ public class CropController {
         return "/crop/" + cate;
     }
 
-    //글쓰기
+    //글쓰기(가져오기)
     @GetMapping("/crop/{cate}/CropWrite")
     public String CropWrite(Model model, @PathVariable("cate") String cate) {
 
@@ -117,6 +117,8 @@ public class CropController {
         model.addAttribute("str1", str1);
         model.addAttribute("comments", comments);
 
+        System.out.println("comments :" + comments);
+        System.out.println(model);
         System.out.println(str1);
         System.out.println(cate);
         return "/crop/talk/CropView";
@@ -142,4 +144,17 @@ public class CropController {
 
         return "/crop/talk/CropModify";
     }
+
+    
+    //삭제
+    @GetMapping("/crop/{cate}/CropDelete")
+    public String CropStroyDelete(int artNo){
+
+        articleService.deleteArticle(artNo);
+
+        return "/crop/talk/CropDelete";
+    }
+
+
+
 }
