@@ -33,6 +33,7 @@
             }else{
                 resultPass.innerText = "비밀번호가 일치하지 않습니다.";
                 resultPass.style.color = 'red';
+
             }
         });
 
@@ -43,6 +44,7 @@
                 e.preventDefault(); // 제출 중단
             }
         });
+
     }
 </script>
 <link rel="stylesheet" th:href="@{/css/user/style_passwordchange.css}">
@@ -89,7 +91,9 @@
                     <div>
                         <a th:href="@{/user/UserLogin}" class="cancel-button">취소</a>
                         <button type="submit" class="next-button">
+
                             <span>변경</span>
+
                         </button>
                     </div>
                 </form>

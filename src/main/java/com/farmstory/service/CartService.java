@@ -37,6 +37,8 @@ public class CartService {
         return carts.stream().map(Cart::toDTO).toList();
     }
     public void updateCart(Cart cart) {}
-    public void deleteCart(int cartNo) {}
+    public void deleteCart(int cartNo) {
+        cartRepository.deleteById(cartNo);
+    }
 
 }

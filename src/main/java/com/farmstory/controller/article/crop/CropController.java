@@ -3,28 +3,28 @@ package com.farmstory.controller.article.crop;
 import com.farmstory.dto.ArticleDTO;
 
 import com.farmstory.entity.Article;
+
+import com.farmstory.entity.Comment;
+
+import com.farmstory.entity.Comment;
 import com.farmstory.repository.article.ArticleRepository;
 import com.farmstory.service.ArticleService;
 import com.farmstory.service.CommentService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Log4j2
 @Controller
+@RequiredArgsConstructor
 public class CropController {
     private final ArticleService articleService;
-    private ArticleRepository articleRepository;
-    private CommentService commentService;
-
-    public CropController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
-    //농작물이야기 // 메인
-//    @GetMapping("/crop/CropStory")
-//    @GetMapping("/crop/CropGarden")
-//    @GetMapping("/crop/CropReturnfarm")
+    private final ArticleRepository articleRepository;
+    private final CommentService commentService;
 
     @GetMapping("/crop/{cate}")
     public String cropStory(@PathVariable String cate, Model model) {
@@ -38,7 +38,6 @@ public class CropController {
         }
 
         model.addAttribute("str1", str1);
-
 
         List<Article> articles = articleService.selectArticles(cate);
         model.addAttribute("articles", articles);
@@ -74,8 +73,17 @@ public class CropController {
 
     @PostMapping("/crop/CropWrite")
 
-    public String CropWrite(Model model, @ModelAttribute ArticleDTO articleDTO, @RequestParam String artCate) {
+    public String CropWrite(Model model, @ModelAttribute ArticleDTO articleDTO, String artCate) {
+        String str1 = "";
+        if (artCate.equals("CropStory")) {
+            str1 = "b201";
+        } else if (artCate.equals("CropGarden")) {
+            str1 = "b202";
+        } else if (artCate.equals("CropReturnfarm")) {
+            str1 = "b203";
+        }
 
+        log.info("Received artCate: " + artCate);
         System.out.println("ArticleDTO: " + articleDTO);
         System.out.println("Received artCate: " + artCate);  // 받아온 artCate 확인
 
@@ -86,7 +94,7 @@ public class CropController {
 
         // db제출
         model.addAttribute("str1", "b201");
-        return "redirect:/crop/CropStory";
+        return "redirect:/crop/" + artCate;
 
     }
 
@@ -103,11 +111,11 @@ public class CropController {
         }
 
         ArticleDTO articleDTO = articleService.getArticle(artNo);
-//        commentService.
+        List<Comment> comments = commentService.selectCommentByArtNo(articleDTO.getArtNo());
         model.addAttribute(articleDTO);
 
         model.addAttribute("str1", str1);
-
+        model.addAttribute("comments", comments);
 
         System.out.println(str1);
         System.out.println(cate);

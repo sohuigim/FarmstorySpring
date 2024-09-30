@@ -3,10 +3,14 @@ package com.farmstory.service;
 
 import com.farmstory.dto.ArticleDTO;
 import com.farmstory.entity.Article;
+
 import com.farmstory.entity.File;
 import com.farmstory.entity.QArticle;
+import com.farmstory.repository.FileRepository;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +21,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    @Autowired
     private final ArticleRepository articleRepository;
+    private final FileRepository fileRepository;
+
     private JPAQueryFactory queryFactory;
     private QArticle article = QArticle.article;
 
-    public ArticleService(ArticleRepository articleRepository) {this.articleRepository = articleRepository; }
 
     public Article saveArticle(ArticleDTO articleDTO) {
 
@@ -53,7 +58,8 @@ public class ArticleService {
     public ArticleDTO getArticle(int artNo) {
         Optional<Article> articleOpt = articleRepository.findById(artNo);
         ArticleDTO articleDTO = articleOpt.map(Article::toDTO).orElse(null);
-        for (File file : articleOpt.get().getFiles()) {
+        List<File> files = fileRepository.findAllByArticle(articleOpt.get());
+        for (File file : files) {
             articleDTO.getFileList().add(file.toDTO());
         }
         return articleDTO;

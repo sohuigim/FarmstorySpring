@@ -35,10 +35,12 @@ public class UserFindPassResultController {
         String uid = userDTO.getUserUid();
         UserDTO resultUser = userService.selectUserById(uid);
 
+
         resultUser.setUserPass(userDTO.getUserPass());
         userService.updateUserPass(resultUser);
 
         return "redirect:/user/UserLogin";
+
 
     }
 }
