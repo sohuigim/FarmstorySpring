@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -39,15 +40,33 @@ public class CommentService {
         // 댓글 생성
         commentRepository.save(comment);
 
+
         // dto 변환 후 반환
         CommentDTO dto = modelMapper.map(comment, CommentDTO.class);
 //        dto.setNick(user.getUserNick());
 
+        log.info("dto : " +dto);
+
         return dto;
     }
 
-    public List<CommentDTO> selectComment() {
-        return null;
+    public List<CommentDTO> selectComments() {
+
+        List<Comment> comments = commentRepository.findAll();
+
+        List<CommentDTO> commentDTOs = comments.stream()
+        .map(comment -> CommentDTO.builder()
+                .commentNo(comment.getCommentNo())
+                .artNo(comment.getArticle().getArtNo()) // 필요한 경우 artNo도 매핑
+                .userUid(comment.getUser().getUserUid())
+                .commentRegIp(comment.getCommentRegIp()) // 추가 매핑 필요시
+                .content(comment.getContent())
+                .nick(comment.getUser().getUserNick()) // 필요시 닉네임 추가
+                .commentRegDate(comment.getCommentRegDate())
+                .build())
+                .collect(Collectors.toList());
+
+        return commentDTOs;
     }
 
     public CommentDTO selectComment(int no) {
@@ -60,7 +79,7 @@ public class CommentService {
     }
 
     public void deleteComment(int no) {
-
+        commentRepository.delete(commentRepository.findById(no).orElseThrow(() -> new RuntimeException()));
     }
 
     public List<Comment> selectCommentByArtNo(int artNo){

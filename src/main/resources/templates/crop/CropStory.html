@@ -33,11 +33,7 @@
                                 </tr>
                                 <tr th:each="article : ${articles}">
                                     <td>[[${article.artNo}]]</td>
-<<<<<<< HEAD
-                                    <td><a th:href="@{/crop/CropStory/CropView}">[[${article.artTitle}]]&nbsp;&#91;[[${article.artComment}]]&#93;</a></td>
-=======
                                     <td><a th:href="@{|/crop/CropStory/CropView/${article.artNo}|}">[[${article.artTitle}]]&nbsp;&#91;[[${article.artComment}]]&#93;</a></td>
->>>>>>> 42451f685fcb9c2bb278b9e96b68e2704b17fcd6
                                     <td>[[${article.artNick}]]</td>
                                     <td>[[${article.artRdate}]]</td>
                                     <td>[[${article.artHit}]]</td>

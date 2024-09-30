@@ -18,15 +18,16 @@
             const btnComplete = document.getElementById('btnComplete');
             const commentForm = document.commentForm;
             const commentList = document.getElementsByClassName('commentList')[0];
+            const writer = document.getElementById('writer');
 
             btnComplete.onclick = async function (e) {
                e.preventDefault();
 
                const jsonData = {
                   // "userUid": commentForm.writer.value,
-
-                  "artNo": commentForm.artNo.value,
-                  "content": commentForm.content.value
+                   "userUid": writer.value,
+                   "artNo": commentForm.artNo.value,
+                   "content": commentForm.content.value
                }
 
                // fetchPost는 async 함수로 async 함수를 호출할때는 반드시 await 키워드 붙여서 호출
@@ -69,18 +70,9 @@
             </tr>
 
             <!-- 첨부파일이 있으면 나타나게끔  -->
-<!--            <th:if test="${boardDTO.b_fNo > 0}">-->
             <tr th:if="${articleDTO.artFile > 0}">
                <tr>
                   <td>첨부파일</td>
-<!--                  <td>-->
-<!--                     <th:Each var="file" items="${boardDTO.boardFiles}">-->
-<!--                        <p style="margin: 4px 0">-->
-<!--                           <a href="#">${file.b_oName}</a>-->
-<!--                           <span>${file.b_download}회 다운로드</span>-->
-<!--                        </p>-->
-<!--                     </th:Each>-->
-<!--                  </td>-->
                   <td>
                      <th:block th:each="file:${articleDTO.fileList}">
                         <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드<br>
@@ -108,10 +100,9 @@
          <section class="commentList">
             <h3>댓글목록</h3>
                <article th:each="comment : ${comments}" class="comment">
-<!--                                <span>-->
-<!--                                  <span>${comment.nick}</span>-->
-<!--                                  <span>${comment.com_rdate}</span>-->
-<!--                              </span>-->
+                  <span th:text="${comment.commentNo}"></span>
+                  <span th:text="${comment.user.userNick}"></span>
+                  <span th:text="${comment.commentRegDate.toLocalDate()}"></span>
                   <textarea style="resize: none" name="comment" readonly th:text="${comment.content}"></textarea>
 
 <!--                  <th:if test="${sessUser.uid eq comment.com_writer}">-->
@@ -119,7 +110,7 @@
 <!--                        &lt;!&ndash; HTML 사용자 정의 속성을 이용한 삭제/수정 &ndash;&gt;-->
 <!--                        <a href="#" class="commentRemove" data-no="${comment.comNo}">삭제</a>-->
 <!--                        <a href="#" class="commentModify" data-no="${comment.comNo}">수정</a>-->
-<!--                        <a href="#" class="commentUpdate" data-no="${comment.comNo}" style="display:none;">수정완료</a>-->
+<!--                        <a href="#" class="commentUpdate" data-n {comment.comNo}" style="display:none;">수정완료</a>-->
 <!--                     </div>-->
 <!--                  </th:if>-->
                </article>
@@ -137,8 +128,8 @@
          <section class="commentForm">
             <h3>댓글쓰기</h3>
             <form th:action="@{/comment/write}" name="commentForm" method="post">
-               <input type="hidden" name="artNo" th:value="${articleDTO.artNo}"/>
-<!--               <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}"/>-->
+               <input type="text" name="artNo" th:value="${articleDTO.artNo}"/>
+<!--               <input type="hidden" name="writer" id="writer" th:value="${articleDTO.user.userNick}"/>-->
                <textarea name="content">댓글내용 입력</textarea>
                <div>
                   <a th:href="@{#}" class="btn btnCancel">취소</a>
