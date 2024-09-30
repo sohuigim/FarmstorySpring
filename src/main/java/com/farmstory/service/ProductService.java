@@ -139,4 +139,16 @@ public class ProductService {
 
         productRepository.save(product);
     }
+    public void DeleteProduct(List<String> productIds) {
+        for (String id : productIds) {
+            try {
+                int productId = Integer.parseInt(id);
+                productRepository.deleteById(productId);
+            } catch (NumberFormatException e) {
+                // 문자열이 숫자로 변환되지 않을 경우 예외 처리
+                System.out.println("Invalid product ID format: " + id);
+                throw new IllegalArgumentException("Invalid product ID format: " + id);
+            }
+        }
+    }
 }

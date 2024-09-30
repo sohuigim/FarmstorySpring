@@ -154,8 +154,8 @@ input[type='number']::-webkit-inner-spin-button {
 }
 
 .sample > img {
-    width: 750px;
-    height: 1387px;
+    width: auto;
+    height: auto;
     margin-top: 16px;
 }
 

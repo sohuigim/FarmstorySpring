@@ -1,4 +1,4 @@
-<th:block th:include ="/grid/_header.html"/>
+<th:block th:include ="grid/_header.html"/>
 <title>상품목록</title>
 <link rel="stylesheet" th:href="@{/css/style_market_list.css}">
 <!-- #main -->
@@ -62,7 +62,7 @@
                         <td colspan="7" class="td_first" style="width: 100%">장바구니에 상품이 없습니다.</td>
                     </tr>
                     <tr th:each="product:${marketPageResponseDTO.getDtoList()}" th:if="${product != null}">
-                        <td class="pic"><img src="#" alt="사과 500g"></td>
+                        <td class="pic"><img th:src="@{'/uploads/'+${product.prodImage1}}" alt="사과 500g"></td>
                         <td class="type">
                             <th:block th:if="${product.prodCateType == 1}">
                                 과일
@@ -107,4 +107,4 @@
         </article><!-- .article -->
     </section>
 </main><!-- #main -->
-<th:block th:include ="/grid/_footer.html"/>
+<th:block th:include ="grid/_footer.html"/>

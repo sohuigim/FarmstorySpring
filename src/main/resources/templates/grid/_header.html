@@ -14,16 +14,16 @@
         <ul class="utill">
             <li><a th:href="@{/}" id="home">HOME</a></li>
             <li th:if="${isAuthenticated == true}">
-                <a th:href="@{/user/logout}" id="login">로그아웃</a>
+                <a th:href="@{user/logout}" id="login">로그아웃</a>
             </li>
             <li th:if="${isAuthenticated != true}">
-                <a th:href="@{/user/UserLogin}" id="login">로그인</a>
+                <a th:href="@{user/UserLogin}" id="login">로그인</a>
             </li>
             <li th:if="${isAuthenticated == true && role == 'ADMIN'}">
                 <a th:href="@{/admin/index}" id="register">관리자</a>
             </li>
             <li th:if="${isAuthenticated == true}">
-                <a th:href="@{/user/UserMyinfo}" id="register">마이페이지</a>
+                <a th:href="@{/userInfo/UserMyinfo}" id="register">마이페이지</a>
             </li>
             <li th:if="${isAuthenticated  != true}">
                 <a th:href="@{/user/UserTerms}" id="register">회원가입</a>

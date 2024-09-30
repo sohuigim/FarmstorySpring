@@ -28,15 +28,20 @@ public class CartService {
         Cart cart = modelMapper.map(cartDTO, Cart.class);
         cartRepository.save(cart);
     }
+
     public CartDTO selectCart(int cartNo) {
-        return null;
+        Cart cart = cartRepository.findCartByCartNo(cartNo);
+        return modelMapper.map(cart, CartDTO.class);
     }
+
     public List<CartDTO> selectCartAll(String userId) {
         List<Cart> carts = cartRepository.findCartByUserId(userId);
 
         return carts.stream().map(Cart::toDTO).toList();
     }
     public void updateCart(Cart cart) {}
-    public void deleteCart(int cartNo) {}
+    public void deleteCart(int cartNo) {
+        cartRepository.deleteById(cartNo);
+    }
 
 }

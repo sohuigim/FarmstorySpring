@@ -1,19 +1,286 @@
-<link rel="stylesheet" th:href="@{/css/footer.css}">
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-	<meta charset="UTF-8">
-	<link rel="shortcut icon" th:href="@{/images/fav.ico}" type="image/x-icon">
-	<link rel="stylesheet" th:href="@{/css/reset.css}">
-	<link rel="stylesheet" th:href="@{/css/header.css}">
-	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	<link rel="stylesheet" th:href="@{/css/user/myinfo.css}">
-
 <th:block th:include="user/User_myinfo_header.html"/>
-    <title>MyInfo</title>
+<title>MyInfo</title>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:src="@{/js/postcode.js}"></script>
+<script th:src="@{/js/utils.js}"></script>
+
+<script th:inline="javascript">
+
+	const rePass = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{5,16}$/;
+	const reName = /^[가-힣]{2,10}$/
+	const reNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]*$/;
+	const reEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	const reHp = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
+
+	// 유효성 검사 함수
+	function validateInput(value, rule) {
+		return rule.test(value);
+	}
+
+
+	const uid = [[${user.userUid}]];
+	const regDate = [[${user.userRegDate}]];
+
+	let isPassOk = false;
+	let isFormValid = true;
+
+	window.onload=function (){
+
+		const modifyForm 	= document.getElementsByTagName('form')[0];
+
+		const btn_modify 	= document.querySelector('.btn_modify');
+		const resultPass 	= document.querySelector('.resultPass')
+		const btnPass2 		= document.querySelector('.pass2');
+		const btn_submit 	= document.querySelector('.btn_submit');
+		const btn_duplicate 	= document.querySelector('.btn_duplicate');
+
+		//비밀번호 유효성 검사
+		btnPass2.addEventListener('focusout', function (){
+			const pass = document.querySelector('.userPass').value;
+			const pass2 = document.querySelector('.pass2').value;
+
+			if(!pass.match(rePass)){
+				resultPass.innerText = "비밀번호가 유효하지 않습니다.";
+				resultPass.style.color = 'red';
+				return;
+			}
+
+			if(pass == pass2){
+				resultPass.innerText = "비밀번호가 일치합니다.";
+				resultPass.style.color = 'green';
+				isPassOk = true;
+			}else{
+				resultPass.innerText = "비밀번호가 일치하지 않습니다.";
+				resultPass.style.color = 'red';
+				isPassOk = false;
+			}
+		});
+
+		//비밀번호 수정
+		btn_modify.addEventListener('click',async function (e){
+			e.preventDefault();
+
+			const pass = document.querySelector('.userPass').value;
+			const cate = 'pass';
+
+
+			// 비밀번호 유효성 검사 완료 여부
+			if (!isPassOk) {
+				alert('비밀번호가 유효하지 않습니다.');
+				return;
+			}
+
+			const jsonData = {
+				"userUid":uid,
+				"userPass":pass
+			}
+
+			const data = await fetchPost(`/userInfo/UserMyinfo/${cate}`,jsonData);
+
+			console.log(data);
+			if(data) {
+				alert('비밀번호가 정상적으로 변경되었습니다.');
+			}else{
+				alert('비밀번호를 다시 확인해주세요.');
+			}
+
+			const passfeild = document.querySelector('.userPass');
+			const pass2feild = document.querySelector('.pass2');
+
+			passfeild.value = '';
+			pass2feild.value = '';
+			resultPass.innerText = '';
+
+		});
+
+		//유효성검사
+		const resultName = document.querySelector('.resultName');
+		const resultNick = document.querySelector('.resultNick');
+		const resultHp = document.querySelector('.resultHp');
+
+		let userName = modifyForm.userName.value
+		let userNick =modifyForm.userNick.value
+		let userEmail =modifyForm.userEmail.value
+		let userHp =modifyForm.userHp.value
+		let userZip =modifyForm.userZip.value
+		let userAddr1 =modifyForm.userAddr1.value
+		let userAddr2 =modifyForm.userAddr2.value
+
+		// 3.이름 유효성 검사
+		modifyForm.userName.addEventListener('focusout', function(){
+
+			userName = modifyForm.userName.value;
+
+			if(!userName.match(reName)){
+				showResultInvalid(resultName,'이름이 유효하지 않습니다.')
+				isFormValid = false;
+			}else{
+				resultName.innerText = "";
+				isFormValid = true;
+			}
+		});
+
+		modifyForm.userNick.addEventListener('focusout', function(){
+			userNick = modifyForm.userNick.value;
+			if(!userNick.match(reNick)){
+				resultNick.innerText = '별명이 유효하지 않습니다.';
+				resultNick.style.color = 'red';
+				isFormValid = false;
+			}
+		});
+
+		// 4.별명 유효성 검사
+		btn_duplicate.addEventListener('click', async function (){
+			userNick = modifyForm.userNick.value;
+			const type = modifyForm.btnnick.dataset.type;
+			const value = userNick;
+
+			const data = await fetchGet(`/user/UserRegister/${type}/${value}`)
+			console.log(data.result)
+
+			if(data.result > 0){
+				resultNick.innerText = '이미 사용중인 별명입니다.';
+				resultNick.style.color = 'red';
+				isFormValid = false;
+			}else{
+				resultNick.innerText = '사용 가능한 별명입니다.';
+				resultNick.style.color = 'green';
+				isFormValid = true;
+			}
+		})
+
+
+		// 이메일 유효성 검사
+
+		const btnSendEmail = document.querySelector('#btnSendEmail')
+		const btnAuthEmail = document.getElementById('btnAuthEmail');
+
+		const resultEmail = document.querySelector('.resultEmail');
+		const auth = document.getElementsByClassName('auth')[0];
+
+		btnSendEmail.addEventListener('click', async function (){
+
+			userEmail = modifyForm.userEmail.value;
+			const type = modifyForm.btnEmail.dataset.type;
+			const value = userEmail;
+
+			if (!value.match(reEmail)) {
+				resultEmail.innerText = '이메일 형식이'
+				showResultInvalid(resultEmail, '이메일 형식이 맞지 않습니다.');
+				isFormValid = false;
+				return;
+			}else{
+				resultEmail.innerText = '이메일 형식 유효';
+			}
+
+			const data = await fetchGet(`/user/UserRegister/${type}/${value}`);
+
+			if(data.result > 0){
+				showResultInvalid(resultEmail, '이미 사용중인 이메일 입니다.');
+				isFormValid = false;
+			}else{
+				showResultValid(resultEmail, '인증코드가 발송 되었습니다.');
+				// 인증코드 입력 필드 활성화
+				auth.style.display = 'block';
+
+				isFormValid = false;
+			}
+
+		})
+
+
+		// 이메일 인증코드 확인
+		btnAuthEmail.onclick = async function (){
+			const userauth = document.querySelector('.userAuth');
+
+			console.log(userauth)
+			const jsonData = {"code": userauth.value};
+
+			const data = await fetchPost(`/user/UserRegister/email`, jsonData);
+
+			console.log(data+data.result)
+
+			if(!data.result){
+				showResultInvalid(resultEmail, '인증코드가 일치하지 않습니다.');
+				isFormValid = false;
+			}else{
+				showResultValid(resultEmail, '이메일이 인증되었습니다.');
+				isFormValid = true;
+			}
+		}
+
+		// 6.휴대폰 유효성 검사
+		modifyForm.userHp.addEventListener('focusout', async function(){
+
+			userHp = modifyForm.userHp.value;
+			const type = 'hp'
+			const value = userHp;
+
+			console.log(value);
+
+			if(!value.match(reHp)){
+				resultHp.innerText = '전화번호가 유효하지 않습니다.';
+				resultHp.style.color = 'red';
+				isFormValid = false;
+				return;
+			}
+
+			const data = await fetchGet(`/user/UserRegister/${type}/${value}`);
+			console.log(data.result)
+
+			if(data.result > 0){
+				resultHp.innerText = '이미 사용중인 휴대폰번호 입니다.';
+				resultHp.style.color = 'red';
+				isFormValid = false;
+			}else{
+				resultHp.innerText = '사용할 수 있는 번호입니다.';
+				resultHp.style.color = 'green';
+				isFormValid = true;
+			}
+		});
+
+
+		//회원 정보 수정
+		if(isFormValid){
+			btn_submit.addEventListener('click', async function (e){
+				e.preventDefault();
+				userZip = modifyForm.userZip.value;
+				userAddr1 = modifyForm.userAddr1.value;
+				userAddr2 = modifyForm.userAddr2.value;
+
+				const cate = 'user';
+
+				const jsonData = {
+					"userUid":uid,
+					"userName":userName,
+					"userNick":userNick,
+					"userEmail":userEmail,
+					"userHp":userHp,
+					"userZip":userZip,
+					"userAddr1":userAddr1,
+					"userAddr2":userAddr2,
+					"userRegDate":regDate
+				}
+
+				console.log(jsonData);
+				const data = await fetchPost(`/userInfo/UserMyinfo/${cate}`,jsonData);
+				console.log(data);
+				if(data){
+					alert('회원 정보가 변경되었습니다.')
+					window.location.reload();
+				}else{
+					alert('회원 정보 수정에 실패하였습니다. 다시 시도해 주세요.')
+				}
+
+			});
+		}else{
+			alert('입력한 정보를 다시 확인해 주세요.')
+		}
+	}
+</script>
+
 <link rel="stylesheet" th:href="@{/css/user/myinfo.css}">
 <link rel="stylesheet" th:href="@{/css/common_myinfo_modify.css}">
-
 <main>
 	<div class="mainIn">
 		<section class="infotable">
@@ -28,9 +295,9 @@
 					</div><!-- .aside_cate -->
 					<div class="aside_bg">
 						<ul class="cate_lnb_real">
-							<li> <a href="#">장바구니</a></li>
-							<li> <a href="#">주문정보</a></li>
-							<li> <a href="#">정보수정</a></li>
+							<li> <a th:href="@{/userinfo/UserMyinfoCart}">장바구니</a></li>
+							<li> <a th:href="@{/userinfo/UserMyinfoOrder}">주문정보</a></li>
+							<li> <a th:href="@{/userinfo/UserMyinfo}">정보수정</a></li>
 						</ul><!-- .cate_lnb -->
 					</div><!-- .aside_bg -->
 				</div><!-- .sidebar -->
@@ -52,13 +319,14 @@
 						<table>
 							<tr>
 								<th>아이디</th>
-								<td><span>${sessUser.uid }</span></td>
+								<td><span>[[${user.userUid}]]</span></td>
 							</tr>
 							<tr>
 								<th>비밀번호</th>
 								<td>
 									<div class="form_group">
-										<input type="password" id="input_password" placeholder="비밀번호 입력">
+										<input type="password" id="input_password" class="userPass" placeholder="비밀번호 입력">
+										<span style="margin-left: 10px" class="resultPass"></span>
 									</div>
 								</td>
 							</tr>
@@ -66,25 +334,25 @@
 								<th>비밀번호 확인</th>
 								<td>
 									<div class="form_group">
-										<input type="password" id="input_password_confirm" placeholder="비밀번호 입력확인">
-										<button type="button" class="btn_modifty"><p>비밀번호 수정</p></button>
-										<span class="resultPass"></span>
+										<input type="password" id="input_password_confirm" class="pass2" placeholder="비밀번호 입력확인">
+										<button type="button" class="btn_modify"><p>비밀번호 수정</p></button>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<th>회원가입날짜</th>
-								<td><span>${sessUser.regDate }</span></td>
+								<td><span>[[${#strings.substring(user.userRegDate,0,10)}]]</span></td>
 							</tr>
 						</table>
-
 						<span>개인정보 수정</span>
 						<form id="myForm" action="#" method="post" enctype="multipart/form-data">
 
 							<table>
 								<tr>
 									<th>이름</th>
-									<td class="form_group"><input type="text" id="input_name" name="name" placeholder="홍길동" readonly></td>
+									<td class="form_group">
+										<input type="text" id="input_name" name="userName" th:value="${user.userName}"><span class="resultName"></span>
+									</td>
 								</tr>
 								<tr>
 									<th>별명</th>
@@ -92,8 +360,8 @@
 										<ul>
 											<li><p>공백없는 한글, 영문, 숫자 입력</p></li>
 											<li>
-												<input type="text" id="input nickname" name="nick" placeholder="${sessUser.nick }" >
-												<button type="button" class="btn_duplicate" placeholder="별명 입력"> <img th:src="@{/images/user/chk_id.gif}" alt="Duplicate Check" class="icon"></button>
+												<input type="text" id="input nickname" name="userNick" th:value="${user.userNick}" >
+												<button type="button" class="btn_duplicate" name="btnnick" data-type="nick" placeholder="별명 입력"> <img th:src="@{/images/user/chk_id.gif}" alt="Duplicate Check" class="icon"></button>
 												<span class="resultNick"></span>
 											</li>
 										</ul>
@@ -102,11 +370,11 @@
 								<tr>
 									<th>이메일</th>
 									<td class="form_group">
-										<input type="email" name="email"  id="input email" placeholder="${sessUser.email }" />
-										<button type="button" id="btnSendEmail"  class="btn_send"><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
-										<span class="resultEmail"></span>
+										<input type="email" name="userEmail"  id="input email" th:value="${user.userEmail}" />
+										<button type="button" id="btnSendEmail" name="btnEmail" data-type="email" class="btn_send"><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
+										<span class="resultEmail"></span><br>
 										<div class="auth" style="display:none">
-											<input type="text" name="auth" placeholder="인증번호 입력" />
+											<input type="text" name="auth" class="userAuth" placeholder="인증번호 입력" />
 											<button type="button" id="btnAuthEmail"  class="btn_auth" ><img th:src="@{/images/user/chk_confirm.gif}" alt="확인"/></button>
 											<span class="resultEmail"></span>
 										</div>
@@ -115,21 +383,22 @@
 								<tr>
 									<th>휴대폰</th>
 									<td class="form_group">
-										<input type="tel" id="input tel" name="hp" placeholder="${sessUser.hp }">
+										<input type="tel" id="input tel" name="userHp" th:value="${user.userHp}">
+										<span class="resultHp"></span>
 									</td>
 								</tr>
 								<tr>
 									<th>주소</th>
 									<td class="form_group">
 										<div class="address">
-											<input type="text" name="zip" id="zip" placeholder="${sessUser.zip }" readonly/>
+											<input type="text" name="userZip" id="zip" th:value="${user.userZip}" readonly/>
 											<button type="button" class="btnZip" onclick="postcode()"> <img th:src="@{/images/user/chk_post.gif}" class="icon" alt="우편번호 버튼"></button><!--alt="Postal check"-->
 										</div>
 										<div class="address">
-											<input type="text" id="input_address1" class="input_address" name="addr1" placeholder="${sessUser.addr1 }" >
+											<input type="text" id="addr1" class="input_address" name="userAddr1" th:value="${user.userAddr1}" readonly/>
 										</div>
 										<div class="address">
-											<input type="text" id="input_address2" class="input_address" name="addr2" placeholder="${sessUser.addr2 }" >
+											<input type="text" id="addr2" class="input_address" name="userAddr2" th:value="${user.userAddr2}" />
 										</div>
 									</td>
 								</tr>
@@ -140,16 +409,16 @@
 									</td>
 								</tr>
 							</table>
-									<div class="button_container">
-										<button type="button" class="btn-cancel">취소</button>
-										<button type="submit" class="btn_submit">회원정보 수정</button>
-									</div>
-								</form>
-						   </div>
-					   </div><!-- .articleIn -->
-				   </article><!-- .article -->
-            	</section>
-            </div>
-        </main>
+							<div class="button_container">
+								<button type="button" class="btn-cancel">취소</button>
+								<button type="submit" class="btn_submit">회원정보 수정</button>
+							</div>
+						</form>
+					</div>
+				</div><!-- .articleIn -->
+			</article><!-- .article -->
+		</section>
+	</div>
+</main>
 <th:block th:include ="/user/User_footer.html"/>
 <link rel="stylesheet" th:href="@{/css/footer.css}">

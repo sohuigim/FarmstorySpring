@@ -42,8 +42,8 @@
 							<td th:text="${user.userHp}"></td>
 							<td>
 
-								<select class="usergrade">
-									<option value="1" th:selected="${user.userRole}==1">1</option>
+								<select class="usergrade" th:data-id="${user.userUid}">
+									<option value="ADMIN" th:selected="${user.userRole}=='ADMIN'">1</option>
 									<option value="2" th:selected="${user.userRole}==2">2</option>
 									<option value="3" th:selected="${user.userRole}==3">3</option>
 									<option value="4" th:selected="${user.userRole}==4">4</option>
@@ -106,12 +106,12 @@
 		console.log(`New Grade: ${grade}`);  // 디버깅 로그
 
 		const data = {
-			id: id,
-			grade: grade
+			userUid: id,
+			userRole: grade
 		};
 
 
-		fetch('/FarmStoryJSP/admin/user/list.do', {
+		fetch('/admin/UserList/Update', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
