@@ -28,9 +28,12 @@ public class CartService {
         Cart cart = modelMapper.map(cartDTO, Cart.class);
         cartRepository.save(cart);
     }
+
     public CartDTO selectCart(int cartNo) {
-        return null;
+        Cart cart = cartRepository.findCartByCartNo(cartNo);
+        return modelMapper.map(cart, CartDTO.class);
     }
+
     public List<CartDTO> selectCartAll(String userId) {
         List<Cart> carts = cartRepository.findCartByUserId(userId);
 

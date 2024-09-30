@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +42,11 @@ public class MarketOrderController {
             product = cartDTO.getProdDTO();
             product.setCartProdCount(cartDTO.getCartProdCount());
 
+
         }
         log.info("222222222222222"+carts);
 
         model.addAttribute("carts", carts);
-
         return "/market/MarketCart";
     }
 
@@ -88,23 +89,19 @@ public class MarketOrderController {
     }
 
     @GetMapping("/market/MarketOrder12")
-    public String MarketOrder12(@RequestParam(required = false) String userId, Model model) {
+    public String MarketOrder12(@RequestParam(required = false) int[] cartId, Model model) {
 
+        List<CartDTO> carts = new ArrayList<>();
+        log.info("123123123123"+cartId.toString());
 
-
-        List<CartDTO> carts = cartService.selectCartAll(userId);
-
-        log.info("22221111112222"+carts);
-
-        for(CartDTO cartDTO : carts) {
-
+        for(int cart : cartId) {
+            log.info(cart);
+            CartDTO cartDTO = cartService.selectCart(cart);
             cartDTO.setProdDTO(productService.selectProduct(cartDTO.getProdNo()));
-
             ProductDTO product = cartDTO.getProdDTO();
             product.setCartProdCount(cartDTO.getCartProdCount());
-
+            carts.add(cartDTO);
         }
-        log.info("22221111112222"+carts);
 
         model.addAttribute("carts", carts);
 
