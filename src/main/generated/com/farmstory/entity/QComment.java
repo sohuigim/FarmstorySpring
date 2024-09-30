@@ -26,7 +26,7 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Integer> commentNo = createNumber("commentNo", Integer.class);
 
-    public final StringPath commentRegDate = createString("commentRegDate");
+    public final DateTimePath<java.time.LocalDateTime> commentRegDate = createDateTime("commentRegDate", java.time.LocalDateTime.class);
 
     public final StringPath commentRegIp = createString("commentRegIp");
 
