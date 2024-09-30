@@ -17,15 +17,17 @@ public class UserMyinfoController {
 
     private final UserService userService;
 
+    UserDTO resultUser = new UserDTO();
+
     @GetMapping("userInfo/UserMyinfo")
     public String UserMyinfo(Authentication authentication, Model model){
 
         if(authentication != null){
             String uid = authentication.getName();
             UserDTO userDTO = userService.selectUserById(uid);
-
             model.addAttribute("user", userDTO);
 
+            resultUser = userDTO;
             return "user/UserMyinfo";
         }else{
             return "redirect:/user/UserLogin";
@@ -34,14 +36,35 @@ public class UserMyinfoController {
     }
 
     @ResponseBody
-    @PostMapping("userInfo/UserMyinfo")
+    @PostMapping("userInfo/UserMyinfo/{cate}")
     public ResponseEntity UserMyinfo(@RequestBody UserDTO userDTO) {
-        String uid = userDTO.getUserUid();
-        UserDTO resultUser = userService.selectUserById(uid);
 
-        resultUser.setUserPass(userDTO.getUserPass());
-        ResponseEntity result = userService.updateUserPass(resultUser);
-        return result;
+        log.info(userDTO.toString());
+        log.info(resultUser.toString());
+
+        if(userDTO.getUserPass()!=null){
+            resultUser.setUserPass(userDTO.getUserPass());
+            ResponseEntity result = userService.updateUser(resultUser);
+            return null;
+        }
+
+        userDTO.setUserPass(resultUser.getUserPass());
+        userDTO.setUserRegip(resultUser.getUserRegip());
+        userDTO.setUserRole(resultUser.getUserRole());
+
+        if(userDTO.equals(resultUser)) {
+            ResponseEntity.ok().body(resultUser);
+        }else{
+            ResponseEntity result = userService.updateUserPass(userDTO);
+            return result;
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
+    @ResponseBody
+    @PostMapping("userInfo/UserMyinfoLeave")
+    public ResponseEntity UserMyinfoLeave(){
+        return null;
     }
 
         @GetMapping("userInfo/UserMyinfoCart")
