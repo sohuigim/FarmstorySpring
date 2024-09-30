@@ -4,6 +4,8 @@ import com.farmstory.entity.Point;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -17,7 +19,7 @@ public class PointDTO {
     private String pointDesc;
 
     @CreationTimestamp
-    private String pointDate;
+    private LocalDateTime pointDate;
 
 
     public Point toEntity() {

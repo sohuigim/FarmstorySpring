@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +32,7 @@ public class Product {
     private int prodDelivery;
 
     @CreationTimestamp
-    private String prodRegDate;
+    private LocalDateTime prodRegDate;
 
 
     public ProductDTO toDTO(){

@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class Order {
     private int orderItemDiscount;
 
     @CreationTimestamp
-    private String orderDate;
+    private LocalDateTime orderDate;
     private String orderReceiveName;
     private String orderReceiveHp;
     private String orderMemo;

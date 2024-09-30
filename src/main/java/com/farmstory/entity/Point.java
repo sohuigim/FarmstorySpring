@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class Point {
     private String pointDesc;
 
     @CreationTimestamp
-    private String pointDate;
+    private LocalDateTime pointDate;
 
     public PointDTO toDTO() {
         return PointDTO.builder()
