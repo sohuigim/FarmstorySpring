@@ -47,7 +47,7 @@ public class CommunityController {
     }
 
     //글쓰기
-    @GetMapping("/community/{cate}/CommunityWrite")
+    @GetMapping("/community/{cate}/CommunityWrite/")
     public String CommunityWrite(Model model, @PathVariable("cate") String cate) {
 
         String str1 = "";

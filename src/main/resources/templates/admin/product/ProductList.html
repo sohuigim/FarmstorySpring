@@ -46,7 +46,7 @@
 
                     for (let checkbox of selectedCheckboxes) {
                         const row = checkbox.closest('tr');
-                        const productNo = row.querySelector('.no1').value.trim();
+                        const productNo = row.querySelector('.no').value.trim();
                         console.log(productNo);
                         selectedIds.push(productNo);
                     }
@@ -61,7 +61,7 @@
                     }
 
 
-                    fetch('/FarmStoryJSP/admin/product/list.do', {
+                    fetch('/admin/ProductList/Delete', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -119,7 +119,7 @@
                                 <img th:src="@{'/uploads/'+${product.prodImage1}}" th:alt="${product.prodName}" width="60" height="60" />
                             </td>
 
-                            <td>[[${product.prodNo}]]</td>
+                            <td>[[${product.prodNo}]] <input type="hidden" class="no" th:value="${product.prodNo}"></td>
                             <td>[[${product.prodName}]]</td>
                             <td>[[${product.prodCateType}]]</td>
                             <td>[[${product.prodPrice}]]원</td>
