@@ -74,6 +74,13 @@ public class UserService {
         return modelMapper.map(user, UserDTO.class);
     }
 
+    public ResponseEntity updateUser(UserDTO userDTO) {
+        if(userDTO.getUserUid() != null) {
+            userRepository.save(userDTO.toEntity());
+            return ResponseEntity.ok().body(true);
+        }
+        return ResponseEntity.ok().body(false);
+    }
 
     public ResponseEntity updateUserPass(UserDTO userDTO) {
 
@@ -89,12 +96,6 @@ public class UserService {
             return ResponseEntity.ok().body(false);
         }
 
-    }
-
-    //선택한 유저 정보 삭제
-    public void deleteUserById(String uid) {
-        //Entity 삭제 (데이터베이스 Delete)
-        userRepository.deleteById(uid);
     }
 
     public int selectCountUser(String type, String value){
@@ -140,6 +141,27 @@ public class UserService {
             mailSender.send(message);
         }catch(Exception e){
             log.error("sendEmailConde : " + e.getMessage());
+        }
+    }
+
+    //선택한 유저 정보 삭제
+    public void deleteUserById(String uid) {
+        //Entity 삭제 (데이터베이스 Delete)
+        userRepository.deleteById(uid);
+    }
+
+    //유저 등급 수정
+    public boolean updateUserGrade(String userUid, String newGrade) {
+        // 유저 ID로 유저 찾기
+        Optional<User> optionalUser = userRepository.findById(userUid);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserRole(newGrade);  // 유저 등급 업데이트
+            userRepository.save(user);  // 데이터베이스에 저장
+            return true;  // 성공 시 true 반환
+        } else {
+            return false;  // 유저가 없을 경우 false 반환
         }
     }
 }
