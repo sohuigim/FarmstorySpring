@@ -12,6 +12,7 @@
 
         const registerForm = document.getElementsByTagName('form')[0];
         const resultPass = document.getElementsByClassName('resultPass')[0];
+        const submit = document.querySelector('.next-button');
 
         // 2.비밀번호 유효성 검사
         registerForm.pass2.addEventListener('focusout', function(){
@@ -32,17 +33,18 @@
             }else{
                 resultPass.innerText = "비밀번호가 일치하지 않습니다.";
                 resultPass.style.color = 'red';
-                isPassOk = false;
+
             }
         });
 
-        document.registerForm.onsubmit = function () {
+        submit.addEventListener('click', function (e) {
 
             if (!isPassOk) {
-                alertModal('비밀번호가 유효하지 않습니다. 다시 입력해 주세요.');
-                return false;
+                alert('비밀번호가 유효하지 않습니다. 다시 입력해 주세요.');
+                e.preventDefault(); // 제출 중단
             }
-        }
+        });
+
     }
 </script>
 <link rel="stylesheet" th:href="@{/css/user/style_passwordchange.css}">
@@ -89,7 +91,9 @@
                     <div>
                         <a th:href="@{/user/UserLogin}" class="cancel-button">취소</a>
                         <button type="submit" class="next-button">
-                            <span>확인</span>
+
+                            <span>변경</span>
+
                         </button>
                     </div>
                 </form>

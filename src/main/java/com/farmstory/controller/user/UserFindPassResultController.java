@@ -35,15 +35,12 @@ public class UserFindPassResultController {
         String uid = userDTO.getUserUid();
         UserDTO resultUser = userService.selectUserById(uid);
 
-        String pass = userDTO.getUserPass();
-        String encodedPass = passwordEncoder.encode(pass);
 
-        //비밀번호가 사용하는 비밀번호와 일치하면
-        if(!encodedPass.equals(resultUser.getUserPass())) {
-            resultUser.setUserPass(encodedPass);
-            userService.updateUserPass(resultUser);
-            return "redirect:/user/UserLogin";
-        }
-        return "redirect:/user/UserFindPass";
+        resultUser.setUserPass(userDTO.getUserPass());
+        userService.updateUserPass(resultUser);
+
+        return "redirect:/user/UserLogin";
+
+
     }
 }

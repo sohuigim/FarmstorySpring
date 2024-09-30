@@ -30,7 +30,8 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         //로그인 설정
-        http.formLogin(login -> login.loginPage("/user/UserLogin")
+        http.formLogin(login -> login
+                .loginPage("/user/UserLogin")
                 .defaultSuccessUrl("/")//컨트롤러 요청 주소
                 .failureUrl("/user/UserLogin?success=100")
                 .usernameParameter("uid")
@@ -44,11 +45,13 @@ public class SecurityConfig {
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/").permitAll()
+                .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/introduction/**").permitAll()
-//                .requestMatchers("/crop/**").permitAll()
-//                .requestMatchers("/community/**").permitAll()
-//                .requestMatchers("/crop/CropWrite").authenticated()
+                .requestMatchers("/userinfo/**").authenticated()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/crop/**").permitAll()
+                .requestMatchers("/community/**").permitAll()
+                .requestMatchers("/crop/CropWrite").authenticated()
                 .anyRequest().permitAll());
 
         //보안 설정
