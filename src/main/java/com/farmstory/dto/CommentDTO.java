@@ -4,6 +4,8 @@ import com.farmstory.entity.Comment;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -19,7 +21,7 @@ public class CommentDTO {
     private String nick;
 
     @CreationTimestamp
-    private String commentRegDate;
+    private LocalDateTime commentRegDate;
 
 
     public Comment toEntity() {
