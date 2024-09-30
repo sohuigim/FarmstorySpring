@@ -1,11 +1,11 @@
 package com.farmstory.repository;
 
 import com.farmstory.entity.Article;
-import com.farmstory.entity.File;
+import com.farmstory.entity.FileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface FileRepository extends JpaRepository<File, Integer> {
-    public List<File> findAllByArticle(Article article);
+public interface FileRepository extends JpaRepository<FileEntity, Integer> {
+    public List<FileEntity> findAllByArticle(Article article);
 }

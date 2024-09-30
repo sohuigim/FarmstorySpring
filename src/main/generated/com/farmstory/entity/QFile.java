@@ -14,7 +14,7 @@ import com.querydsl.core.types.dsl.PathInits;
  * QFile is a Querydsl query type for File
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QFile extends EntityPathBase<File> {
+public class QFile extends EntityPathBase<FileEntity> {
 
     private static final long serialVersionUID = -1668875477L;
 
@@ -37,10 +37,10 @@ public class QFile extends EntityPathBase<File> {
     public final StringPath filesName = createString("filesName");
 
     public QFile(String variable) {
-        this(File.class, forVariable(variable), INITS);
+        this(FileEntity.class, forVariable(variable), INITS);
     }
 
-    public QFile(Path<? extends File> path) {
+    public QFile(Path<? extends FileEntity> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
@@ -49,10 +49,10 @@ public class QFile extends EntityPathBase<File> {
     }
 
     public QFile(PathMetadata metadata, PathInits inits) {
-        this(File.class, metadata, inits);
+        this(FileEntity.class, metadata, inits);
     }
 
-    public QFile(Class<? extends File> type, PathMetadata metadata, PathInits inits) {
+    public QFile(Class<? extends FileEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.article = inits.isInitialized("article") ? new QArticle(forProperty("article")) : null;
     }
