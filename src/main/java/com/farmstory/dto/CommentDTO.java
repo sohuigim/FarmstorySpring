@@ -1,6 +1,8 @@
 package com.farmstory.dto;
 
+import com.farmstory.entity.Article;
 import com.farmstory.entity.Comment;
+import com.farmstory.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -24,11 +26,17 @@ public class CommentDTO {
     private LocalDateTime commentRegDate;
 
 
-    public Comment toEntity() {
+    private ArticleDTO article;
+
+
+    public Comment toEntity(Article article, User user) {
         return Comment.builder()
                 .commentNo(commentNo)
                 .commentRegIp(commentRegIp)
                 .commentRegDate(commentRegDate)
+                .content(content)
+                .article(article)
+                .user(user)
                 .build();
     }
 }

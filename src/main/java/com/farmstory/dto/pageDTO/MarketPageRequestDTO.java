@@ -1,4 +1,4 @@
-package com.farmstory.dto;
+package com.farmstory.dto.pageDTO;
 
 import lombok.*;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +23,7 @@ public class MarketPageRequestDTO {
     private int size = 5;
 
     private int cateType;
+
 
     public Pageable getPageable(String sort) {
         return PageRequest.of(this.pg -1, this.size, Sort.by(sort).descending());

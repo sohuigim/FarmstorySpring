@@ -34,14 +34,14 @@
                     <tr th:if="${#lists.isEmpty(productDTOs)}">
                         <td colspan="10" style="width: 100%;">등록된 상품이 없습니다.</td>
                     </tr>
-                        <tr th:each="product : ${productDTOs}">
-                            <td>[[${product.prodNo}]]</td>
-                            <td>[[${product.prodName}]]</td>
-                            <td>[[${product.prodCateType}]]</td>
-                            <td class="price" >[[${product.prodPrice}]]원</td>
-                            <td>[[${product.prodStock}]]</td>
-                            <td>[[${product.prodRegDate}]]</td>
-                        </tr>
+                    <tr th:each="product,stat : ${productDTOs}" th:if="${stat.index <5}">
+                        <td>[[${product.prodNo}]]</td>
+                        <td>[[${product.prodName}]]</td>
+                        <td>[[${product.prodCateType}]]</td>
+                        <td class="price" >[[${product.prodPrice}]]원</td>
+                        <td>[[${product.prodStock}]]</td>
+                        <td>[[${product.prodRegDate}]]</td>
+                    </tr>
                     </tbody>
                 </table>
             </article>
@@ -64,18 +64,19 @@
                     </tr>
                     </thead>
                     <tbody>
-<!--                    <c:forEach var="order" items="${orders}">-->
-<!--                        <tr>-->
-<!--                            <td>${order.orderno}</td>-->
-<!--                            <td>${order.orderproname}</td>-->
-<!--                            <td class="price">${order.orderproprice}</td>-->
-<!--                            <td class="stock">${order.orderstock}</td>-->
-<!--                            <td class="price">${order.orderprodeliveryfee}</td>-->
-<!--                            <td class="price">${order.orderpayment}</td>-->
-<!--                            <td>${order.orderusername}</td>-->
-<!--                            <td>${order.orderdate}</td>-->
-<!--                        </tr>-->
-<!--                    </c:forEach>-->
+                    <tr th:if="${orderDTOs == null }">
+                        <td colspan="11" style="width: 100%;">등록된 주문이 없습니다.</td>
+                    </tr>
+                    <tr th:each="order,stat:${orderDTOs}" th:if="${stat.index < 5}">
+                        <td class="no">[[${order.orderNo}]]</td>
+                        <td>[[${order.prodName}]]</td>
+                        <td class="price">[[${order.orderPrice}]]</td>
+                        <td>[[${order.orderStock}]]</td>
+                        <td class="price">[[${order.orderDeliveryFee}]]</td>
+                        <td class="price">합계</td>
+                        <td>[[${order.orderSendName}]]</td>
+                        <td>[[${order.Date}]]<br>[[${order.timeDate}]]</td>
+                    </tr>
                     </tbody>
                 </table>
             </article>
@@ -100,7 +101,7 @@
                     <tr th:if="${userDtos == null}">
                         <td colspan="10" style="width: 100%;">등록된 회원이 없습니다.</td>
                     </tr>
-                    <tr th:each="user:${userDtos}">
+                    <tr th:each="user,stat:${userDtos}" th:if="${stat.index < 5}">
                         <td th:text="${user.userUid}"></td>
                         <td th:text="${user.userName}"></td>
                         <td th:text="${user.userNick}"></td>

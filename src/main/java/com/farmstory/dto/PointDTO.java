@@ -16,8 +16,6 @@ public class PointDTO {
     private int pointNo;
     private String userId;
     private int pointValue;
-    private String pointDesc;
-
     @CreationTimestamp
     private LocalDateTime pointDate;
 
@@ -27,7 +25,6 @@ public class PointDTO {
                 .pointNo(pointNo)
                 .userId(userId)
                 .pointValue(pointValue)
-                .pointDesc(pointDesc)
                 .pointDate(pointDate)
                 .build();
     }

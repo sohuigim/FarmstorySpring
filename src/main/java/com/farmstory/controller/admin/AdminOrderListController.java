@@ -1,9 +1,10 @@
 package com.farmstory.controller.admin;
 
 import com.farmstory.dto.OrderDTO;
-import com.farmstory.dto.ProductDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.OrderPageResponseDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.service.OrderService;
-import com.farmstory.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.awt.print.Pageable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,13 +25,13 @@ public class AdminOrderListController {
 
     private final OrderService orderService;
 
-//    @GetMapping("/admin/OrderList")
-//    public String AdminOrder(Model model) {
-//        List<OrderDTO> orderDTO = orderService.selectOrders();
-//        log.info("orderDTO" + orderDTO);
-//        model.addAttribute("orderDTOS", orderDTO);
-//        return "/admin/order/OrderList";
-//    }
+    @GetMapping("/admin/OrderList")
+    public String AdminOrder(Model model, PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<OrderDTO> OrderPageResponseDTO = orderService.selectorderAll(pageRequestDTO);
+        log.info("orderorder"+OrderPageResponseDTO);
+        model.addAttribute("OrderPageResponseDTO", OrderPageResponseDTO);
+        return "/admin/order/OrderList";
+    }
 
     @DeleteMapping("/admin/OrderList/Delete")
     public ResponseEntity<?> AdminProdListDelete(@RequestBody List<String> orderIds) {

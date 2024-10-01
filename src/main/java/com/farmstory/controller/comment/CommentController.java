@@ -1,25 +1,33 @@
 package com.farmstory.controller.comment;
 
 import com.farmstory.dto.CommentDTO;
+import com.farmstory.entity.Article;
+import com.farmstory.entity.Comment;
+import com.farmstory.entity.User;
 import com.farmstory.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor
-@Controller
+@RestController
+@RequestMapping("/comment")
 public class CommentController {
 
     private final CommentService commentService;
+    private User user = new User();
+    private Article article = new Article();
 
-    @PostMapping("/comment/write")
+
+    @PostMapping("/write")
     public ResponseEntity<CommentDTO> write(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
 
         String regip = request.getRemoteAddr();
@@ -33,11 +41,23 @@ public class CommentController {
                 .body(dto);
     }
 
-    @GetMapping("/comment/delete")
-    public void delete(int no){
+    // 댓글 삭제
+    @GetMapping("/delete")
+    public ResponseEntity<String> deleteComment(@RequestParam("articleNo") int articleNo,
+                                                @RequestParam("commentNo") int commentNo) {
+        commentService.deleteComment(articleNo, commentNo);
 
-        commentService.deleteComment(no);
-
+        return ResponseEntity.ok().body("댓글 삭제 성공");
     }
+
+    // 댓글 수정
+    @PutMapping("/modify")
+    public ResponseEntity<?> updateComment(@RequestBody CommentDTO commentDTO) {
+        log.info(commentDTO);
+        commentService.updateComment(commentDTO);
+
+       return ResponseEntity.ok().build();
+    }
+
 
 }

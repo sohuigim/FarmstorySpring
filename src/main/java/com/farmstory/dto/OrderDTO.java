@@ -1,6 +1,8 @@
 package com.farmstory.dto;
 
 import com.farmstory.entity.Order;
+import com.farmstory.entity.Product;
+import com.farmstory.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,27 +16,33 @@ import java.time.LocalDateTime;
 @Builder
 public class OrderDTO {
     private int orderNo;
-    private String orderUserId;
-    private int orderTotalPrice;
+    private String orderuserUid;
+    private int prodNo;
+    private String prodName;
     private String orderAddr;
     private int orderItemDiscount;
 
     @CreationTimestamp
     private LocalDateTime orderDate;
+    private String Date;
+    private String timeDate;
     private String orderReceiveName;
     private String orderReceiveHp;
     private String orderMemo;
     private String orderSendHp;
     private String orderSendName;
 
+    private int orderPrice;
+    private int orderStock;
+    private int orderDeliveryFee;
+    private int orderDiscount;
+    private int ordersGroup;
 
 
-
-    public Order toEntity() {
+    public Order toEntity(Product product) {
         return Order.builder()
                 .orderNo(orderNo)
-                .orderUserId(orderUserId)
-                .orderTotalPrice(orderTotalPrice)
+                .product(product) // Product는 따로 설정해야 함
                 .orderAddr(orderAddr)
                 .orderItemDiscount(orderItemDiscount)
                 .orderDate(orderDate)
@@ -43,6 +51,32 @@ public class OrderDTO {
                 .orderMemo(orderMemo)
                 .orderSendHp(orderSendHp)
                 .orderSendName(orderSendName)
+                .orderPrice(orderPrice)
+                .orderStock(orderStock)
+                .orderDeliveryFee(orderDeliveryFee)
+                .orderDiscount(orderDiscount)
+                .ordersGroup(ordersGroup)
+                .build();
+    }
+
+    public Order toEntity(Product product, User user) {
+        return Order.builder()
+                .orderNo(orderNo)
+                .user(user)
+                .product(product) // Product는 따로 설정해야 함
+                .orderAddr(orderAddr)
+                .orderItemDiscount(orderItemDiscount)
+                .orderDate(orderDate)
+                .orderReceiveName(orderReceiveName)
+                .orderReceiveHp(orderReceiveHp)
+                .orderMemo(orderMemo)
+                .orderSendHp(orderSendHp)
+                .orderSendName(orderSendName)
+                .orderPrice(orderPrice)
+                .orderStock(orderStock)
+                .orderDeliveryFee(orderDeliveryFee)
+                .orderDiscount(orderDiscount)
+                .ordersGroup(ordersGroup)
                 .build();
     }
 }

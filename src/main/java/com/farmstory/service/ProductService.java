@@ -1,8 +1,9 @@
 package com.farmstory.service;
 
-import com.farmstory.dto.MarketPageRequestDTO;
-import com.farmstory.dto.MarketPageResponseDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.MarketPageResponseDTO;
 import com.farmstory.dto.ProductDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.Product;
 import com.farmstory.repository.product.ProductRepository;
 import com.querydsl.core.Tuple;
@@ -59,12 +60,12 @@ public class ProductService {
         return productDTOS;
     }
 
-    public MarketPageResponseDTO selectProductAll(MarketPageRequestDTO marketPageRequestDTO, int catetype){
-        Pageable pageable = marketPageRequestDTO.getPageable("prodNo");
+    public PageResponseDTO<ProductDTO> selectProductAll(PageRequestDTO pageRequestDTO, int catetype){
+        Pageable pageable = pageRequestDTO.getPageable("prodNo",false);
 
-        marketPageRequestDTO.setCateType(catetype);
+        pageRequestDTO.setCateType(catetype);
 
-        Page<Tuple> pageProduct = productRepository.selectProductAllForList(marketPageRequestDTO, pageable, catetype);
+        Page<Tuple> pageProduct = productRepository.selectProductAllForList(pageRequestDTO, pageable, catetype);
 
         List<ProductDTO> productList = pageProduct.getContent().stream().map(tuple -> {
 
@@ -76,8 +77,8 @@ public class ProductService {
 
         int total = (int) pageProduct.getTotalElements();
 
-        return MarketPageResponseDTO.builder()
-                .marketPageRequestDTO(marketPageRequestDTO)
+        return PageResponseDTO.<ProductDTO>builder()
+                .pageRequestDTO(pageRequestDTO)
                 .dtoList(productList)
                 .total(total)
                 .build();
