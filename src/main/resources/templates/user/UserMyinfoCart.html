@@ -2,6 +2,140 @@
 <link rel="stylesheet" th:href="@{/css/common_myinfo.css}">
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/user/myInfoCart.css}">
+<script>
+    window.onload = function () {
+        let setDelete = new Set();
+        const btnSd = document.getElementsByClassName('btnSD')[0];
+        const btnOrder = document.getElementsByClassName('btn_order')[0];
+        let checkboxes = document.querySelectorAll('.select');
+        const selectAll = document.querySelector('.selectAll')
+
+        function updateTotal() {
+            const selectedCheckboxes1 = document.querySelectorAll('.select:checked');
+
+            let totalCount = 0;
+            let totalPrice = 0;
+            let totalPoint = 0;
+            let totalDiscount = 0;
+            let totalOrderPrice = 0;
+            let totalNoDiscount = 0;
+            let maxDelivery = 0;
+
+            for (let checkbox of selectedCheckboxes1) {
+                let parentRow = checkbox.closest('tr');
+                let count = parseInt(parentRow.querySelector('.prodCount').innerText.trim(), 10);
+                let price = parseInt(parentRow.querySelector('.prodPrice').innerText.replace('원', '').trim(), 10);
+                let point = parseInt(parentRow.querySelector('.prodPoint').innerText.replace('p', '').trim(), 10);
+                let discount = parseInt(parentRow.querySelector('.prodDiscount').innerText.replace('%', '').trim(), 10);
+                let delivery = parseInt(parentRow.getElementsByClassName('prodDelivery')[0].value.trim(), 10);
+
+                const orderPrice = count * price;
+                const prodDiscount = (orderPrice * discount) / 100;
+
+                totalCount += count;
+                totalDiscount += prodDiscount;
+                totalPoint += point * count ;
+                totalPrice += price;
+                totalOrderPrice += orderPrice - prodDiscount;
+                totalNoDiscount += price * count;
+                maxDelivery = Math.max(maxDelivery, delivery);
+            }
+            document.getElementById('total_count').innerText = totalCount + "개";
+            document.getElementById('total_price').innerText = totalNoDiscount + "원";
+            document.getElementById('total_discount').innerText = totalDiscount + "원";
+            document.getElementById('total_point').innerText = totalPoint + "P";
+            if(totalOrderPrice > 30000){
+                document.getElementById('total_delivery').innerText = 0 + "원";
+            }else{
+                document.getElementById('total_delivery').innerText = maxDelivery + "원";
+            }
+            document.getElementById('total_orderPrice').innerText = totalOrderPrice + "원";
+        }
+
+        selectAll.addEventListener('click', function (e) {
+            if (e.target.classList.contains('selectAll')) {
+                selectAll(e.target);
+                updateTotal();
+            }
+
+            function selectAll(selectAllCheckbox) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                    checkbox.dispatchEvent(new Event('click'));
+                });
+            }
+
+        })
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('click', function () {
+                if (this.checked) {
+                    setDelete.add(this.value);
+                    updateTotal();
+                } else {
+                    setDelete.delete(this.value);
+                    updateTotal();
+                }
+            });
+        });
+        let arr = [];
+
+        btnSd.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            setDelete.forEach(value => {
+                arr.push(value);
+            });
+
+            let formData = new FormData();
+
+            arr.forEach(val => {
+                formData.append("cart", val);
+            });
+            formData.append("action", "delete");
+            fetch('/market/MarketCart', {
+                method: 'POST',
+                body: formData
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    console.log("확인해보기" + data);
+                    if (data.success) {
+                        alert('삭제되었습니다!');
+                        location.reload();
+                    } else {
+                        alert('실패하였습니다!');
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
+        });
+
+        btnOrder.addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedCheckboxes = document.querySelectorAll('.select:checked');
+            let cartId = [];
+
+            for (let checkbox of selectedCheckboxes) {
+                const row = checkbox.closest('tr');
+                const cartNo = row.querySelector('.cartNo').value.trim();
+                cartId.push(cartNo);
+            }
+            if (cartId.length === 0) {
+                alert('상품이 선택되지 않았습니다.');
+            } else {
+                if (confirm('선택한 상품을 주문하시겠습니까?')) {
+                    location.href = "/market/MarketOrder12?cartId=" + cartId;
+                }
+            }
+
+        })
+
+    }
+</script>
 <!-- #main -->
 <main id="main" class="cf">
     <section class="mainIn cf">
@@ -48,7 +182,7 @@
                         <col style="width: 10%">
                     </colgroup>
                     <tr>
-                        <th><input type="checkbox" class="checkbox"/></th>
+                        <th><input type="checkbox" class="selectAll" value="0"/></th>
                         <th>이미지</th>
                         <th>종류</th>
                         <th>상품명</th>
@@ -58,29 +192,36 @@
                         <th>가격</th>
                         <th>소계</th>
                     </tr>
-                    <tr th:if="${products == null}">
+                    <tr th:if="${carts == null}">
                         <td colspan="10" class="td_first">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr th:each="product:${products}">
-                        <td><input type="checkbox" class="checkbox" onclick=""  value="${prodCartDto.cartNo}"/></td>
-                        <td><img src="#" alt="사과 샘플"/></td>
+                    <tr th:each="cart:${carts}">
+                        <td><input type="checkbox" class="select" th:value="${cart.cartNo}"/><input type="hidden"
+                                                                                                    class="cartNo"
+                                                                                                    th:value="${cart.cartNo}">
+                        </td>
+                        <td class="pic"><img th:src="@{'/uploads/'+${cart.prodDTO.prodImage1}}" alt="제품 이미지 1"></td>
                         <td>
-                            <th:block th:if="${product.prodCateType == 1}">
+                            <th:block th:if="${cart.prodDTO.prodCateType == 1}">
                                 과일
                             </th:block>
-                            <th:block th:if="${product.prodCateType == 2}">
+                            <th:block th:if="${cart.prodDTO.prodCateType == 2}">
                                 곡류
                             </th:block>
-                            <th:block th:if="${product.prodCateType == 3}">
+                            <th:block th:if="${cart.prodDTO.prodCateType == 3}">
                                 야채
                             </th:block>
                         </td>
-                        <td>[[${product.prodName}]]</td>
-                        <td>[[${product.cartProdCount}]]</td>
-                        <td>[[${product.prodDiscount}]]%</td>
-                        <td>[[${product.prodPoint}]]p</td>
-                        <td>[[${product.prodPrice}]]원</td>
-                        <td><strong>[[${(product.prodPrice - (product.prodPrice * product.prodDiscount / 100)) * product.cartProdCount}]]</strong>원</td>
+                        <td>[[${cart.prodDTO.prodName}]]</td>
+                        <td class="prodCount">[[${cart.prodDTO.cartProdCount}]]</td>
+                        <td class="prodDiscount">[[${cart.prodDTO.prodDiscount}]]%</td>
+                        <td class="prodPoint">[[${cart.prodDTO.prodPoint}]]p</td>
+                        <td class="prodPrice">[[${cart.prodDTO.prodPrice}]]원<input type="hidden" class="prodDelivery"
+                                                                                   th:value="${cart.prodDTO.prodDelivery}">
+                        </td>
+                        <td class="totalPrice"><strong>[[${(cart.prodDTO.prodPrice - (cart.prodDTO.prodPrice *
+                            cart.prodDTO.prodDiscount / 100)) * cart.prodDTO.cartProdCount}]]</strong>원
+                        </td>
                     </tr>
                 </table><!-- .tb1 -->
                 <button class="btnSD"><a href="#">선택삭제</a></button>
@@ -91,30 +232,30 @@
                         </tr>
                         <tr>
                             <td>상품수</td>
-                            <td>0개</td>
+                            <td id="total_count">0개</td>
                         </tr>
                         <tr>
                             <td>상품금액</td>
-                            <td>0원</td>
+                            <td id="total_price">0원</td>
                         </tr>
                         <tr>
                             <td>할인금액</td>
-                            <td>0원</td>
+                            <td id="total_discount">0원</td>
                         </tr>
                         <tr>
                             <td>배송비</td>
-                            <td>0원</td>
+                            <td id="total_delivery">0원</td>
                         </tr>
                         <tr>
                             <td>포인트 적립</td>
-                            <td>0p</td>
+                            <td id="total_point">0p</td>
                         </tr>
                         <tr>
                             <td>전체주문금액</td>
-                            <td>0원</td>
+                            <td id="total_orderPrice">0원</td>
                         </tr>
                     </table><!-- .tb2 -->
-                    <button class="btn_order"><a th:href="@{/market/MarketOrder}">주문하기</a></button>
+                    <button class="btn_order"><a href="#">주문하기</a></button>
                 </div><!-- .order_final -->
 
             </div><!-- .articleIn -->

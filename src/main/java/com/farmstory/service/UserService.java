@@ -68,6 +68,15 @@ public class UserService {
         }
         return null;
     }
+    public ResponseEntity MatchPass(UserDTO userDTO, String pass) {
+        String resultPass = userDTO.getUserPass();
+
+        if(passwordEncoder.matches(pass, resultPass)) {
+            return ResponseEntity.ok().body(true);
+        }else{
+            return ResponseEntity.ok().body(false);
+        }
+    }
 
     //페이지 형식으로 유저 정보 가져오기
     public PageResponseDTO<UserDTO> selectUserAll (PageRequestDTO pageRequestDTO) {
