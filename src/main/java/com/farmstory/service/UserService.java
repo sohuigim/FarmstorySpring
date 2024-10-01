@@ -63,6 +63,15 @@ public class UserService {
         }
         return null;
     }
+    public ResponseEntity MatchPass(UserDTO userDTO, String pass) {
+        String resultPass = userDTO.getUserPass();
+
+        if(passwordEncoder.matches(pass, resultPass)) {
+            return ResponseEntity.ok().body(true);
+        }else{
+            return ResponseEntity.ok().body(false);
+        }
+    }
 
     public UserDTO selectUserForFindUser(String type, String value) {
 

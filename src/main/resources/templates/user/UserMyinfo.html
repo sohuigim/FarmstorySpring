@@ -286,61 +286,54 @@
 		const quitPass = document.querySelector('.quitPass');
 		const quit_result = document.querySelector('.quit_result');
 
-		btn_quit.addEventListener('click',function (){
-
-			quitPass.style.display='block';
-			quit_result.innerText = '비밀번호 입력 후 탈퇴 버튼을 눌러주세요.'
+		btn_quit.addEventListener('click',async function (e){
 
 			const leavePass = quitPass.value;
-			console.log(leavePass)
-			//
-			// const jsonData = {
-			// 	"userPass":leavePass,
-			// 	"userUid":uid
-			// }
-			//
-			// if(leavePass!=null && leavePass!=''){
-			// 	fetch('/userInfo/LeavePass', {
-			// 		method: 'POST',  // POST 요청
-			// 		headers: {
-			// 			'Content-Type': 'text/plain'  // 문자열 전송임을 명시
-			// 		},
-			// 		body: leavePass
-			// 			})
-			// 		.then(resp => resp.json)
-			// 		.then(data => {
-			// 			console.log(data);
-			// 			if(data){
-			//
-			// 			}
-			// 		})
-			// 		.catch(err => {
-			// 			console.log(err);
-			// 		});
-			// }
-			// confirm('정말 탈퇴하시겠습니까?\n확인 버튼 선택시, 계정은 삭제되며 복구되지 않습니다.');
-			// if(confirm){
-			//
-			// 	// uid를 단순 문자열로 전송
-			// 	fetch('/userInfo/UserMyinfoLeave', {
-			// 		method: 'POST',  // POST 요청
-			// 		headers: {
-			// 			'Content-Type': 'text/plain'  // 문자열 전송임을 명시
-			// 		},
-			// 		body: uid  // uid만 전송
-			// 	})
-			// 		.then(resp => resp.json())  // 응답을 JSON으로 처리
-			// 		.then(data => {
-			// 			console.log(data);
-			// 			if(data){
-			// 				alert('회원탈퇴가 완료되었습니다.\n지금까지 FarmStory를 이용해 주신 것을 진심으로 감사드립니다.')
-			// 				window.location.replace('/user/logout');
-			// 			}
-			// 		})
-			// 		.catch(err => {
-			// 			alert('로그인 후 다시 시도해 주세요.');
-			// 		});
-			// }
+
+			if(leavePass==null || leavePass == ''){
+				quitPass.style.display='block';
+				quit_result.innerText = '비밀번호 입력 후 탈퇴 버튼을 눌러주세요.'
+				console.log("console.log(leavePass) 1 "+leavePass)
+				return;
+			}else{
+
+				const jsonData = {
+					"userUid":uid,
+					"userPass":leavePass
+				}
+
+				console.log(jsonData)
+				const data = await fetchPost('/userInfo/LeavePass',jsonData);
+
+				if(data){
+					const isConfirmed = confirm('정말 탈퇴하시겠습니까?\n확인 버튼 선택시, 계정은 삭제되며 복구되지 않습니다.');
+					if(isConfirmed){
+						// uid를 단순 문자열로 전송
+						fetch('/userInfo/UserMyinfoLeave', {
+							method: 'POST',  // POST 요청
+							headers: {
+								'Content-Type': 'text/plain'  // 문자열 전송임을 명시
+							},
+							body: uid  // uid만 전송
+						})
+								.then(resp => resp.json())  // 응답을 JSON으로 처리
+								.then(data => {
+									console.log(data);
+									if(data){
+										alert('회원탈퇴가 완료되었습니다.\n지금까지 FarmStory를 이용해 주신 것을 진심으로 감사드립니다.')
+										window.location.replace('/user/logout');
+									}
+								})
+								.catch(err => {
+									alert('로그인 후 다시 시도해 주세요.');
+								});
+					}
+				}else{
+					alert('비밀번호가 맞지 않습니다.\n다시 시도해 주세요.')
+				}
+
+			}
+
 
 		});
 	}//onload
