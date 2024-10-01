@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>글쓰기</title>
 <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 <link rel="stylesheet" th:href="@{/css/community.css}">
-    <link rel="stylesheet" th:href="@{/css/croptalk.css}">
 <!--<c:choose>-->
 <!--	<c:when test="${group eq 'croptalk'}">-->
 <!--		<%@ include file="../../_aside_ct.jsp" %>-->
@@ -28,7 +27,7 @@
                 	<h3>글쓰기</h3>
                 	<article>
 
-                    <form name="artForm" method="post" ModelAttribute="ArticleDTO" th:action="@{/crop/CropWrite}" enctype="multipart/form-data">
+                    <form name="artForm" method="post" ModelAttribute="ArticleDTO" th:action="@{/community/CommunityWrite}" enctype="multipart/form-data">
                         <input type="hidden" name="artCate" th:value="${artCate}">
                         <input type="hidden" name="b_writer" value="">
 
@@ -64,8 +63,7 @@
                         </table>
                         <div>
 
-                            <a th:href="|/crop/${cate}|">취소</a>
-
+                            <a th:href="|/community/${cate}|" class="btnCancel">취소</a>
                             <input type="submit"  class="btnWrite" value="작성완료">
                         </div>
                     </form>
