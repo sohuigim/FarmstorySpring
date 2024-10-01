@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Log4j2
 @RequiredArgsConstructor
 @Controller
@@ -36,7 +38,7 @@ public class UserMyinfoController {
     }
 
     @ResponseBody
-    @PostMapping("userInfo/UserMyinfo/{cate}")
+    @PostMapping("userInfo/UserMyinfo")
     public ResponseEntity UserMyinfo(@RequestBody UserDTO userDTO) {
 
         log.info(userDTO.toString());
@@ -61,9 +63,22 @@ public class UserMyinfoController {
     @PostMapping("userInfo/UserMyinfoLeave")
     public ResponseEntity UserMyinfoLeave(@RequestBody String uid) {
 
-        log.info(uid);
-        ResponseEntity result = userService.leaveUser(uid);
-        return result;
+        try {
+            if (uid != null) {
+                ResponseEntity result = userService.leaveUser(uid);
+                return result;
+            } else {
+                return ResponseEntity.ok().body(false);
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok().body(false);
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("userInfo/LeavePass")
+    public void LeavePass(@RequestBody String pass){
+
     }
 
         @GetMapping("userInfo/UserMyinfoCart")

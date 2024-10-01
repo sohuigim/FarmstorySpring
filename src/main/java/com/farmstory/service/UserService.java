@@ -155,15 +155,22 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity leaveUser(String userUid) {
-        if(userUid!=null) {
-            LocalDateTime leaveDateTime = LocalDateTime.now();
-            log.info("leaveDateTime : " + leaveDateTime);
-            userRepository.updateByUserLeaveDate(userUid, leaveDateTime);
-            return ResponseEntity.ok().body(true);
-        }else{
-            return ResponseEntity.ok().body(false);
-        }
+    public ResponseEntity leaveUser(String uid) {
+
+
+        User user = userRepository.findByUserUid(uid);
+        LocalDateTime regDate = user.getUserRegDate();
+        LocalDateTime leaveDateTime = LocalDateTime.now();
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserUid(uid);
+        userDTO.setUserRegDate(regDate);
+        userDTO.setUserLeaveDate(leaveDateTime);
+
+        User entity = modelMapper.map(userDTO, User.class);
+        userRepository.save(entity);
+
+        return ResponseEntity.ok().body(true);
     }
 
     //유저 등급 수정

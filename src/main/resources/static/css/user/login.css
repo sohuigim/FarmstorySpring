@@ -69,3 +69,21 @@
 .login > div >a:first-child:after{
 	content :'';
 }
+
+.oahth{
+    width: 150px;
+    margin: 0 auto;
+    position: relative;
+    right: 20px;
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.kakao{
+    width: 40px;
+    border-radius: 5px;
+}
+
+.naver {
+    width: 40px;
+}
