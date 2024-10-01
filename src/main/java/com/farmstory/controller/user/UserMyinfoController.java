@@ -40,22 +40,18 @@ public class UserMyinfoController {
     public ResponseEntity UserMyinfo(@RequestBody UserDTO userDTO) {
 
         log.info(userDTO.toString());
-        log.info(resultUser.toString());
+        UserDTO resultUser = userService.selectUserById(userDTO.getUserUid());
 
-        if(userDTO.getUserPass()!=null){
+        if(userDTO.getUserPass()!=null && resultUser!=null){
             resultUser.setUserPass(userDTO.getUserPass());
-            ResponseEntity result = userService.updateUser(resultUser);
-            return null;
-        }
+            ResponseEntity result = userService.updateUserPass(resultUser);
 
-        userDTO.setUserPass(resultUser.getUserPass());
-        userDTO.setUserRegip(resultUser.getUserRegip());
-        userDTO.setUserRole(resultUser.getUserRole());
+            return result;
+        }else if(resultUser!=null){
+            userDTO.setUserPass(resultUser.getUserPass());
+            userDTO.setUserRegip(resultUser.getUserRegip());
 
-        if(userDTO.equals(resultUser)) {
-            ResponseEntity.ok().body(resultUser);
-        }else{
-            ResponseEntity result = userService.updateUserPass(userDTO);
+            ResponseEntity result = userService.updateUser(userDTO);
             return result;
         }
         return ResponseEntity.ok().body(false);
@@ -63,8 +59,11 @@ public class UserMyinfoController {
 
     @ResponseBody
     @PostMapping("userInfo/UserMyinfoLeave")
-    public ResponseEntity UserMyinfoLeave(){
-        return null;
+    public ResponseEntity UserMyinfoLeave(@RequestBody String uid) {
+
+        log.info(uid);
+        ResponseEntity result = userService.leaveUser(uid);
+        return result;
     }
 
         @GetMapping("userInfo/UserMyinfoCart")

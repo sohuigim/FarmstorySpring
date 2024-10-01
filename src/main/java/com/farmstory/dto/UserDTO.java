@@ -4,6 +4,8 @@ import com.farmstory.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -26,8 +28,8 @@ public class UserDTO {
     private String userRole = "USER";
 
 
-    private String userRegDate;
-    private String userLeaveDate; // 탈퇴 버튼이 후 떠나는 일자를 확정가능
+    private LocalDateTime userRegDate;
+    private LocalDateTime userLeaveDate; // 탈퇴 버튼이 후 떠나는 일자를 확정가능
     private int userTotalPoint;
 
 

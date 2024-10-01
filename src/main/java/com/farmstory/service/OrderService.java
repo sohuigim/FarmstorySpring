@@ -21,6 +21,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     public void insertOrder(OrderDTO orderDTO) {
+
 //        Product product = productRepository.findById(orderDTO.getProdNo())
 //                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
 //
@@ -30,6 +31,7 @@ public class OrderService {
     }
 
     public List<OrderDTO> selectOrders() {
+
 //        List<Order> orders = orderRepository.findAll();
 //
 //        List<OrderDTO> orderDTOs = orders.stream()
@@ -57,3 +59,4 @@ public class OrderService {
         }
     }
 }
+
