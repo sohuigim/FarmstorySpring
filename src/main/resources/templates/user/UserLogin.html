@@ -1,4 +1,4 @@
-<th:block th:include="user/User_header.html"/>
+<th:block th:include="/user/User_header.html"/>
     <title>Login</title>
 
  
@@ -23,15 +23,13 @@
                         <p>
                             아직 회원이 아니시면 회원으로 가입하세요.
                         </p>
-
                         <a th:href="@{/user/UserTerms}" class="join_mem">&nbsp회원가입</a>
                         <a th:href="@{/user/UserFindPass}">&nbsp비밀번호찾기</a>
                         <a th:href="@{/user/UserFindId}">아이디찾기</a>
-
                     </div>
                 </section>
             </div>
         </main>
 
-<th:block th:include = "user/User_footer.html"/>
+<th:block th:include = "/user/User_footer.html"/>
 
