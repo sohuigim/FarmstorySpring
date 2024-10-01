@@ -78,8 +78,12 @@ public class UserService {
 
     public ResponseEntity updateUser(UserDTO userDTO) {
         if(userDTO.getUserUid() != null) {
+<<<<<<< HEAD
             User entity = modelMapper.map(userDTO, User.class);
             userRepository.save(entity);
+=======
+            userRepository.save(userDTO.toEntity());
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
             return ResponseEntity.ok().body(true);
         }
         return ResponseEntity.ok().body(false);
@@ -153,6 +157,7 @@ public class UserService {
         userRepository.deleteById(uid);
     }
 
+<<<<<<< HEAD
     @Transactional
     public ResponseEntity leaveUser(String userUid) {
         if(userUid!=null) {
@@ -165,6 +170,8 @@ public class UserService {
         }
     }
 
+=======
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
     //유저 등급 수정
     public boolean updateUserGrade(String userUid, String newGrade) {
         // 유저 ID로 유저 찾기

@@ -12,6 +12,7 @@
 	const reEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	const reHp = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
 
+<<<<<<< HEAD
 
 	const uid = [[${user.userUid}]];
 	const regDate = [[${user.userRegDate}]];
@@ -41,6 +42,29 @@
 		const btn_submit = document.querySelector('.btn_submit');
 		const btn_duplicate = document.querySelector('.btn_duplicate');
 		const btn_quit = document.querySelector('.btn_quit');
+=======
+	// 유효성 검사 함수
+	function validateInput(value, rule) {
+		return rule.test(value);
+	}
+
+
+	const uid = [[${user.userUid}]];
+	const regDate = [[${user.userRegDate}]];
+
+	let isPassOk = false;
+	let isFormValid = true;
+
+	window.onload=function (){
+
+		const modifyForm 	= document.getElementsByTagName('form')[0];
+
+		const btn_modify 	= document.querySelector('.btn_modify');
+		const resultPass 	= document.querySelector('.resultPass')
+		const btnPass2 		= document.querySelector('.pass2');
+		const btn_submit 	= document.querySelector('.btn_submit');
+		const btn_duplicate 	= document.querySelector('.btn_duplicate');
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 
 		//비밀번호 유효성 검사
 		btnPass2.addEventListener('focusout', function () {
@@ -69,6 +93,8 @@
 			e.preventDefault();
 
 			const pass = document.querySelector('.userPass').value;
+			const cate = 'pass';
+
 
 			// 비밀번호 유효성 검사 완료 여부
 			if (!isPassOk) {
@@ -81,7 +107,11 @@
 				"userPass": pass
 			}
 
+<<<<<<< HEAD
 			const data = await fetchPost(`/userInfo/UserMyinfo`, jsonData);
+=======
+			const data = await fetchPost(`/userInfo/UserMyinfo/${cate}`,jsonData);
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 
 			console.log(data);
 			if (data) {
@@ -105,6 +135,7 @@
 		const resultHp = document.querySelector('.resultHp');
 
 		let userName = modifyForm.userName.value
+<<<<<<< HEAD
 		let userNick = modifyForm.userNick.value
 		let userEmail = modifyForm.userEmail.value
 		let userHp = modifyForm.userHp.value
@@ -131,11 +162,44 @@
 			if (!userNick.match(reNick)) {
 				resultNick.innerText = '별명이 유효하지 않습니다.';
 				resultNick.style.color = 'red';
+=======
+		let userNick =modifyForm.userNick.value
+		let userEmail =modifyForm.userEmail.value
+		let userHp =modifyForm.userHp.value
+		let userZip =modifyForm.userZip.value
+		let userAddr1 =modifyForm.userAddr1.value
+		let userAddr2 =modifyForm.userAddr2.value
+
+		// 3.이름 유효성 검사
+		modifyForm.userName.addEventListener('focusout', function(){
+
+			userName = modifyForm.userName.value;
+
+			if(!userName.match(reName)){
+				showResultInvalid(resultName,'이름이 유효하지 않습니다.')
+				isFormValid = false;
+			}else{
+				resultName.innerText = "";
+				isFormValid = true;
+			}
+		});
+
+		modifyForm.userNick.addEventListener('focusout', function(){
+			userNick = modifyForm.userNick.value;
+			if(!userNick.match(reNick)){
+				resultNick.innerText = '별명이 유효하지 않습니다.';
+				resultNick.style.color = 'red';
+				isFormValid = false;
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 			}
 		});
 
 		// 4.별명 유효성 검사
+<<<<<<< HEAD
 		btn_duplicate.addEventListener('click', async function () {
+=======
+		btn_duplicate.addEventListener('click', async function (){
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 			userNick = modifyForm.userNick.value;
 			const type = modifyForm.btnnick.dataset.type;
 			const value = userNick;
@@ -143,6 +207,7 @@
 			const data = await fetchGet(`/user/UserRegister/${type}/${value}`)
 			console.log(data.result)
 
+<<<<<<< HEAD
 			if (data.result > 0) {
 				resultNick.innerText = '이미 사용중인 별명입니다.';
 				resultNick.style.color = 'red';
@@ -151,6 +216,16 @@
 				resultNick.innerText = '사용 가능한 별명입니다.';
 				resultNick.style.color = 'green';
 				isNickOk = true;
+=======
+			if(data.result > 0){
+				resultNick.innerText = '이미 사용중인 별명입니다.';
+				resultNick.style.color = 'red';
+				isFormValid = false;
+			}else{
+				resultNick.innerText = '사용 가능한 별명입니다.';
+				resultNick.style.color = 'green';
+				isFormValid = true;
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 			}
 		})
 
@@ -163,7 +238,11 @@
 		const resultEmail = document.querySelector('.resultEmail');
 		const auth = document.getElementsByClassName('auth')[0];
 
+<<<<<<< HEAD
 		btnSendEmail.addEventListener('click', async function () {
+=======
+		btnSendEmail.addEventListener('click', async function (){
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 
 			userEmail = modifyForm.userEmail.value;
 			const type = modifyForm.btnEmail.dataset.type;
@@ -172,12 +251,19 @@
 			if (!value.match(reEmail)) {
 				resultEmail.innerText = '이메일 형식이'
 				showResultInvalid(resultEmail, '이메일 형식이 맞지 않습니다.');
+<<<<<<< HEAD
 				return;
 			} else {
+=======
+				isFormValid = false;
+				return;
+			}else{
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 				resultEmail.innerText = '이메일 형식 유효';
 			}
 
 			const data = await fetchGet(`/user/UserRegister/${type}/${value}`);
+<<<<<<< HEAD
 
 			if (data.result > 0) {
 				showResultInvalid(resultEmail, '이미 사용중인 이메일 입니다.');
@@ -185,10 +271,62 @@
 				showResultValid(resultEmail, '인증코드가 발송 되었습니다.');
 				// 인증코드 입력 필드 활성화
 				auth.style.display = 'block';
+=======
+
+			if(data.result > 0){
+				showResultInvalid(resultEmail, '이미 사용중인 이메일 입니다.');
+				isFormValid = false;
+			}else{
+				showResultValid(resultEmail, '인증코드가 발송 되었습니다.');
+				// 인증코드 입력 필드 활성화
+				auth.style.display = 'block';
+
+				isFormValid = false;
+			}
+
+		})
+
+
+		// 이메일 인증코드 확인
+		btnAuthEmail.onclick = async function (){
+			const userauth = document.querySelector('.userAuth');
+
+			console.log(userauth)
+			const jsonData = {"code": userauth.value};
+
+			const data = await fetchPost(`/user/UserRegister/email`, jsonData);
+
+			console.log(data+data.result)
+
+			if(!data.result){
+				showResultInvalid(resultEmail, '인증코드가 일치하지 않습니다.');
+				isFormValid = false;
+			}else{
+				showResultValid(resultEmail, '이메일이 인증되었습니다.');
+				isFormValid = true;
+			}
+		}
+
+		// 6.휴대폰 유효성 검사
+		modifyForm.userHp.addEventListener('focusout', async function(){
+
+			userHp = modifyForm.userHp.value;
+			const type = 'hp'
+			const value = userHp;
+
+			console.log(value);
+
+			if(!value.match(reHp)){
+				resultHp.innerText = '전화번호가 유효하지 않습니다.';
+				resultHp.style.color = 'red';
+				isFormValid = false;
+				return;
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 			}
 			isEmailOk = false;
 		})
 
+<<<<<<< HEAD
 
 		// 이메일 인증코드 확인
 		btnAuthEmail.onclick = async function () {
@@ -208,6 +346,58 @@
 				showResultValid(resultEmail, '이메일이 인증되었습니다.');
 				isEmailOk = true;
 			}
+=======
+			const data = await fetchGet(`/user/UserRegister/${type}/${value}`);
+			console.log(data.result)
+
+			if(data.result > 0){
+				resultHp.innerText = '이미 사용중인 휴대폰번호 입니다.';
+				resultHp.style.color = 'red';
+				isFormValid = false;
+			}else{
+				resultHp.innerText = '사용할 수 있는 번호입니다.';
+				resultHp.style.color = 'green';
+				isFormValid = true;
+			}
+		});
+
+
+		//회원 정보 수정
+		if(isFormValid){
+			btn_submit.addEventListener('click', async function (e){
+				e.preventDefault();
+				userZip = modifyForm.userZip.value;
+				userAddr1 = modifyForm.userAddr1.value;
+				userAddr2 = modifyForm.userAddr2.value;
+
+				const cate = 'user';
+
+				const jsonData = {
+					"userUid":uid,
+					"userName":userName,
+					"userNick":userNick,
+					"userEmail":userEmail,
+					"userHp":userHp,
+					"userZip":userZip,
+					"userAddr1":userAddr1,
+					"userAddr2":userAddr2,
+					"userRegDate":regDate
+				}
+
+				console.log(jsonData);
+				const data = await fetchPost(`/userInfo/UserMyinfo/${cate}`,jsonData);
+				console.log(data);
+				if(data){
+					alert('회원 정보가 변경되었습니다.')
+					window.location.reload();
+				}else{
+					alert('회원 정보 수정에 실패하였습니다. 다시 시도해 주세요.')
+				}
+
+			});
+		}else{
+			alert('입력한 정보를 다시 확인해 주세요.')
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 		}
 
 		// 6.휴대폰 유효성 검사
@@ -377,8 +567,12 @@
 								<tr>
 									<th>이름</th>
 									<td class="form_group">
+<<<<<<< HEAD
 										<input type="text" id="input_name" name="userName"
 											   th:value="${user.userName}"><span class="resultName"></span>
+=======
+										<input type="text" id="input_name" name="userName" th:value="${user.userName}"><span class="resultName"></span>
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 									</td>
 								</tr>
 								<tr>
@@ -387,12 +581,17 @@
 										<ul>
 											<li><p>공백없는 한글, 영문, 숫자 입력</p></li>
 											<li>
+<<<<<<< HEAD
 												<input type="text" id="input nickname" name="userNick"
 													   th:value="${user.userNick}">
 												<button type="button" class="btn_duplicate" name="btnnick"
 														data-type="nick" placeholder="별명 입력"><img
 														th:src="@{/images/user/chk_id.gif}" alt="Duplicate Check"
 														class="icon"></button>
+=======
+												<input type="text" id="input nickname" name="userNick" th:value="${user.userNick}" >
+												<button type="button" class="btn_duplicate" name="btnnick" data-type="nick" placeholder="별명 입력"> <img th:src="@{/images/user/chk_id.gif}" alt="Duplicate Check" class="icon"></button>
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 												<span class="resultNick"></span>
 											</li>
 										</ul>
@@ -401,6 +600,7 @@
 								<tr>
 									<th>이메일</th>
 									<td class="form_group">
+<<<<<<< HEAD
 										<input type="email" name="userEmail" id="input email"
 											   th:value="${user.userEmail}"/>
 										<button type="button" id="btnSendEmail" name="btnEmail" data-type="email"
@@ -411,6 +611,14 @@
 											<input type="text" name="auth" class="userAuth" placeholder="인증번호 입력"/>
 											<button type="button" id="btnAuthEmail" class="btn_auth"><img
 													th:src="@{/images/user/chk_confirm.gif}" alt="확인"/></button>
+=======
+										<input type="email" name="userEmail"  id="input email" th:value="${user.userEmail}" />
+										<button type="button" id="btnSendEmail" name="btnEmail" data-type="email" class="btn_send"><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
+										<span class="resultEmail"></span><br>
+										<div class="auth" style="display:none">
+											<input type="text" name="auth" class="userAuth" placeholder="인증번호 입력" />
+											<button type="button" id="btnAuthEmail"  class="btn_auth" ><img th:src="@{/images/user/chk_confirm.gif}" alt="확인"/></button>
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 											<span class="resultEmail"></span>
 										</div>
 									</td>
@@ -460,5 +668,9 @@
 		</section>
 	</div>
 </main>
+<<<<<<< HEAD
 <th:block th:include="/user/User_footer.html"/>
+=======
+<th:block th:include ="/user/User_footer.html"/>
+>>>>>>> 1ddd1f0c8eb06e1b12e2811319b965386de07a39
 <link rel="stylesheet" th:href="@{/css/footer.css}">
