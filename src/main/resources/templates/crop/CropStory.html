@@ -47,12 +47,37 @@
                             <input type="submit" value="검색">
                         </form>
 
-                        <!-- 페이지 네비게이션 -->
+<!--                        <div class="page">-->
+
+<!--                            <th:block th:if="${ArticlePageResponseDTO.prev}">-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword == null}"-->
+<!--                                   th:href="@{/crop/CropStory(pg=${ArticlePageResponseDTO.start-1})}" class="prev">이전</a>-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword != null}"-->
+<!--                                   th:href="@{/crop/CropStory(pg=${ArticlePageResponseDTO.start-1}, type=${ArticlePageResponseDTO.type}, keyword=${ArticlePageResponseDTO.keyword})}" class="prev">이전</a>-->
+<!--                            </th:block>-->
+
+<!--                            <th:block th:each="num:${#numbers.sequence(ArticlePageResponseDTO.start, ArticlePageResponseDTO.end)}">-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword == null}"-->
+<!--                                   th:href="@{/crop/CropStory(pg=${num})}"-->
+<!--                                   th:class="${num == ArticlePageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword != null}"-->
+<!--                                   th:href="@{/crop/CropStory(pg=${num}, type=${ArticlePageResponseDTO.type}, keyword=${ArticlePageResponseDTO.keyword})}"-->
+<!--                                   th:class="${num ==  ArticlePageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>-->
+<!--                            </th:block>-->
+
+<!--                            <th:block th:if="${ArticlePageResponseDTO.next}">-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword == null}" th:href="@{/crop/CropStory(pg=${ArticlePageResponseDTO.end+1})}" class="next">다음</a>-->
+<!--                                <a th:if="${ArticlePageResponseDTO.keyword != null}" th:href="@{/crop/CropStory(pg=${ArticlePageResponseDTO.end+1}, type=${ArticlePageResponseDTO.type}, keyword=${ArticlePageResponseDTO.keyword})}" class="next">다음</a>-->
+<!--                            </th:block>-->
+
+<!--                        </div>-->
+
+                         페이지 네비게이션
                         <div class="paging">
                             <a href="#" class="prev">이전</a>
-                            <a href="#" class="num current">1</a>                
-                            <a href="#" class="num">2</a>                
-                            <a href="#" class="num">3</a>                
+                            <a href="#" class="num current">1</a>
+                            <a href="#" class="num">2</a>
+                            <a href="#" class="num">3</a>
                             <a href="#" class="next">다음</a>
                         </div>
 

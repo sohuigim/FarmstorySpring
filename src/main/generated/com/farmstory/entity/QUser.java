@@ -27,7 +27,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath userHp = createString("userHp");
 
-    public final StringPath userLeaveDate = createString("userLeaveDate");
+    public final DateTimePath<java.time.LocalDateTime> userLeaveDate = createDateTime("userLeaveDate", java.time.LocalDateTime.class);
 
     public final StringPath userName = createString("userName");
 
@@ -35,7 +35,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath userPass = createString("userPass");
 
-    public final StringPath userRegDate = createString("userRegDate");
+    public final DateTimePath<java.time.LocalDateTime> userRegDate = createDateTime("userRegDate", java.time.LocalDateTime.class);
 
     public final StringPath userRegip = createString("userRegip");
 

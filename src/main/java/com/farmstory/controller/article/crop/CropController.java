@@ -2,6 +2,9 @@ package com.farmstory.controller.article.crop;
 
 import com.farmstory.dto.ArticleDTO;
 
+import com.farmstory.dto.ArticlePageRequestDTO;
+import com.farmstory.dto.ArticlePageResponseDTO;
+import com.farmstory.dto.MarketPageRequestDTO;
 import com.farmstory.entity.Article;
 
 import com.farmstory.entity.Comment;
@@ -27,7 +30,8 @@ public class CropController {
     private final CommentService commentService;
 
     @GetMapping("/crop/{cate}")
-    public String cropStory(@PathVariable String cate, Model model) {
+    public String cropStory(@PathVariable String cate, Model model, ArticlePageRequestDTO articlePageRequestDTO) {
+        log.info(articlePageRequestDTO);
         String str1 = "";
         if (cate.equals("CropStory")) {
             str1 = "b201";
@@ -41,6 +45,13 @@ public class CropController {
 
         List<Article> articles = articleService.selectArticles(cate);
         model.addAttribute("articles", articles);
+
+        if(cate == null) {
+            cate = "0";
+        }
+
+        ArticlePageResponseDTO articlePageResponseDTO = articleService.selectProductAll(articlePageRequestDTO, cate);
+        model.addAttribute("articlePageResponseDTO", articlePageResponseDTO);
         System.out.println(articles);
 
         return "/crop/" + cate;
