@@ -362,9 +362,11 @@
 					</div><!-- .aside_cate -->
 					<div class="aside_bg">
 						<ul class="cate_lnb_real">
-							<li><a th:href="@{/userinfo/UserMyinfoCart}">장바구니</a></li>
-							<li><a th:href="@{/userinfo/UserMyinfoOrder}">주문정보</a></li>
-							<li><a th:href="@{/userinfo/UserMyinfo}">정보수정</a></li>
+
+							<li> <a th:href="@{/userinfo/UserMyinfoCart12(userId=${#authentication.principal.user.userUid})}">장바구니</a></li>
+							<li> <a th:href="@{/userinfo/UserMyinfoOrder}">주문정보</a></li>
+							<li> <a th:href="@{/userinfo/UserMyinfo}">정보수정</a></li>
+
 						</ul><!-- .cate_lnb -->
 					</div><!-- .aside_bg -->
 				</div><!-- .sidebar -->

@@ -27,6 +27,8 @@ public class MarketOrderController {
     private final ProductService productService;
     private final CartService cartService;
 
+
+
     @GetMapping("/market/MarketCart")
     public String MarketCart(@RequestParam(required = false) String userId, Model model) {
 
@@ -41,7 +43,6 @@ public class MarketOrderController {
 
             product = cartDTO.getProdDTO();
             product.setCartProdCount(cartDTO.getCartProdCount());
-
 
         }
         log.info("222222222222222"+carts);
@@ -112,14 +113,31 @@ public class MarketOrderController {
     public String MarketOrder(@RequestParam(required = false) int prodNo, @RequestParam(required = false) int cartProdCount, Model model){
 
 
+        List<CartDTO> carts = new ArrayList<>();
+
+        CartDTO cart = new CartDTO();
+
         ProductDTO product = productService.selectProduct(prodNo);
 
         product.setCartProdCount(cartProdCount);
 
-        model.addAttribute("product", product);
+        cart.setProdDTO(product);
+
+        carts.add(cart);
+
+        model.addAttribute("carts", carts);
 
         return "/market/MarketOrder";
     }
 
+    @PostMapping("/market/MarketOrder")
+    public void MarketOrder(@ModelAttribute OrderDTO orderDTO, HttpServletRequest req, Model model){
+        log.info(orderDTO);
+        String[] prodNos = req.getParameterValues("prodNo");
+        String[] prodCounts = req.getParameterValues("prodCount");
+        log.info(prodNos);
+        log.info(prodCounts);
+
+    }
 
 }
