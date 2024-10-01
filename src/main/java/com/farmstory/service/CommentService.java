@@ -5,7 +5,7 @@ import com.farmstory.entity.Article;
 import com.farmstory.entity.Comment;
 import com.farmstory.entity.User;
 import com.farmstory.repository.CommentRepository;
-import com.farmstory.repository.UserRepository;
+import com.farmstory.repository.user.UserRepository;
 import com.farmstory.repository.article.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor

@@ -2,14 +2,12 @@ package com.farmstory.controller.article.crop;
 
 import com.farmstory.dto.ArticleDTO;
 
-import com.farmstory.dto.ArticlePageRequestDTO;
-import com.farmstory.dto.ArticlePageResponseDTO;
-import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
+import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
 import com.farmstory.entity.Article;
 
 import com.farmstory.entity.Comment;
 
-import com.farmstory.entity.Comment;
 import com.farmstory.repository.article.ArticleRepository;
 import com.farmstory.service.ArticleService;
 import com.farmstory.service.CommentService;

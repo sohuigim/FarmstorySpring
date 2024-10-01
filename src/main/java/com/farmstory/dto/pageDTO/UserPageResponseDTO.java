@@ -1,5 +1,6 @@
-package com.farmstory.dto;
+package com.farmstory.dto.pageDTO;
 
+import com.farmstory.dto.UserDTO;
 import lombok.*;
 
 import java.util.List;
@@ -9,10 +10,9 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticlePageResponseDTO {
+public class UserPageResponseDTO {
 
-    private List<ArticleDTO> dtoList;
-
+    private List<UserDTO> ordList;
     private int pg;
     private int size;
     private int total;
@@ -22,16 +22,12 @@ public class ArticlePageResponseDTO {
 
     private int cateType;
 
-    private String cate;
-
     @Builder
-    public ArticlePageResponseDTO(ArticlePageRequestDTO articlePageRequestDTO, List<ArticleDTO> dtoList, int total) {
-        this.pg = articlePageRequestDTO.getPg();
-        this.size = articlePageRequestDTO.getSize();
+    public UserPageResponseDTO(PageRequestDTO pageRequestDTO, List<UserDTO> dtoList, int total) {
+        this.pg = pageRequestDTO.getPg();
+        this.size = pageRequestDTO.getSize();
         this.total = total;
-        this.dtoList = dtoList;
-
-        this.cate = articlePageRequestDTO.getCate();
+        this.ordList = dtoList;
 
         this.startNo = total - ((pg -1) * size);
         this.end = (int) (Math.ceil(this.pg / 5.0)) * 5;
@@ -42,7 +38,6 @@ public class ArticlePageResponseDTO {
         this.prev = this.start > 1;
         this.next = total > this.end * this.size;
     }
-
 
 
 }

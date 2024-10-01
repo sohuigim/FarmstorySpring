@@ -1,6 +1,6 @@
 package com.farmstory.oauth2;
 
-import com.farmstory.repository.UserRepository;
+import com.farmstory.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

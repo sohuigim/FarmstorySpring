@@ -2,6 +2,8 @@ package com.farmstory.service;
 
 
 import com.farmstory.dto.*;
+import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
+import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
 import com.farmstory.entity.Article;
 
 import com.farmstory.entity.FileEntity;

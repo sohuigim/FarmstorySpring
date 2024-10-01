@@ -30,10 +30,10 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr th:if="${userDto == null}">
+						<tr th:if="${userDtos == null}">
 							<td colspan="10" style="width: 100%;">등록된 회원이 없습니다.</td>
 						</tr>
-						<tr var="user" th:each="user:${userDto}">
+						<tr var="user" th:each="user:${userDtos.dtoList}">
 							<td><input type="checkbox" name="select"></td>
 							<td th:text="${user.userUid}"></td>
 							<td th:text="${user.userName}"></td>
@@ -53,26 +53,20 @@
 							</td>
 							<td th:text="${user.userRegDate}"></td>
 							<td><a href="#">[상세확인]</a></td>
-							</tr>
+						</tr>
 						</tbody>
 					</table>
 				</article>
-<!--				<article class="paging">-->
-<!--					<p>-->
-<!--						<c:if test="${PageGroup.start > 1}">-->
-<!--							<a href="?page=${PageGroup.start-1}"> &lt; </a>-->
-<!--						</c:if>-->
-<!--						<c:forEach var="i" begin="${PageGroup.start}" end="${PageGroup.end}">-->
-<!--							<c:if test="${i<=LastPage}">-->
-<!--								<a href="?page=${i}" class="num ${i eq Current?'current':'off'}">[${i}]</a>-->
-<!--							</c:if>-->
-<!--						</c:forEach>-->
-<!--						<c:if test="${PageGroup.end < LastPage}">-->
-<!--							<a href="?page=${PageGroup.end+1}"> &gt; </a>-->
-<!--						</c:if>-->
-
-<!--					</p>-->
-<!--				</article>-->
+				<article class="paging">
+					<p>
+						<a th:href="@{/admin/UserList(pg=${userDtos.start - 1})}" th:if="${userDtos.prev}" class="no current">&#60;</a>
+						<th:block th:each="num:${#numbers.sequence(userDtos.start, userDtos.end)}">
+							<a th:href="@{/admin/UserList(pg=${num})}"
+							   th:classappend="${num == userDtos.pg} ? 'no current bold' : 'no'">[[${num}]]</a>
+						</th:block>
+						<a th:href="@{/admin/UserList(pg=${userDtos.end + 1})}" th:if="${userDtos.next}" class="no current">&#62;</a>
+					</p>
+				</article>
 			</section>
 		</section>
 	</main>

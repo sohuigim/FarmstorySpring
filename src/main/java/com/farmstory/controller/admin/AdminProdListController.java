@@ -1,6 +1,8 @@
 package com.farmstory.controller.admin;
 
 import com.farmstory.dto.ProductDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,9 +25,9 @@ public class AdminProdListController {
 
     private final ProductService productService;
     @GetMapping("/admin/ProductList")
-    public String AdminProd(Model model) {
-        List<ProductDTO> productDTO = productService.selectProducts();
-        log.info(productDTO);
+    public String AdminProd(Model model, PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<ProductDTO> productDTO = productService.selectProductAll(pageRequestDTO,0);
+        log.info("productDTOproductDTO"+productDTO);
         model.addAttribute("productDTOs",productDTO);
         return "/admin/product/ProductList";
     }

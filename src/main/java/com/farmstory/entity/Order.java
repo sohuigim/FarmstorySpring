@@ -1,9 +1,7 @@
 package com.farmstory.entity;
 
 import com.farmstory.dto.OrderDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,13 +12,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @Builder
-@Entity                 // 엔티티 객체 정의
-@Table(name = "order")
+@Entity                 // 엔티티
+// 객체 정의
+@Table(name = "`orders`")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderNo;
-    private String orderUserId;
-    private int orderTotalPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderuserUid")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Lazy loading to improve performance
+    @JoinColumn(name = "prodNo") // FK reference
+    private Product product;
+
     private String orderAddr;
     private int orderItemDiscount;
 
@@ -32,11 +39,15 @@ public class Order {
     private String orderSendHp;
     private String orderSendName;
 
+    private int orderPrice;
+    private int orderStock;
+    private int orderDeliveryFee;
+    private int orderDiscount;
+    private int ordersGroup;
+
     public OrderDTO toDTO(){
         return OrderDTO.builder()
                 .orderNo(orderNo)
-                .orderUserId(orderUserId)
-                .orderTotalPrice(orderTotalPrice)
                 .orderAddr(orderAddr)
                 .orderItemDiscount(orderItemDiscount)
                 .orderDate(orderDate)
@@ -45,6 +56,11 @@ public class Order {
                 .orderMemo(orderMemo)
                 .orderSendHp(orderSendHp)
                 .orderSendName(orderSendName)
+                .orderPrice(orderPrice)
+                .orderStock(orderStock)
+                .orderDeliveryFee(orderDeliveryFee)
+                .orderDiscount(orderDiscount)
+                .ordersGroup(ordersGroup)
                 .build();
     }
 

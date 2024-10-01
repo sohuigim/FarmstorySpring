@@ -112,21 +112,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:if="${#lists.isEmpty(orderDTOS)}">
+                        <tr th:if="${OrderPageResponseDTO == null }">
                             <td colspan="11" style="width: 100%;">등록된 주문이 없습니다.</td>
                         </tr>
-                            <tr th:each="order:${orderDTOS}">
-                                <td><input type="checkbox" class="select" th:value="${order.orderNo}" onclick='checkSelectAll(this)'></td>
-                                <td class="no">[[${order.orderNo}]]</td> <!-- 주문번호 -->
-                                <td>[[${order.prodName}]]</td><!-- 상품명 -->
-                                <td class="no">[[${order.orderTotalPrice}]]</td><!-- 판매가격 -->
-                                <td>${구매수량}</td> <!--수량  -->
-                                <td>${배송비}</td> <!--배송비  -->
-                                <td>${합계}</td> <!--합계  -->
-                                <td>[[${order.orderSendName}]]</td><!--주문자 -->
-                                <td>[[${order.orderDate}]]<!--주문일 -->
-                                <td><a href="#">[상세확인]</a></td>
-                            </tr>
+                        <tr th:each="order:${OrderPageResponseDTO.dtoList}">
+                            <td><input type="checkbox" class="select" th:value="${order.orderNo}" onclick='checkSelectAll(this)'></td>
+                            <td class="no">[[${order.orderNo}]]</td>
+                            <td>[[${order.prodName}]]</td>
+                            <td class="price">[[${order.orderPrice}]]</td>
+                            <td>[[${order.orderStock}]]</td>
+                            <td class="price">[[${order.orderDeliveryFee}]]</td>
+                            <td class="price">합계</td>
+                            <td>[[${order.orderSendName}]]</td>
+                            <td>[[${order.Date}]]<br>[[${order.timeDate}]]</td>
+                            <td><a href="#">[상세확인]</a></td>
+                        </tr>
                         </tbody>
                     </table>
                 </article>
@@ -135,22 +135,16 @@
                         <a href="#" class="del">선택삭제</a>
                     </h3>
                 </article>
-<!--                <article class="paging">-->
-<!--                    <p>-->
-<!--                        <c:if test="${PageGroup.start > 1}">-->
-<!--                            <a href="?page=${PageGroup.start-1}"> &lt; </a>-->
-<!--                        </c:if>-->
-<!--                        <c:forEach var="i" begin="${PageGroup.start}" end="${PageGroup.end}">-->
-<!--                            <c:if test="${i<=LastPage}">-->
-<!--                                <a href="?page=${i}" class="num ${i eq Current?'current':'off'}">[${i}]</a>-->
-<!--                            </c:if>-->
-<!--                        </c:forEach>-->
-<!--                        <c:if test="${PageGroup.end < LastPage}">-->
-<!--                            <a href="?page=${PageGroup.end+1}"> &gt; </a>-->
-<!--                        </c:if>-->
-
-<!--                    </p>-->
-<!--                </article>-->
+                <article class="paging">
+                    <p>
+                        <a th:href="@{/admin/OrderList(pg=${OrderPageResponseDTO.start - 1})}" th:if="${OrderPageResponseDTO.prev}" class="no current">&#60;</a>
+                        <th:block th:each="num:${#numbers.sequence(OrderPageResponseDTO.start, OrderPageResponseDTO.end)}">
+                            <a th:href="@{/admin/OrderList(pg=${num})}"
+                               th:classappend="${num == OrderPageResponseDTO.pg} ? 'no current bold' : 'no'">[[${num}]]</a>
+                        </th:block>
+                        <a th:href="@{/admin/OrderList(pg=${OrderPageResponseDTO.end + 1})}" th:if="${OrderPageResponseDTO.next}" class="no current">&#62;</a>
+                    </p>
+                </article>
             </section>
         </section>
     </main>

@@ -15,13 +15,12 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @Entity                 // 엔티티 객체 정의
-@Table(name = "point")
+@Table(name = "points")
 public class Point {
     @Id
     private int pointNo;
     private String userId;
     private int pointValue;
-    private String pointDesc;
 
     @CreationTimestamp
     private LocalDateTime pointDate;
@@ -31,7 +30,6 @@ public class Point {
                 .pointNo(pointNo)
                 .userId(userId)
                 .pointValue(pointValue)
-                .pointDesc(pointDesc)
                 .pointDate(pointDate)
                 .build();
     }

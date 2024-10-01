@@ -1,8 +1,11 @@
 package com.farmstory.service;
 
 import com.farmstory.dto.UserDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.User;
-import com.farmstory.repository.UserRepository;
+import com.farmstory.repository.user.UserRepository;
+import com.querydsl.core.Tuple;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -12,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,6 +67,22 @@ public class UserService {
             return user.toDTO();
         }
         return null;
+    }
+
+    //페이지 형식으로 유저 정보 가져오기
+    public PageResponseDTO<UserDTO> selectUserAll (PageRequestDTO pageRequestDTO) {
+        Pageable pageable = pageRequestDTO.getPageable("userUid",false);
+        Page<Tuple> pageOrder = userRepository.selectUserAllForList(pageRequestDTO, pageable);
+        List<UserDTO> userList = pageOrder.getContent().stream().map(tuple -> {
+            User user = tuple.get(0, User.class);
+            return modelMapper.map(user, UserDTO.class);
+        }).toList();
+        int total = (int) pageOrder.getTotalElements();
+        return PageResponseDTO.<UserDTO>builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(userList)
+                .total(total)
+                .build();
     }
 
     public UserDTO selectUserForFindUser(String type, String value) {
