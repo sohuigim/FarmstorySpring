@@ -1,6 +1,7 @@
 package com.farmstory.controller.user;
 
 import com.farmstory.dto.UserDTO;
+import com.farmstory.entity.User;
 import com.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -77,8 +78,14 @@ public class UserMyinfoController {
 
     @ResponseBody
     @PostMapping("userInfo/LeavePass")
-    public void LeavePass(@RequestBody String pass){
+    public ResponseEntity LeavePass(@RequestBody UserDTO userDTO) {
+        String pass = userDTO.getUserPass();
+        String uid = userDTO.getUserUid();
 
+        UserDTO resultUser = userService.selectUserById(uid);
+        ResponseEntity result = userService.MatchPass(resultUser, pass);
+
+        return result;
     }
 
         @GetMapping("userInfo/UserMyinfoCart")
