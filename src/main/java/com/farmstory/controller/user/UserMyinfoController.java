@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Log4j2
 @RequiredArgsConstructor
 @Controller
@@ -17,15 +19,17 @@ public class UserMyinfoController {
 
     private final UserService userService;
 
+    UserDTO resultUser = new UserDTO();
+
     @GetMapping("userInfo/UserMyinfo")
     public String UserMyinfo(Authentication authentication, Model model){
 
         if(authentication != null){
             String uid = authentication.getName();
             UserDTO userDTO = userService.selectUserById(uid);
-
             model.addAttribute("user", userDTO);
 
+            resultUser = userDTO;
             return "user/UserMyinfo";
         }else{
             return "redirect:/user/UserLogin";
@@ -36,12 +40,45 @@ public class UserMyinfoController {
     @ResponseBody
     @PostMapping("userInfo/UserMyinfo")
     public ResponseEntity UserMyinfo(@RequestBody UserDTO userDTO) {
-        String uid = userDTO.getUserUid();
-        UserDTO resultUser = userService.selectUserById(uid);
 
-        resultUser.setUserPass(userDTO.getUserPass());
-        ResponseEntity result = userService.updateUserPass(resultUser);
-        return result;
+        log.info(userDTO.toString());
+        UserDTO resultUser = userService.selectUserById(userDTO.getUserUid());
+
+        if(userDTO.getUserPass()!=null && resultUser!=null){
+            resultUser.setUserPass(userDTO.getUserPass());
+            ResponseEntity result = userService.updateUserPass(resultUser);
+
+            return result;
+        }else if(resultUser!=null){
+            userDTO.setUserPass(resultUser.getUserPass());
+            userDTO.setUserRegip(resultUser.getUserRegip());
+
+            ResponseEntity result = userService.updateUser(userDTO);
+            return result;
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
+    @ResponseBody
+    @PostMapping("userInfo/UserMyinfoLeave")
+    public ResponseEntity UserMyinfoLeave(@RequestBody String uid) {
+
+        try {
+            if (uid != null) {
+                ResponseEntity result = userService.leaveUser(uid);
+                return result;
+            } else {
+                return ResponseEntity.ok().body(false);
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok().body(false);
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("userInfo/LeavePass")
+    public void LeavePass(@RequestBody String pass){
+
     }
 
         @GetMapping("userInfo/UserMyinfoCart")

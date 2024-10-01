@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QFile is a Querydsl query type for File
+ * QFileEntity is a Querydsl query type for FileEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QFile extends EntityPathBase<File> {
+public class QFileEntity extends EntityPathBase<FileEntity> {
 
-    private static final long serialVersionUID = -1668875477L;
+    private static final long serialVersionUID = -1160937746L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QFile file = new QFile("file");
+    public static final QFileEntity fileEntity = new QFileEntity("fileEntity");
 
     public final QArticle article;
 
@@ -36,23 +36,23 @@ public class QFile extends EntityPathBase<File> {
 
     public final StringPath filesName = createString("filesName");
 
-    public QFile(String variable) {
-        this(File.class, forVariable(variable), INITS);
+    public QFileEntity(String variable) {
+        this(FileEntity.class, forVariable(variable), INITS);
     }
 
-    public QFile(Path<? extends File> path) {
+    public QFileEntity(Path<? extends FileEntity> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QFile(PathMetadata metadata) {
+    public QFileEntity(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QFile(PathMetadata metadata, PathInits inits) {
-        this(File.class, metadata, inits);
+    public QFileEntity(PathMetadata metadata, PathInits inits) {
+        this(FileEntity.class, metadata, inits);
     }
 
-    public QFile(Class<? extends File> type, PathMetadata metadata, PathInits inits) {
+    public QFileEntity(Class<? extends FileEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.article = inits.isInitialized("article") ? new QArticle(forProperty("article")) : null;
     }

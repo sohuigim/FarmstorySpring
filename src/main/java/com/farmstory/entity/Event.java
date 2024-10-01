@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -39,3 +38,4 @@ public class Event {
                 .build();
     }
 }
+

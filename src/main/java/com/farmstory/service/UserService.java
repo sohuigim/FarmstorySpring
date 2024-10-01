@@ -7,6 +7,7 @@ import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -74,10 +76,19 @@ public class UserService {
         return modelMapper.map(user, UserDTO.class);
     }
 
+    public ResponseEntity updateUser(UserDTO userDTO) {
+        if(userDTO.getUserUid() != null) {
+            User entity = modelMapper.map(userDTO, User.class);
+            userRepository.save(entity);
+
+            return ResponseEntity.ok().body(true);
+        }
+        return ResponseEntity.ok().body(false);
+    }
 
     public ResponseEntity updateUserPass(UserDTO userDTO) {
 
-        if(userDTO != null) {
+        if(userDTO.getUserName() != null && userDTO.getUserPass() != null) {
             String encoded = passwordEncoder.encode(userDTO.getUserPass());
             userDTO.setUserPass(encoded);
 
@@ -89,12 +100,6 @@ public class UserService {
             return ResponseEntity.ok().body(false);
         }
 
-    }
-
-    //선택한 유저 정보 삭제
-    public void deleteUserById(String uid) {
-        //Entity 삭제 (데이터베이스 Delete)
-        userRepository.deleteById(uid);
     }
 
     public int selectCountUser(String type, String value){
@@ -140,6 +145,46 @@ public class UserService {
             mailSender.send(message);
         }catch(Exception e){
             log.error("sendEmailConde : " + e.getMessage());
+        }
+    }
+
+    //선택한 유저 정보 삭제
+    public void deleteUserById(String uid) {
+        //Entity 삭제 (데이터베이스 Delete)
+        userRepository.deleteById(uid);
+    }
+
+    @Transactional
+    public ResponseEntity leaveUser(String uid) {
+
+
+        User user = userRepository.findByUserUid(uid);
+        LocalDateTime regDate = user.getUserRegDate();
+        LocalDateTime leaveDateTime = LocalDateTime.now();
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserUid(uid);
+        userDTO.setUserRegDate(regDate);
+        userDTO.setUserLeaveDate(leaveDateTime);
+
+        User entity = modelMapper.map(userDTO, User.class);
+        userRepository.save(entity);
+
+        return ResponseEntity.ok().body(true);
+    }
+
+    //유저 등급 수정
+    public boolean updateUserGrade(String userUid, String newGrade) {
+        // 유저 ID로 유저 찾기
+        Optional<User> optionalUser = userRepository.findById(userUid);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserRole(newGrade);  // 유저 등급 업데이트
+            userRepository.save(user);  // 데이터베이스에 저장
+            return true;  // 성공 시 true 반환
+        } else {
+            return false;  // 유저가 없을 경우 false 반환
         }
     }
 }

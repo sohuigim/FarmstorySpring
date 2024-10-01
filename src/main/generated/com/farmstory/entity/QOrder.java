@@ -21,7 +21,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath orderAddr = createString("orderAddr");
 
-    public final StringPath orderDate = createString("orderDate");
+    public final DateTimePath<java.time.LocalDateTime> orderDate = createDateTime("orderDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> orderItemDiscount = createNumber("orderItemDiscount", Integer.class);
 

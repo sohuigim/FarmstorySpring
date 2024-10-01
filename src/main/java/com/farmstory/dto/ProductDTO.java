@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -28,7 +30,7 @@ public class ProductDTO {
     private int prodDelivery;
 
     @CreationTimestamp
-    private String prodRegDate;
+    private LocalDateTime prodRegDate;
 
     // 추가 필드
     private int cartProdCount;

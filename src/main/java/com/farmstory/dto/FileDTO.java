@@ -1,6 +1,6 @@
 package com.farmstory.dto;
 
-import com.farmstory.entity.File;
+import com.farmstory.entity.FileEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,8 +22,8 @@ public class FileDTO {
     private String filePath;
 
 
-    public File toEntity() {
-        return File.builder()
+    public FileEntity toEntity() {
+        return FileEntity.builder()
                 .fileNo(fileNo)
                 .fileoName(fileoName)
                 .filesName(filesName)

@@ -27,7 +27,7 @@ public class IndexController {
             // 로그인 안했을 경우
             model.addAttribute("isAuthenticated", false);
         }
-        return "/index";
+        return "index";
     }
 
 }

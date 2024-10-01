@@ -4,6 +4,8 @@ import com.farmstory.entity.Order;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -18,12 +20,15 @@ public class OrderDTO {
     private int orderItemDiscount;
 
     @CreationTimestamp
-    private String orderDate;
+    private LocalDateTime orderDate;
     private String orderReceiveName;
     private String orderReceiveHp;
     private String orderMemo;
     private String orderSendHp;
     private String orderSendName;
+
+
+
 
     public Order toEntity() {
         return Order.builder()

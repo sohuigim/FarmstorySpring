@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
+
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +25,7 @@ public class Comment {
     private String content;
 
     @CreationTimestamp
-    private String commentRegDate;
+    private LocalDateTime commentRegDate;
 
     @ManyToOne
     @JoinColumn(name = "writer")
