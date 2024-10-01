@@ -26,13 +26,13 @@ public class AdminOrderListController {
 
     private final OrderService orderService;
 
-    @GetMapping("/admin/OrderList")
-    public String AdminOrder(Model model) {
-        List<OrderDTO> orderDTO = orderService.selectOrders();
-        log.info("orderDTO" + orderDTO);
-        model.addAttribute("orderDTOS", orderDTO);
-        return "/admin/order/OrderList";
-    }
+//    @GetMapping("/admin/OrderList")
+//    public String AdminOrder(Model model) {
+//        List<OrderDTO> orderDTO = orderService.selectOrders();
+//        log.info("orderDTO" + orderDTO);
+//        model.addAttribute("orderDTOS", orderDTO);
+//        return "/admin/order/OrderList";
+//    }
 
     @DeleteMapping("/admin/OrderList/Delete")
     public ResponseEntity<?> AdminProdListDelete(@RequestBody List<String> orderIds) {
