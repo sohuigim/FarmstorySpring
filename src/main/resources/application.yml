@@ -51,3 +51,20 @@ spring:
         multipart:
             location: uploads/
             max-file-size: 10MB
+    security:
+        oauth2:
+            client:
+                provider:
+                    google:
+                        authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+                        token-uri: https://accounts.google.com/o/oauth2/token
+                        user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+                        user-name-attribute: name
+                registration:
+                    google:
+                        client-id: 60431749569-m5e000jb59uqkinlqo5udh3m54d5mlgk.apps.googleusercontent.com
+                        client-secret: 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
+                        redirect-uri: http://localhost:8080/login/oauth2/code/google
+                        scope:
+                            - email
+                            - profile
