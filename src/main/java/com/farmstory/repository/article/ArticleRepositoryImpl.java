@@ -1,9 +1,7 @@
 package com.farmstory.repository.article;
 
 
-import com.farmstory.dto.ArticleDTO;
-import com.farmstory.dto.ArticlePageRequestDTO;
-import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.entity.Article;
 import com.farmstory.entity.QArticle;
 import com.querydsl.core.Tuple;

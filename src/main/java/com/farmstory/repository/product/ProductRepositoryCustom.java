@@ -1,6 +1,6 @@
 package com.farmstory.repository.product;
 
-import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.entity.Product;
 import com.querydsl.core.Tuple;
 import org.springframework.data.domain.Page;
@@ -13,5 +13,5 @@ public interface ProductRepositoryCustom {
     public List<Product> selectProducts();
     public Product selectProduct(int prodNo);
 
-    public Page<Tuple> selectProductAllForList(MarketPageRequestDTO marketPageRequestDTO , Pageable pageable, int catetype);
+    public Page<Tuple> selectProductAllForList(PageRequestDTO pageRequestDTO, Pageable pageable, int catetype);
 }

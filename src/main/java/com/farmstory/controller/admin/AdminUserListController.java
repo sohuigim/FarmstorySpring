@@ -1,6 +1,8 @@
 package com.farmstory.controller.admin;
 
 import com.farmstory.dto.UserDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.User;
 import com.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,12 +28,38 @@ public class AdminUserListController {
     private final UserService userService;
 
     @GetMapping("/admin/UserList")
-    public String AdminUser(Model model) {
-        List<UserDTO> userDto = userService.selectUsers();
+    public String AdminUser(Model model, PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<UserDTO> userDto = userService.selectUserAll(pageRequestDTO);
         log.info(userDto);
-        model.addAttribute("userDto", userDto);
+        model.addAttribute("userDtos", userDto);
         return "/admin/user/UserList";
     }
+    @PostMapping("/admin/UserList/Update")
+    public ResponseEntity<Map<String, Object>> updateUserGrade(@RequestBody UserDTO userDto) {
+        // 로그 찍기
+        log.info("Received User ID: " + userDto.getUserUid());
+        log.info("Received Grade: " + userDto.getUserRole());
 
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 유저 등급 업데이트 로직 호출
+            boolean isUpdated = userService.updateUserGrade(userDto.getUserUid(), userDto.getUserRole());
+
+            if (isUpdated) {
+                response.put("result", 1);  // 성공 응답
+                response.put("message", "User grade updated successfully.");
+            } else {
+                response.put("result", 0);  // 실패 응답
+                response.put("message", "Failed to update user grade.");
+            }
+            return ResponseEntity.ok(response);  // JSON 응답
+
+        } catch (Exception e) {
+            log.error("Error updating user grade", e);
+            response.put("result", 0);
+            response.put("message", "Error occurred while updating user grade.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }

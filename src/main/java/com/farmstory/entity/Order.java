@@ -28,9 +28,7 @@ public class Order {
     @JoinColumn(name = "prodNo") // FK reference
     private Product product;
 
-    private String orderZip;
-    private String orderAddr1;
-    private String orderAddr2;
+    private String orderAddr;
     private int orderItemDiscount;
 
     @CreationTimestamp
@@ -41,18 +39,16 @@ public class Order {
     private String orderSendHp;
     private String orderSendName;
 
-    private int orderTotalPrice;
     private int orderPrice;
     private int orderStock;
     private int orderDeliveryFee;
     private int orderDiscount;
     private int ordersGroup;
-    private int orderUsePoint;
 
     public OrderDTO toDTO(){
         return OrderDTO.builder()
                 .orderNo(orderNo)
-                .orderAddr1(orderAddr1)
+                .orderAddr(orderAddr)
                 .orderItemDiscount(orderItemDiscount)
                 .orderDate(orderDate)
                 .orderReceiveName(orderReceiveName)

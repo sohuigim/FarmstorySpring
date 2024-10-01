@@ -1,11 +1,9 @@
 package com.farmstory.repository.product;
 
-import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.entity.Product;
 import com.farmstory.entity.QProduct;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,7 +36,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
     }
 
     @Override
-    public Page<Tuple> selectProductAllForList(MarketPageRequestDTO marketPageRequestDTO, Pageable pageable, int catetype) {
+    public Page<Tuple> selectProductAllForList(PageRequestDTO pageRequestDTO, Pageable pageable, int catetype) {
 
         List<Tuple> content = null;
         long total = 0;
@@ -54,10 +52,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                     .select(qProduct.count())
                     .from(qProduct)
                     .fetchOne();
-        }else if(catetype == 1) {
+        }else if(catetype >= 1) {
             content = queryFactory.select(qProduct, qProduct)
                     .from(qProduct)
-                    .where(qProduct.prodCateType.eq(1))
+                    .where(qProduct.prodCateType.eq(catetype))
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .orderBy(qProduct.prodNo.desc())
@@ -65,36 +63,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
             total = queryFactory
                     .select(qProduct.count())
                     .from(qProduct)
-                    .where(qProduct.prodCateType.eq(1))
-                    .fetchOne();
-        }else if(catetype == 2) {
-            content = queryFactory.select(qProduct, qProduct)
-                    .from(qProduct)
-                    .where(qProduct.prodCateType.eq(2))
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qProduct.prodNo.desc())
-                    .fetch();
-            total = queryFactory
-                    .select(qProduct.count())
-                    .from(qProduct)
-                    .where(qProduct.prodCateType.eq(2))
-                    .fetchOne();
-        }else if(catetype == 3) {
-            content = queryFactory.select(qProduct, qProduct)
-                    .from(qProduct)
-                    .where(qProduct.prodCateType.eq(3))
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qProduct.prodNo.desc())
-                    .fetch();
-            total = queryFactory
-                    .select(qProduct.count())
-                    .from(qProduct)
-                    .where(qProduct.prodCateType.eq(3))
+                    .where(qProduct.prodCateType.eq(catetype))
                     .fetchOne();
         }
-
         // 페이징 처리를 위해 page 객체 리턴
         return new PageImpl<Tuple>(content, pageable, total);
     }

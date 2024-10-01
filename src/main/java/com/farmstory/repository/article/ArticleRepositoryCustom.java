@@ -1,7 +1,6 @@
 package com.farmstory.repository.article;
 
-import com.farmstory.dto.ArticlePageRequestDTO;
-import com.farmstory.dto.MarketPageRequestDTO;
+import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.entity.Article;
 import com.querydsl.core.Tuple;
 import org.springframework.data.domain.Page;

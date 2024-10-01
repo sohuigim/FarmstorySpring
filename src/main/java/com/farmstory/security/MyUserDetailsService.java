@@ -1,7 +1,7 @@
 package com.farmstory.security;
 
 import com.farmstory.entity.User;
-import com.farmstory.repository.UserRepository;
+import com.farmstory.repository.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

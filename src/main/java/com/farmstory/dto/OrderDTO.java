@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,13 +19,8 @@ public class OrderDTO {
     private String orderuserUid;
     private int prodNo;
     private String prodName;
-    private String orderZip;
-    private String orderAddr1;
-    private String orderAddr2;
+    private String orderAddr;
     private int orderItemDiscount;
-    private int orderPay;
-
-    private List<ProductDTO> productDTO;
 
     @CreationTimestamp
     private LocalDateTime orderDate;
@@ -38,20 +32,39 @@ public class OrderDTO {
     private String orderSendHp;
     private String orderSendName;
 
-    private int orderTotalPrice;
     private int orderPrice;
     private int orderStock;
     private int orderDeliveryFee;
     private int orderDiscount;
     private int ordersGroup;
-    private int orderUsePoint;
 
 
     public Order toEntity(Product product) {
         return Order.builder()
                 .orderNo(orderNo)
                 .product(product) // Product는 따로 설정해야 함
-                .orderAddr1(orderAddr1)
+                .orderAddr(orderAddr)
+                .orderItemDiscount(orderItemDiscount)
+                .orderDate(orderDate)
+                .orderReceiveName(orderReceiveName)
+                .orderReceiveHp(orderReceiveHp)
+                .orderMemo(orderMemo)
+                .orderSendHp(orderSendHp)
+                .orderSendName(orderSendName)
+                .orderPrice(orderPrice)
+                .orderStock(orderStock)
+                .orderDeliveryFee(orderDeliveryFee)
+                .orderDiscount(orderDiscount)
+                .ordersGroup(ordersGroup)
+                .build();
+    }
+
+    public Order toEntity(Product product, User user) {
+        return Order.builder()
+                .orderNo(orderNo)
+                .user(user)
+                .product(product) // Product는 따로 설정해야 함
+                .orderAddr(orderAddr)
                 .orderItemDiscount(orderItemDiscount)
                 .orderDate(orderDate)
                 .orderReceiveName(orderReceiveName)

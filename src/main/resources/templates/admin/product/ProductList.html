@@ -45,8 +45,7 @@
                     let selectedIds = [];
 
                     for (let checkbox of selectedCheckboxes) {
-                        const row = checkbox.closest('tr');
-                        const productNo = row.querySelector('.no').value.trim();
+                        const productNo = checkbox.value.trim();
                         console.log(productNo);
                         selectedIds.push(productNo);
                     }
@@ -113,13 +112,13 @@
                         <tr th:if="${#lists.isEmpty(productDTOs)}">
                             <td colspan="9" style="width: 100%;">등록된 상품이 없습니다.</td>
                         </tr>
-                        <tr th:each="product : ${productDTOs}">
+                        <tr th:each="product : ${productDTOs.getDtoList()}">
                             <td><input type="checkbox" class="select" th:value="${product.prodNo}"></td>
                             <td>
                                 <img th:src="@{'/uploads/'+${product.prodImage1}}" th:alt="${product.prodName}" width="60" height="60" />
                             </td>
 
-                            <td>[[${product.prodNo}]] <input type="hidden" class="no" th:value="${product.prodNo}"></td>
+                            <td>[[${product.prodNo}]]</td>
                             <td>[[${product.prodName}]]</td>
                             <td>[[${product.prodCateType}]]</td>
                             <td>[[${product.prodPrice}]]원</td>
@@ -134,22 +133,16 @@
                         <a href="#" class="del">선택삭제</a> <a th:href="@{/admin/ProductRegister}" class="btn">상품등록</a>
                     </h3>
                 </article>
-<!--                <article class="paging">-->
-<!--                    <p>-->
-<!--                        <c:if test="${PageGroup.start > 1}">-->
-<!--                            <a href="?page=${PageGroup.start-1}"> &lt; </a>-->
-<!--                        </c:if>-->
-<!--                        <c:forEach var="i" begin="${PageGroup.start}" end="${PageGroup.end}">-->
-<!--                            <c:if test="${i<=LastPage}">-->
-<!--                                <a href="?page=${i}" class="num ${i eq Current?'current':'off'}">[${i}]</a>-->
-<!--                            </c:if>-->
-<!--                        </c:forEach>-->
-<!--                        <c:if test="${PageGroup.end < LastPage}">-->
-<!--                            <a href="?page=${PageGroup.end+1}"> &gt; </a>-->
-<!--                        </c:if>-->
-
-<!--                    </p>-->
-<!--                </article>-->
+                <article class="paging">
+                    <p>
+                        <a th:href="@{/admin/ProductList(pg=${productDTOs.start - 1})}" th:if="${productDTOs.prev}" class="no current">&#60;</a>
+                        <th:block th:each="num:${#numbers.sequence(productDTOs.start, productDTOs.end)}">
+                            <a th:href="@{/admin/ProductList(pg=${num})}"
+                               th:classappend="${num == productDTOs.pg} ? 'no current bold' : 'no'">[[${num}]]</a>
+                        </th:block>
+                        <a th:href="@{/admin/ProductList(pg=${productDTOs.end + 1})}" th:if="${productDTOs.next}" class="no current">&#62;</a>
+                    </p>
+                </article>
             </section>
         </section>
     </main>
