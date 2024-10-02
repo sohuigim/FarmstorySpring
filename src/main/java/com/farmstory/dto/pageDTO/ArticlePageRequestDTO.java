@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+
 @Getter
 @Setter
 @ToString
@@ -25,6 +26,9 @@ public class ArticlePageRequestDTO {
     private int cateType;
 
     private String cate;
+
+    private String type;
+    private String keyword;
 
     public Pageable getPageable(String sort) {
         return PageRequest.of(this.pg -1, this.size, Sort.by(sort).descending());

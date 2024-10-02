@@ -4,15 +4,9 @@ package com.farmstory.service;
 import com.farmstory.dto.*;
 import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
-import com.farmstory.dto.pageDTO.PageRequestDTO;
-import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.Article;
-
-import com.farmstory.entity.FileEntity;
-
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.CommentRepository;
-import com.farmstory.repository.FileRepository;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,12 +28,29 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final FileRepository fileRepository;
     private final CommentRepository commentRepository;
+    private final FileService fileService;
 
     private final ModelMapper modelMapper;
     private JPAQueryFactory queryFactory;
     private QArticle article = QArticle.article;
+
+
+
+    public int insertArticle(ArticleDTO articleDTO) {
+
+        // ModelMapper를 이용해서 DTO를 Entity로 변환
+        Article article = modelMapper.map(articleDTO, Article.class);
+        log.info(articleDTO.toString());
+
+        // 저장
+        Article savedArticle = articleRepository.save(article);
+
+        // 저장된 글번호 리턴
+        return savedArticle.getArtNo();
+    }
+
+
 
 
     public Article saveArticle(ArticleDTO articleDTO) {
@@ -61,27 +72,38 @@ public class ArticleService {
         return articleRepository.selectArticles(cate);
     }
 
-    public Article selectArticle(int artNo) {
-        return articleRepository.selectArticle(artNo);
+    public ArticleDTO selectArticle(int artNo) {
+        Article article = articleRepository.findById(artNo)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+        ArticleDTO articleDTO = article.toDTO();
+
+        List<FileDTO> fileList = fileService.getFilesByArtNo(artNo);
+        articleDTO.setFileList(fileList);
+
+        return articleDTO;
     }
 
 
     public ArticleDTO getArticle(int artNo) {
-        Optional<Article> articleOpt = articleRepository.findById(artNo);
-        ArticleDTO articleDTO = articleOpt.map(Article::toDTO).orElse(null);
-        List<FileEntity> files = fileRepository.findAllByArticle(articleOpt.get());
-        for (FileEntity file : files) {
-            articleDTO.getFileList().add(file.toDTO());
+        Optional<Article> optArticle = articleRepository.findById(artNo);
+        if(optArticle.isPresent()){
+            Article article = optArticle.get();
+            log.info(article.toString());
+
+            ArticleDTO dto = modelMapper.map(article, ArticleDTO.class);
+            return dto;
         }
-        return articleDTO;
+
+        return null;
     }
 
-    public PageResponseDTO selectProductAll(PageRequestDTO pageRequestDTO, String catetype){
-        Pageable pageable = pageRequestDTO.getPageable("artNo",true);
+    public ArticlePageResponseDTO selectArticleAll(ArticlePageRequestDTO articlePageRequestDTO, String catetype){
+        Pageable pageable = articlePageRequestDTO.getPageable("artNo");
 
-        pageRequestDTO.setArtcateType(catetype);
+        articlePageRequestDTO.setCate(catetype);
 
-        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(pageRequestDTO, pageable, catetype);
+        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(articlePageRequestDTO, pageable, catetype);
 
         List<ArticleDTO> articleList = pageArticle.getContent().stream().map(tuple -> {
 
@@ -93,17 +115,23 @@ public class ArticleService {
 
         int total = (int) pageArticle.getTotalElements();
 
-        return PageResponseDTO.<ArticleDTO>builder()
-                .pageRequestDTO(pageRequestDTO)
+        return ArticlePageResponseDTO.builder()
+                .articlePageRequestDTO(articlePageRequestDTO)
                 .dtoList(articleList)
                 .total(total)
                 .build();
     }
 
+
     @Transactional
     public void deleteArticle(int artNo) {
-        articleRepository.deleteById(artNo);
+        fileService.deleteFile(artNo);
+
         commentRepository.deleteById(artNo);
+
+        articleRepository.deleteById(artNo);
+
+
     }
 
     public void updateArticle(ArticleDTO articleDTO) {
