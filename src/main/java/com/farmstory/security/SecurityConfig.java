@@ -49,7 +49,8 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/crop/**").permitAll()
                 .requestMatchers("/community/**").permitAll()
-                .requestMatchers("/crop/CropWrite").authenticated()
+                .requestMatchers("/event/**").permitAll()
+                .requestMatchers("/crop/**").permitAll()
                 .anyRequest().permitAll());
 
         //보안 설정

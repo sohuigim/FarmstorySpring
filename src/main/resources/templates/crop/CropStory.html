@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +11,12 @@
         var cate = /*[[${cate}]]*/ 'b201'
         console.log(cate)
     </script>
+
 </head>
 <body>
 <div id="container">
-    <th:block th:include ="/grid/_header.html"/>
-    <th:block th:include ="/grid/_aside_ct.html"/>
+    <th:block th:include="/grid/_header.html"/>
+    <th:block th:include="/grid/_aside_ct.html"/>
 
     <section class="list">
         <h3>글목록</h3>
@@ -29,9 +30,14 @@
                     <th>날짜</th>
                     <th>조회</th>
                 </tr>
-                <tr th:each="article : ${articles}">
+                <tr th:each="article : ${pageResponseDTO.dtoList}">
                     <td>[[${article.artNo}]]</td>
-                    <td><a th:href="@{|/crop/CropStory/CropView/${article.artNo}|}">[[${article.artTitle}]]&nbsp;&#91;[[${article.artComment}]]&#93;</a></td>
+                    <td>
+                        <a href="javascript:void(0);" th:onclick="increaseHitAndRedirect([[${article.artNo}]], '/crop/CropStory/CropView/' + [[${article.artNo}]]);">
+                            [[${article.artTitle}]]&nbsp;&#91;[[${article.artComment}]]&#93;
+                        </a>
+                    </td>
+
                     <td>[[${article.artNick}]]</td>
                     <td>[[${article.artRdate}]]</td>
                     <td>[[${article.artHit}]]</td>
@@ -64,10 +70,27 @@
                 <a th:href="@{/crop/CropStory(pg=${pageResponseDTO.end+1})}" class="next">다음</a>
             </th:block>
         </div>
-
         <!-- 글쓰기 버튼 -->
-        <a th:href="@{/crop/CropStory/CropWrite}" class="btnWrite">글쓰기</a>
-    </section>
+        <a th:href="@{/crop/CropStory/CropWrite}" class="btnWrite"
+           th:onclick="${#authentication == null or !#authentication.authenticated} ? 'return alertLogin()' : ''">글쓰기</a>
 
+
+    </section>
+    <script>
+        function increaseHitAndRedirect(artNo, redirectUrl) {
+            fetch('/increaseHit?artNo=' + artNo, {
+                method: 'POST',
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Error increasing hit count');
+                }
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
+        }
+    </script>
     </main>
     <th:block th:include ="/grid/_footer.html"/>
+</div>

@@ -62,8 +62,9 @@ public class CommentService {
         comment.setContent(commentDTO.getContent());
     }
 
-    public void deleteComment(int articleNo,  int commentNo) {
+    public int deleteComment(int articleNo, int commentNo) {
         commentRepository.deleteByArticleNoAndCommentNo(articleNo, commentNo);
+        return articleNo;
     }
 
     public List<Comment> selectCommentByArtNo(int artNo){
