@@ -37,7 +37,12 @@ public class OrderDTO {
     private int orderDeliveryFee;
     private int orderDiscount;
     private int ordersGroup;
+    private int orderTotalPrice;
+    private int orderUsePoint;
+    private int orderPlusPoint;
+    private int orderPay;
 
+    private ProductDTO productDTO;
 
     public Order toEntity(Product product) {
         return Order.builder()
@@ -56,6 +61,10 @@ public class OrderDTO {
                 .orderDeliveryFee(orderDeliveryFee)
                 .orderDiscount(orderDiscount)
                 .ordersGroup(ordersGroup)
+                .orderTotalPrice(orderTotalPrice)
+                .orderUsePoint(orderUsePoint)
+                .orderPlusPoint(orderPlusPoint)
+                .orderPay(orderPay)
                 .build();
     }
 
@@ -77,6 +86,10 @@ public class OrderDTO {
                 .orderDeliveryFee(orderDeliveryFee)
                 .orderDiscount(orderDiscount)
                 .ordersGroup(ordersGroup)
+                .orderTotalPrice(orderTotalPrice)
+                .orderUsePoint(orderUsePoint)
+                .orderPlusPoint(orderPlusPoint)
+                .orderPay(orderPay)
                 .build();
     }
 }
