@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +29,18 @@ public class AdminOrderListController {
         log.info("orderorder"+OrderPageResponseDTO);
         model.addAttribute("OrderPageResponseDTO", OrderPageResponseDTO);
         return "/admin/order/OrderList";
+    }
+
+    @GetMapping("/admin/OrderList/{orderNo}")
+    @ResponseBody
+    public ResponseEntity<OrderDTO> getOrderDetail(@PathVariable String orderNo) {
+        OrderDTO orderDetail = orderService.selectOrderbyId(orderNo);
+
+        if (orderDetail != null) {
+            return ResponseEntity.ok(orderDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/admin/OrderList/Delete")

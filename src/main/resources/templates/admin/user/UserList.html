@@ -8,7 +8,45 @@
 </head>
 <body>
 <div id="wrap">
+
 	<th:block th:include="/admin/Admin_header"/>
+	<link rel="stylesheet" th:href="@{/css/user/findidresult.css}">
+
+	<div class="modal">
+		<section class="modal_popup">
+			<div class="top_txt">
+			</div>
+			<div>
+				<table class="modal_table">
+					<tr>
+						<td>이름</td>
+						<td>
+							<p><span class="modal_name"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>아이디</td>
+						<td>
+							<p><span class="modal_uid"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>이메일</td>
+						<td>
+							<p><span class="modal_email"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>가입일</td>
+						<td>
+							<p><span class="modal_rdate"></span></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<button type="button" class="close_btn">닫기</button>
+		</section><!-- section modal -->
+	</div>
 	<main>
 		<th:block th:include="/admin/Admin_aside"/>
 		<section class="userlist">
@@ -51,8 +89,8 @@
 									<option value="0" th:selected="${user.userRole}==0">0</option>
 								</select>
 							</td>
-							<td th:text="${user.userRegDate}"></td>
-							<td><a href="#">[상세확인]</a></td>
+							<td>[[${user.date}]] [[${user.timeDate}]]</td>
+							<td><a href="#" class="detail_btn" >[상세확인]</a></td>
 						</tr>
 						</tbody>
 					</table>
@@ -142,6 +180,34 @@
 					return;
 				}
 			});
+		});
+	});
+	document.addEventListener('DOMContentLoaded', function() {
+		// 모든 '상세확인' 버튼에 클릭 이벤트 리스너 추가
+		document.querySelectorAll('.detail_btn').forEach(button => {
+			button.addEventListener('click', function(event) {
+				event.preventDefault(); // 기본 동작 방지 (# 링크 클릭 방지)
+
+				// 모달에 사용자 정보 업데이트
+				const name = this.dataset.name;
+				const uid = this.dataset.uid;
+				const email = this.dataset.email;
+				const rdate = this.dataset.rdate;
+
+				document.querySelector('.modal_name').textContent = name;
+				document.querySelector('.modal_uid').textContent = uid;
+				document.querySelector('.modal_email').textContent = email;
+				document.querySelector('.modal_rdate').textContent = rdate;
+
+				// 모달을 보이게 설정
+				document.querySelector('.modal').style.display = 'block';
+			});
+		});
+
+		// 모달 닫기 버튼
+		document.querySelector('.close_btn').addEventListener('click', function() {
+			// 모달을 숨기기
+			document.querySelector('.modal').style.display = 'none';
 		});
 	});
 </script>

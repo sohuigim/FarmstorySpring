@@ -32,78 +32,25 @@
 			</div><!-- .maintit end -->
 
 			<section class="market">
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item6.jpg}" alt="과일 샘플 이미지">
+				<article th:each="product,stat : ${productDTOs}" th:if="${stat.index <= 5}">
+					<a th:href="@{/market/MarketView(pNo=${product.prodNo})}">
+						<img th:src="@{'/uploads/'+${product.prodImage1}}" th:alt="${product.prodName}"/>
 						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
+							<span th:if="${product.prodCateType}==1">과일</span>
+							<span th:if="${product.prodCateType}==2">곡류</span>
+							<span th:if="${product.prodCateType}==3">야채</span>
+							<p></p>
+							<p class="prodname">[[${product.prodName}]]</p>
+							<p><span class="del">[[${product.prodPrice}]]</span> <span class="discount">[[${product.prodDiscount}]]%↓</span></p>
+							<p class="price">
+								<strong>
+									[[${product.prodPrice - (product.prodPrice * product.prodDiscount / 100)}]]원
+								</strong>
+							</p>
 						</div>
-
 					</a>
 				</article>
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item5.jpg}" alt="과일 샘플 이미지">
-						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
-						</div>
 
-					</a>
-				</article>
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item4.jpg}" alt="과일 샘플 이미지">
-						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
-						</div>
-
-					</a>
-				</article>
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item3.jpg}" alt="과일 샘플 이미지">
-						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
-						</div>
-
-					</a>
-				</article>
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item2.jpg}" alt="과일 샘플 이미지">
-						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
-						</div>
-
-					</a>
-				</article>
-				<article>
-					<a href="">
-						<img th:src="@{/images/market_item1.jpg}" alt="과일 샘플 이미지">
-						<div class="mtxt">
-							<span>과일</span>
-							<p class="prodname">사과 500g</p>
-							<p class="del">4,000</p>
-							<p class="price"><strong>3,600원</strong></p>
-						</div>
-
-					</a>
-				</article>
 			</section><!-- .market section end-->
 			<section class="ad">
 				<article class="ad1">
@@ -119,30 +66,13 @@
 					<a href="#"><img th:src="@{/images/main_latest1_tit.png}" alt="텃밭가꾸기"></a>
 					<img th:src="@{/images/main_latest1_img.jpg}" alt="텃밭가꾸기">
 					<table>
-						<tr>
+						<tr th:each="garden,stat : ${CropGarden}" th:if="${stat.index <5}">
 							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
+							<td>
+								<a th:href="@{|/crop/CropGarden/CropView/${garden.artNo}|}">
+									[[${garden.artTitle}]] | [[${garden.artRdate}]]
+								</a>
+							</td>
 						</tr>
 					</table>
 				</article>
@@ -150,30 +80,13 @@
 					<a href="#"><img th:src="@{/images/main_latest2_tit.png}" alt="귀농학교"></a>
 					<img th:src="@{/images/main_latest2_img.jpg}" alt="귀농학교">
 					<table>
-						<tr>
+						<tr th:each="returnfarm,stat : ${CropReturnfarm}" th:if="${stat.index <5}">
 							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
+							<td>
+								<a th:href="@{|/crop/CropReturnfarm/CropView/${returnfarm.artNo}|}">
+									[[${returnfarm.artTitle}]] | [[${returnfarm.artRdate}]]
+								</a>
+							</td>
 						</tr>
 					</table>
 				</article>
@@ -181,30 +94,13 @@
 					<a href="#"><img th:src="@{/images/main_latest3_tit.png}" alt="농작물이야기"></a>
 					<img th:src="@{/images/main_latest3_img.jpg}" alt="농작물 이야기">
 					<table>
-						<tr>
+						<tr th:each="story,stat : ${CropStory}" th:if="${stat.index <5}">
 							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
-						</tr>
-						<tr>
-							<th>></th>
-							<td>토마토! 건강하게 길러…</td>
-							<td>20-12-22</td>
+							<td>
+								<a th:href="@{|/crop/CropStory/CropView/${story.artNo}|}">
+									[[${story.artTitle}]] | [[${story.artRdate}]]
+								</a>
+							</td>
 						</tr>
 					</table>
 				</article>
@@ -252,31 +148,14 @@
 						<img th:src="@{/images/main_sub2_notice_tit.png}" alt="공지사항">
 					</div>
 					<div class="ntable">
-						<table class="ntable">
-							<tr>
-								<th>·</th>
-								<td>안녕하세요. 홈페이지 오픈 기념 이벤트를 … </td>
-								<td>20-12-22</td>
-							</tr>
-							<tr>
-								<th>·</th>
-								<td>안녕하세요. 홈페이지 오픈 기념 이벤트를 … </td>
-								<td>20-12-22</td>
-							</tr>
-							<tr>
-								<th>·</th>
-								<td>안녕하세요. 홈페이지 오픈 기념 이벤트를 … </td>
-								<td>20-12-22</td>
-							</tr>
-							<tr>
-								<th>·</th>
-								<td>안녕하세요. 홈페이지 오픈 기념 이벤트를 … </td>
-								<td>20-12-22</td>
-							</tr>
-							<tr>
-								<th>·</th>
-								<td>안녕하세요. 홈페이지 오픈 기념 이벤트를 … </td>
-								<td>20-12-22</td>
+						<table>
+							<tr th:each="notice,stat : ${CommunityNotice}" th:if="${stat.index <5}">
+								<th>></th>
+								<td>
+									<a th:href="@{|/community/CommunityNotice/CommunityView/${notice.artNo}|}">
+										[[${notice.artTitle}]] | [[${notice.artRdate}]]
+									</a>
+								</td>
 							</tr>
 						</table>
 					</div>

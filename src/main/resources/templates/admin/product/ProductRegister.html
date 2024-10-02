@@ -15,7 +15,7 @@
 			<section>
 				<h3>상품등록</h3>
 				<article>
-					<form th:action="@{/admin/ProductRegister}" method="post" enctype="multipart/form-data">
+					<form th:action="@{/admin/ProductRegister}" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmission()">
 						<table>
 							<tbody>
 							<tr>
@@ -100,6 +100,19 @@
 	const now = document.querySelector('a#prodreg[href]');
 	if (now) {
 		now.classList.add("now");
+	}
+	function confirmSubmission() {
+		return confirm("등록하시겠습니까?");
+	}
+	// 성공 시 URL 파라미터에서 성공 여부를 확인하여 처리
+	const urlParams = new URLSearchParams(window.location.search);
+	const isSuccess = urlParams.get('success');
+
+	if (isSuccess === 'true') {
+		alert("상품이 성공적으로 등록되었습니다.");
+		window.location.href = '/admin/ProductRegister';
+	} else if (isSuccess === 'false') {
+		alert("상품 등록에 실패하였습니다.");
 	}
 </script>
 </html>

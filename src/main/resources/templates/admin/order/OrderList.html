@@ -85,11 +85,100 @@
 
             }); // EventListener END
         }//onload END
+        // 모달 상세보기 스크립트
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.detail_btn').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // 기본 동작 방지
+
+                    // 버튼의 data-order-no 속성에서 주문 번호를 가져옴
+                    const orderNo = this.getAttribute('data-order-no');
+
+                    // AJAX 요청 보내기
+                    fetch(`/admin/OrderList/${orderNo}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('네트워크 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(orderData => {
+                            // 모달에 데이터를 채우기
+                            document.querySelector('.modal_Addr').textContent = orderData.orderAddr;
+                            document.querySelector('.modal_rhp').textContent = orderData.orderReceiveHp;
+                            document.querySelector('.modal_rname').textContent = orderData.orderReceiveName;
+                            document.querySelector('.modal_shp').textContent = orderData.orderSendHp;
+                            document.querySelector('.modal_sname').textContent = orderData.orderSendName;
+                            document.querySelector('.modal_memo').textContent = orderData.orderMemo;
+                            document.querySelector('.modal').style.display = 'block';
+                        })
+                        .catch(err => {
+                            console.error('Error fetching order details:', err);
+                            alert('주문 정보를 가져오는 데 오류가 발생했습니다.');
+                        });
+                });
+            });
+
+            // 모달 닫기 버튼 처리
+            document.querySelector('.close_btn').addEventListener('click', function() {
+                document.querySelector('.modal').style.display = 'none';
+            });
+        });
+
     </script>
 </head>
 <body>
 <div id="wrap">
     <th:block th:include="/admin/Admin_header"/>
+    <link rel="stylesheet" th:href="@{/css/user/findidresult.css}">
+
+    <div class="modal">
+        <section class="modal_popup">
+            <div class="top_txt">
+            </div>
+            <div>
+                <table class="modal_table">
+                    <tr>
+                        <td>주소</td>
+                        <td>
+                            <p><span class="modal_Addr"></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>수령자 전화번호</td>
+                        <td>
+                            <p><span class="modal_rhp"></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>수령자 성함</td>
+                        <td>
+                            <p><span class="modal_rname"></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>주문자 전화번호</td>
+                        <td>
+                            <p><span class="modal_shp"></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>주문자 성함</td>
+                        <td>
+                            <p><span class="modal_sname"></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>참고사항</td>
+                        <td>
+                            <p><span class="modal_memo"></span></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <button type="button" class="close_btn">닫기</button>
+        </section><!-- section modal -->
+    </div>
     <main>
         <th:block th:include="/admin/Admin_aside"/>
         <section class="orderlist">
@@ -125,7 +214,7 @@
                             <td class="price">합계</td>
                             <td>[[${order.orderSendName}]]</td>
                             <td>[[${order.Date}]]<br>[[${order.timeDate}]]</td>
-                            <td><a href="#">[상세확인]</a></td>
+                            <td><a href="#" class="detail_btn" th:data-order-no="${order.orderNo}">[상세확인]</a></td>
                         </tr>
                         </tbody>
                     </table>
