@@ -51,9 +51,10 @@
 .aside_bg .cate_lnb_real li:nth-child(3) a:hover{background: url('../images/myinfo/myinfo_menu3_ov.png') no-repeat; }
 
 /* article 영역 (오른쪽)  ---------------------------------------------- */
-.article{position: relative;  width: 802px; height: 650px;
-    top: -650px;
-    left: 170px;
+
+.article{
+    position: relative;
+    top: 0;
 }
 
 .infotable{
@@ -63,14 +64,29 @@
 }
 
 /* article 타이틀 */
-h2{margin-top: 43px; }
-h2::after{display: block; content: ""; clear: both; width: 762px; height: 1px; background: #c2c2c2; margin-top: 5px;}
+
+h2{margin-top: 43px;
+height: 20px;
+position: relative;
+    left: 20px;
+    top: -10px;
+}
+h2::after{display: block; content: ""; clear: both; width: 785px; height: 1px; background: #c2c2c2; margin-top: 5px;
+position: relative;
+    top: -575px;
+    left: 135px;
+}
 
 /* location */
-.location{position: absolute; top: 0; right:0; float:right; margin-top:51px; height: 17px; font-family: Inter; font-size: 12px; font-weight: 400; line-height: 14.52px; text-align: left;}
+.location{position: absolute; top: -50px; right:0; float:right; margin-top:51px; height: 17px; font-family: Inter; font-size: 12px; font-weight: 400; line-height: 14.52px; text-align: left;}
 .location img{margin-top: 5px;}
 .location span{color:#0a0101;}
 .location span:after{display: inline-block; content: ">" ; clear: both;}
 
 /* location 현재페이지 강조 */
 .location strong{color:#91ba15; font-weight: 700;}
+
+footer{
+    position: relative;
+    top: 30px;
+}

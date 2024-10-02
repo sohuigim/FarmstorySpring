@@ -28,6 +28,13 @@ public class MyUserDetails implements UserDetails , OAuth2User {
     private String accessToken;
 
     @Override
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole()));
+        return authorities;
+    }
+
+    @Override
     public Map<String, Object> getAttributes() {
         return attributes;
     }
@@ -36,13 +43,13 @@ public class MyUserDetails implements UserDetails , OAuth2User {
         return user.getUserName();
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        //계정이 갖는 권한 목록 생성
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getUserRole())); //계정권한 앞에 접두어 ROLE_ 붙여야 됨
-        return authorities;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        //계정이 갖는 권한 목록 생성
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getUserRole())); //계정권한 앞에 접두어 ROLE_ 붙여야 됨
+//        return authorities;
+//    }
 
     @Override
     public String getPassword() {

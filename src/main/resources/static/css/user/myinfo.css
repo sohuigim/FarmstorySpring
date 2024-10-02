@@ -46,6 +46,9 @@ table, th{
 }
 table{
     margin-bottom: 20px;
+    position: relative;
+    top: -550px;
+    left: 180px;
 }
 
 .form_group {
@@ -67,7 +70,7 @@ table{
 }
 
 .form table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
 }
 .form table:nth-of-type(1){
@@ -107,8 +110,16 @@ table:nth-child(2){
     box-sizing: border-box;
 
 }
-.form span {
+.form .span {
     line-height : 24px;
+    position: relative;
+    left: 50px;
+    top: -10px;
+}
+.form .privacy_span{
+    position: relative;
+    left: 185px;
+    top: -550px;
 }
 #zip {
     width: 162px;
@@ -259,6 +270,9 @@ button{
     display: flex;
     justify-content: flex-end;
     margin-top: 20px; /* Space above the buttons */
+    position: relative;
+    top: -550px;
+    left: 40px;
 }
 
 .button_container button {
@@ -283,6 +297,4 @@ button{
     opacity: 0.8;
 }
 
-.article{
 
-}
