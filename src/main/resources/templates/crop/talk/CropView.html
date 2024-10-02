@@ -39,7 +39,7 @@
 
                   // 동적 태그 생성
                   const commentArticle = `<article>
-                                                <span class="nick">${data.userUid}</span>
+                                                <span class="nick">${data.user.userUid}</span>
                                                 <span class="date">${data.commentRegDate}</span>
                                                 <p class="content">${data.content}</p>
                                                 <div>
@@ -174,17 +174,17 @@
 
             <!-- 첨부파일이 있으면 나타나게끔  -->
             <tr th:if="${articleDTO.artFile > 0}">
-               <tr>
-                  <td>첨부파일</td>
-                  <td>
-                     <th:block th:each="file:${articleDTO.fileList}">
-                        <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드<br>
-                     </th:block>
-                  </td>
-               </tr>
-            </th:if>
-            <tr>
-<!--               <td>내용${boardDTO.b_fNo }</td>-->
+               <td>첨부파일</td>
+               <td>
+                  <th:block th:each="file:${articleDTO.fileList}">
+<!--                     <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드<br>-->
+                     <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span th:text="${file.download}"></span>회 다운로드<br>
+
+                  </th:block>
+               </td>
+            </tr>
+
+            <!--               <td>내용${boardDTO.b_fNo }</td>-->
                   <td>내용</td>
                   <td>
                      <textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea>
@@ -193,11 +193,18 @@
                </table>
 
                <div>
-                  <th:if test="${sessUser.uid eq articleDTO.artWriter}">
+<!--                  <th:if test="${sessUser.uid eq articleDTO.artWriter}">-->
+<!--                     <a class="btnDelete">삭제</a>-->
+<!--                     <a th:href="@{/crop/talk/CropView}" class="btnModify">수정</a>-->
+<!--                     <a th:href="|/crop/${cate}|" class="btnList">목록</a>-->
+<!--                  </th:if>-->
+
+                  <th:block th:if="${sessUser.uid eq articleDTO.artWriter}">
                      <a class="btnDelete">삭제</a>
                      <a th:href="@{/crop/talk/CropView}" class="btnModify">수정</a>
                      <a th:href="|/crop/${cate}|" class="btnList">목록</a>
-                  </th:if>
+                  </th:block>
+
                </div>
          <!-- 댓글리스트 -->
          <section class="commentList">

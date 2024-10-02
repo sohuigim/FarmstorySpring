@@ -153,19 +153,46 @@ public class CropController {
 
         model.addAttribute("str1", str1);
 
+        // 카테고리와 관련된 추가 정보 처리
+        model.addAttribute("cate", cate);
+
         return "/crop/talk/CropModify";
     }
 
-    
-    //삭제
-    @GetMapping("/crop/{cate}/CropDelete")
-    public String CropStroyDelete(int artNo){
+    // 게시물 수정을 처리하는 POST 요청
+    @PostMapping("/crop/{cate}/CropModify/{artNo}")
+    public String updateArticle(ArticleDTO articleDTO,
+                                @PathVariable String cate,
+                                @PathVariable("artNo") int artNo,
+                                Model model) {
+        String str1 = "";
+        if (cate.equals("CropStory")) {
+            str1 = "b101";
+        } else if (cate.equals("CropGarden")) {
+            str1 = "b102";
+        } else if (cate.equals("CropReturnfarm")) {
+            str1 = "b103";
+        }
 
-        articleService.deleteArticle(artNo);
+        // 게시물 정보 업데이트
+        articleDTO.setArtNo(artNo); // 게시물 번호 설정
+        articleService.updateArticle(articleDTO); // DB 업데이트
 
-        return "/crop/talk/CropDelete";
+        model.addAttribute("str1", str1);
+
+        // 수정 완료 후 게시글 상세 페이지로 리다이렉트
+        return "redirect:/crop/" + articleDTO.getArtCate() + "/CropView/" + articleDTO.getArtNo();
+
+
+        //삭제
+//    @GetMapping("/crop/{cate}/deleteArticle/{artNo}")
+//    public String CropStoryDelete(int artNo){
+//
+//        articleService.deleteArticle(artNo);
+//
+//        return "/crop/talk/CropDelete";
+//    }
+
     }
-
-
 
 }
