@@ -2,10 +2,9 @@ package com.farmstory.controller.article.crop;
 
 import com.farmstory.dto.ArticleDTO;
 
-
+import com.farmstory.dto.FileDTO;
+import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
-import com.farmstory.dto.pageDTO.PageRequestDTO;
-import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.Article;
 
 import com.farmstory.entity.Comment;
@@ -13,6 +12,7 @@ import com.farmstory.entity.Comment;
 import com.farmstory.repository.article.ArticleRepository;
 import com.farmstory.service.ArticleService;
 import com.farmstory.service.CommentService;
+import com.farmstory.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -26,11 +26,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CropController {
     private final ArticleService articleService;
+
+    private final FileService fileService;
+    private final ArticleRepository articleRepository;
+
     private final CommentService commentService;
 
     @GetMapping("/crop/{cate}")
-    public String cropStory(@PathVariable String cate, Model model, PageRequestDTO pageRequestDTO) {
-        log.info(pageRequestDTO);
+    public String cropView(@PathVariable String cate,@RequestParam(required = false) String type, @RequestParam(required = false) String keyword, Model model, ArticlePageRequestDTO articlePageRequestDTO) {
+        log.info(articlePageRequestDTO);
         String str1 = "";
         if (cate.equals("CropStory")) {
             str1 = "b201";
@@ -45,13 +49,20 @@ public class CropController {
         List<Article> articles = articleService.selectArticles(cate);
         model.addAttribute("articles", articles);
 
+        log.info("articles_controller "+articles);
         if(cate == null) {
-            cate = "0";
+            cate = "b201";
         }
 
-        PageResponseDTO pageResponseDTO = articleService.selectProductAll(pageRequestDTO, cate);
-        model.addAttribute("articlePageResponseDTO", pageResponseDTO);
-        System.out.println(articles);
+        articlePageRequestDTO.setType(type);
+        articlePageRequestDTO.setKeyword(keyword);
+
+        ArticlePageResponseDTO articlePageResponseDTO = articleService.selectArticleAll(articlePageRequestDTO, cate);
+
+        log.info(articlePageResponseDTO);
+
+        model.addAttribute("pageResponseDTO", articlePageResponseDTO);
+
 
         return "/crop/" + cate;
     }
@@ -77,13 +88,13 @@ public class CropController {
         System.out.println(str1);
         return "/crop/talk/CropWrite";
     }
-//    // 글쓰기(기능)
-//    @PostMapping("/croptalk/write")
-//    public String croptalkWrite(@ModelAttribute ArticleDTO articleDTO, HttpServletRequest request) {
+
 
     @PostMapping("/crop/CropWrite")
 
-    public String CropWrite(Model model, @ModelAttribute ArticleDTO articleDTO, String artCate) {
+    public String CropWrite(ArticleDTO articleDTO, String artCate) {
+        log.info("article info : "+articleDTO);
+
         String str1 = "";
         if (artCate.equals("CropStory")) {
             str1 = "b201";
@@ -93,24 +104,25 @@ public class CropController {
             str1 = "b203";
         }
 
-        log.info("Received artCate: " + artCate);
-        System.out.println("ArticleDTO: " + articleDTO);
-        System.out.println("Received artCate: " + artCate);  // 받아온 artCate 확인
+        List<FileDTO> uploadedFiles = fileService.uploadFile(articleDTO);
+        articleDTO.setArtFile(uploadedFiles.size()); // 첨부 파일 갯수 초기화
+        int ano = articleService.insertArticle(articleDTO);
 
-        // DB에 저장
-        articleService.saveArticle(articleDTO);
+        log.info("ano : " + ano);
 
-        System.out.println("글이 성공적으로 저장되었습니다.");
+        for(FileDTO fileDTO : uploadedFiles){
+            fileDTO.setArtNo(ano);
+            fileService.insertFile(fileDTO);
+        }
 
-        // db제출
-        model.addAttribute("str1", "b201");
-        return "redirect:/crop/" + artCate;
+
+        return "redirect:/crop/"+artCate;
 
     }
 
     //글보기
     @GetMapping("/crop/{cate}/CropView/{artNo}")
-    public String CropStoryView(Model model, @PathVariable("cate") String cate, @PathVariable("artNo") int artNo) {
+    public String CropView(Model model, @PathVariable("cate") String cate, @PathVariable("artNo") int artNo) {
         String str1 = "";
         if (cate.equals("CropStory")) {
             str1 = "b201";
@@ -120,7 +132,8 @@ public class CropController {
             str1 = "b203";
         }
 
-        ArticleDTO articleDTO = articleService.getArticle(artNo);
+        ArticleDTO articleDTO = articleService.selectArticle(artNo);
+        System.out.println("article_DTO"+articleDTO.getFileList());
         List<Comment> comments = commentService.selectCommentByArtNo(articleDTO.getArtNo());
         model.addAttribute(articleDTO);
 
@@ -136,7 +149,7 @@ public class CropController {
 
     //글수정
     @GetMapping("/crop/{cate}/CropModify/{artNo}")
-    public String CropStoryModify(Model model, @PathVariable String cate, @PathVariable("artNo") int artNo) {
+    public String CropModify(Model model, @PathVariable String cate, @PathVariable("artNo") int artNo) {
         String str1 = "";
         System.out.println(cate);
         if (cate.equals("CropStory")) {
@@ -152,46 +165,22 @@ public class CropController {
 
         model.addAttribute("str1", str1);
 
-        // 카테고리와 관련된 추가 정보 처리
-        model.addAttribute("cate", cate);
-
         return "/crop/talk/CropModify";
     }
 
-    // 게시물 수정을 처리하는 POST 요청
-    @PostMapping("/crop/{cate}/CropModify/{artNo}")
-    public String updateArticle(ArticleDTO articleDTO,
-                                @PathVariable String cate,
-                                @PathVariable("artNo") int artNo,
-                                Model model) {
-        String str1 = "";
-        if (cate.equals("CropStory")) {
-            str1 = "b101";
-        } else if (cate.equals("CropGarden")) {
-            str1 = "b102";
-        } else if (cate.equals("CropReturnfarm")) {
-            str1 = "b103";
-        }
 
-        // 게시물 정보 업데이트
-        articleDTO.setArtNo(artNo); // 게시물 번호 설정
-        articleService.updateArticle(articleDTO); // DB 업데이트
+    //삭제
+    @GetMapping("/crop/{cate}/CropDelete/{no}")
+    public String CropDelete(@PathVariable String cate, @PathVariable("no") int no) {
 
-        model.addAttribute("str1", str1);
+        log.info("no : " + no);
 
-        // 수정 완료 후 게시글 상세 페이지로 리다이렉트
-        return "redirect:/crop/" + articleDTO.getArtCate() + "/CropView/" + articleDTO.getArtNo();
+        articleService.deleteArticle(no);
 
-
-        //삭제
-//    @GetMapping("/crop/{cate}/deleteArticle/{artNo}")
-//    public String CropStoryDelete(int artNo){
-//
-//        articleService.deleteArticle(artNo);
-//
-//        return "/crop/talk/CropDelete";
-//    }
-
+        // cate 값을 사용하여 리디렉션 경로 설정
+        return "redirect:/crop/" + cate;
     }
+
+
 
 }

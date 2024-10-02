@@ -1,6 +1,7 @@
 package com.farmstory.service;
 
 import com.farmstory.dto.OrderDTO;
+import com.farmstory.dto.ProductDTO;
 import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.dto.pageDTO.OrderPageResponseDTO;
 import com.farmstory.dto.pageDTO.PageResponseDTO;
@@ -86,6 +87,7 @@ public class OrderService {
         return orderDTOs;
     }
     public PageResponseDTO<OrderDTO> selectorderAll (PageRequestDTO pageRequestDTO) {
+        int a = 0;
         Pageable pageable = pageRequestDTO.getPageable("orderNo",false);
         Page<Tuple> pageOrder = orderRepository.selectOrderAllForList(pageRequestDTO, pageable);
         List<OrderDTO> orderList = pageOrder.getContent().stream().map(tuple -> {
@@ -94,13 +96,13 @@ public class OrderService {
             if(order.getProduct() != null) {
                 orderDTO.setProdName(order.getProduct().getProdName());
                 orderDTO.setProdNo(order.getProduct().getProdNo());
+                orderDTO.setProductDTO(modelMapper.map(productRepository.selectProduct(order.getProduct().getProdNo()), ProductDTO.class));
             }
             LocalDateTime orderDateTime = order.getOrderDate();
             if (orderDateTime != null) {
                 orderDTO.setDate(orderDateTime.toLocalDate().toString());  // 날짜 부분
                 orderDTO.setTimeDate(orderDateTime.toLocalTime().toString());  // 시간 부분
             }
-
             return orderDTO;
         }).toList();
 

@@ -9,227 +9,214 @@
    <script th:src="@{/js/utils.js}"></script>
 </head>
 <body>
-   <div id="container">
-      <th:block th:include ="/grid/_header.html"/>
-      <th:block th:include ="/grid/_aside_ct.html"/>
-      <script>
-         window.onload = function () {
+<div id="container">
+   <th:block th:include ="/grid/_header.html"/>
+   <th:block th:include ="/grid/_aside_ct.html"/>
+   <script>
+      window.onload = function () {
 
-            const btnComplete = document.getElementById('btnComplete');
-            const commentForm = document.commentForm;
-            const commentList = document.getElementsByClassName('commentList')[0];
+         const btnComplete = document.getElementById('btnComplete');
+         const commentForm = document.commentForm;
+         const commentList = document.getElementsByClassName('commentList')[0];
 
-            btnComplete.onclick = async function (e) {
-               e.preventDefault();
+         btnComplete.onclick = async function (e) {
+            e.preventDefault();
 
-               const jsonData = {
-                   "userUid": commentForm.writer.value,
-                   "artNo": commentForm.artNo.value,
-                   "content": commentForm.content.value
-               }
+            const jsonData = {
+               "userUid": commentForm.writer.value,
+               "artNo": commentForm.artNo.value,
+               "content": commentForm.content.value
+            }
 
-               // fetchPost는 async 함수로 async 함수를 호출할때는 반드시 await 키워드 붙여서 호출
-               // await 함수를 호출하는 상위 함수에서는 async 키워드를 붙여서 함수 정의
-               const data = await fetchPost('/comment/write', jsonData)
+            // fetchPost는 async 함수로 async 함수를 호출할때는 반드시 await 키워드 붙여서 호출
+            // await 함수를 호출하는 상위 함수에서는 async 키워드를 붙여서 함수 정의
+            const data = await fetchPost('/comment/write', jsonData)
 
-               console.log(data);
+            console.log(data);
 
-               if (data != null) {
-                  alert('댓글이 등록 되었습니다.');
+            if (data != null) {
+               alert('댓글이 등록 되었습니다.');
 
-                  // 동적 태그 생성
-                  const commentArticle = `<article>
+               // 동적 태그 생성
+               const commentArticle = `<article>
                                                 <span class="nick">${data.user.userUid}</span>
                                                 <span class="date">${data.commentRegDate}</span>
                                                 <p class="content">${data.content}</p>
                                                 <div>
                                                     <a href="#" class="remove">삭제</a>
-                                                    <a href="#" class=" ">수정</a>
+                                                    <a href="#" class="">수정</a>
                                                 </div>
                                             </article>`;
 
-                  commentList.insertAdjacentHTML('beforeend', commentArticle);
-               }
+               commentList.insertAdjacentHTML('beforeend', commentArticle);
             }
          }
-      </script>
+      }
+   </script>
 
-      <script>
-         let originalText = '';  // 원본 텍스트를 저장할 변수
+   <script>
+      let originalText = '';
 
-         function getArticleAndCommentNo(e) {
-            const article = e.target.closest('article');  // article 요소 찾기
-            const articleNo = document.getElementById('articleNo').value;  // articleNo는 숨겨진 input에서 가져옴
-            const commentNo = e.target.dataset.no;  // 댓글 번호 가져오기
-            console.log("article info" + articleNo);
-            console.log("commentno info" + commentNo);
+      function getArticleAndCommentNo(e) {
+         const article = e.target.closest('article');
+         const articleNo = document.getElementById('articleNo').value;
+         const commentNo = e.target.dataset.no;
+         console.log("article info" + articleNo);
+         console.log("commentno info" + commentNo);
 
-            return { articleNo, commentNo, article };
+         return { articleNo, commentNo, article };
+      }
+
+      document.addEventListener('click', function(e) {
+         // 삭제 버튼 처리
+         if (e.target.classList.contains('commentRemove')) {
+            e.preventDefault();
+
+            const { articleNo, commentNo, article } = getArticleAndCommentNo(e);
+
+            if (articleNo && commentNo) {
+               fetch(`/comment/delete?articleNo=${articleNo}&commentNo=${commentNo}`, {
+                  method: 'GET'
+               })
+                       .then(resp => resp.json())
+                       .then(data => {
+                          if (data.result > 0) {
+                             article.remove();
+                             alert('댓글이 삭제되었습니다.');
+
+                             console.log(data);
+                          } else {
+                             alert('댓글 삭제에 실패했습니다.');
+                          }
+                       })
+                       .catch(err => {
+                          console.log(err);
+                       });
+            } else {
+               alert('articleNo 또는 commentNo가 유효하지 않습니다.');
+            }
          }
 
-         document.addEventListener('click', function(e) {
-            // 삭제 버튼 처리
-            if (e.target.classList.contains('commentRemove')) {
-               e.preventDefault();
+         // 수정 버튼 처리
+         if (e.target.classList.contains('commentModify')) {
+            e.preventDefault();
 
-               const { articleNo, commentNo, article } = getArticleAndCommentNo(e);
+            const { articleNo, commentNo, article } = getArticleAndCommentNo(e);
 
-               if (articleNo && commentNo) {
-                  fetch(`/comment/delete?articleNo=${articleNo}&commentNo=${commentNo}`, {
-                     method: 'GET'
-                  })
-                          .then(resp => resp.json())
-                          .then(data => {
-                             if (data.result > 0) {
-                                article.remove();
-                                alert('댓글이 삭제되었습니다.');
-                                console.log(data);
-                             } else {
-                                alert('댓글 삭제에 실패했습니다.');
-                             }
-                          })
-                          .catch(err => {
-                             console.log(err);
-                          });
-               } else {
-                  alert('articleNo 또는 commentNo가 유효하지 않습니다.');
-               }
+            const textarea = article.querySelector('textarea');
+            const mode = e.target.innerText;
+
+            if (mode === '수정') {
+               originalText = textarea.value;  // 수정하기 전 원본 텍스트 저장
+               textarea.readOnly = false;
+               textarea.style.background = 'white';
+               textarea.style.border = '1px solid #555';
+               e.target.innerText = '수정완료';
+
+               // 취소 버튼 표시
+               const commentCancel = article.querySelector('.commentCancel');
+               commentCancel.style.display = 'inline';
+            } else {
+               const content = textarea.value;
+
+               fetch(`/comment/modify`, {
+                  method: 'PUT',
+                  body: JSON.stringify({ articleNo, commentNo, content}),
+                  headers: { 'Content-Type': 'application/json' }
+               })
+                       .then(resp => resp.json())
+                       .then(data => {
+                          if (data.result > 0) {
+                             alert('댓글이 수정되었습니다.');
+                             textarea.readOnly = true;
+                             textarea.style.background = 'transparent';
+                             textarea.style.border = 'none';
+                             e.target.innerText = '수정';
+
+                             // 취소 버튼 숨기기
+                             const commentCancel = article.querySelector('.commentCancel');
+                             commentCancel.style.display = 'none';
+                          }
+                       })
+                       .catch(err => {
+                          console.log(err);
+                       });
             }
+         }
 
-            // 수정 버튼 처리
-            if (e.target.classList.contains('commentModify')) {
-               e.preventDefault();
+         // 취소 버튼 처리
+         if (e.target.classList.contains('commentCancel')) {
+            e.preventDefault();
 
-               const { articleNo, commentNo, article } = getArticleAndCommentNo(e);
+            const { article } = getArticleAndCommentNo(e);
+            const textarea = article.querySelector('textarea');
 
-               const textarea = article.querySelector('textarea');
-               const mode = e.target.innerText;
+            textarea.value = originalText;
+            textarea.readOnly = true;
+            textarea.style.background = 'transparent';
+            textarea.style.border = 'none';
 
-               if (mode === '수정') {
-                  originalText = textarea.value;  // 수정하기 전 원본 텍스트 저장
-                  textarea.readOnly = false;
-                  textarea.style.background = 'white';
-                  textarea.style.border = '1px solid #555';
-                  e.target.innerText = '수정완료';
+            e.target.style.display = 'none';
 
-                  // 취소 버튼 표시
-                  const commentCancel = article.querySelector('.commentCancel');
-                  commentCancel.style.display = 'inline';
-               } else {
-                  const content = textarea.value;
-
-                  fetch(`/comment/modify`, {
-                     method: 'PUT',
-                     body: JSON.stringify({ articleNo, commentNo, content}),
-                     headers: { 'Content-Type': 'application/json' }
-                  })
-                          .then(resp => resp.json())
-                          .then(data => {
-                             if (data.result > 0) {
-                                alert('댓글이 수정되었습니다.');
-                                textarea.readOnly = true;
-                                textarea.style.background = 'transparent';
-                                textarea.style.border = 'none';
-                                e.target.innerText = '수정';
-
-                                // 취소 버튼 숨기기
-                                const commentCancel = article.querySelector('.commentCancel');
-                                commentCancel.style.display = 'none';
-                             }
-                          })
-                          .catch(err => {
-                             console.log(err);
-                          });
-               }
-            }
-
-            // 취소 버튼 처리
-            if (e.target.classList.contains('commentCancel')) {
-               e.preventDefault();
-
-               const { article } = getArticleAndCommentNo(e);
-               const textarea = article.querySelector('textarea');
-
-               textarea.value = originalText;
-               textarea.readOnly = true;
-               textarea.style.background = 'transparent';
-               textarea.style.border = 'none';
-
-               e.target.style.display = 'none';
-
-               const commentModify = article.querySelector('.commentModify');
-               commentModify.innerText = '수정';
-            }
-         });
-      </script>
+            const commentModify = article.querySelector('.commentModify');
+            commentModify.innerText = '수정';
+         }
+      });
+   </script>
 
 
-      <section class="view">
-         <h3>글보기</h3>
-         <table>
-            <tr>
-               <td>제목</td>
-               <td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
-            </tr>
+   <section class="view">
+      <h3>글보기</h3>
+      <table>
+         <tr>
+            <td>제목</td>
+            <td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
+         </tr>
+         <tr th:if="${articleDTO.fileList.size() > 0}">
+            <th>파일</th>
+            <td>
+               <th:block th:each="file:${articleDTO.fileList}">
+                  <a th:href="@{/file/download/{fno}(fno=${file.fileNo})}">[[${file.fileoName}]]</a>&nbsp;<span>[[${file.fileDownload}]]</span>회 다운로드<br>
+               </th:block>
+            </td>
+         </tr>
+         <tr>
+            <td>내용</td>
+            <td>
+               <textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea>
+            </td>
+         </tr>
+      </table>
 
-            <!-- 첨부파일이 있으면 나타나게끔  -->
-            <tr th:if="${articleDTO.artFile > 0}">
-               <td>첨부파일</td>
-               <td>
-                  <th:block th:each="file:${articleDTO.fileList}">
-<!--                     <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드<br>-->
-                     <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span th:text="${file.download}"></span>회 다운로드<br>
-
-                  </th:block>
-               </td>
-            </tr>
-
-            <!--               <td>내용${boardDTO.b_fNo }</td>-->
-                  <td>내용</td>
-                  <td>
-                     <textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea>
-                  </td>
-               </tr>
-               </table>
-
+      <div>
+      <th:block th:if="${#authentication.principal.user.userUid eq articleDTO.artWriter}">
+         <a th:href="@{/crop/{cate}/CropDelete/{no}(cate=${cate}, no=${articleDTO.artNo})}" class="btnDelete">삭제</a>
+         <a th:href="@{/crop/talk/CropView/{no}(no=${articleDTO.artNo})}" class="btnModify">수정</a>
+      </th:block>
+         <a th:href="|/crop/${cate}|" class="btnList">목록</a>
+      </div>
+      <!-- 댓글리스트 -->
+      <section class="commentList">
+         <h3>댓글목록</h3>
+         <article th:each="comment : ${comments}" class="comment">
+            <input type="hidden" name="artNo" id="articleNo" th:value="${articleDTO.artNo}"/>
+            <input type="hidden" name="commentNo" id="commentNo" th:value="${comment.commentNo}"/>
+            <span th:text="${comment.user.userNick}"></span>
+            <span th:text="${comment.commentRegDate}"></span>
+            <textarea style="resize: none" name="comment" readonly th:text="${comment.content}"></textarea>
+            <th:block th:if="${#authentication.principal.user.userUid eq comment.user.userUid}">
                <div>
-<!--                  <th:if test="${sessUser.uid eq articleDTO.artWriter}">-->
-<!--                     <a class="btnDelete">삭제</a>-->
-<!--                     <a th:href="@{/crop/talk/CropView}" class="btnModify">수정</a>-->
-<!--                     <a th:href="|/crop/${cate}|" class="btnList">목록</a>-->
-<!--                  </th:if>-->
-
-                  <th:block th:if="${sessUser.uid eq articleDTO.artWriter}">
-                     <a class="btnDelete">삭제</a>
-                     <a th:href="@{/crop/talk/CropView}" class="btnModify">수정</a>
-                     <a th:href="|/crop/${cate}|" class="btnList">목록</a>
-                  </th:block>
-
+                  <!-- HTML 사용자 정의 속성을 이용한 삭제/수정 -->
+                  <a href="#" class="commentRemove" th:attr="data-no=${comment.commentNo}">삭제</a>
+                  <a href="#" class="commentCancel" th:attr="data-no=${comment.commentNo}" style="display:none;">취소</a>
+                  <a href="#" class="commentModify" th:attr="data-no=${comment.commentNo}">수정</a>
                </div>
-         <!-- 댓글리스트 -->
-         <section class="commentList">
-            <h3>댓글목록</h3>
-               <article th:each="comment : ${comments}" class="comment">
-                  <input type="hidden" name="artNo" id="articleNo" th:value="${articleDTO.artNo}"/>
-                  <input type="hidden" name="commentNo" id="commentNo" th:value="${comment.commentNo}"/>
-                  <span th:text="${comment.user.userNick}"></span>
-                  <span th:text="${comment.commentRegDate}"></span>
-                  <textarea style="resize: none" name="comment" readonly th:text="${comment.content}"></textarea>
-                     <th:block th:if="${#authentication.principal.user.userUid eq comment.user.userUid}">
-                        <div>
-                           <!-- HTML 사용자 정의 속성을 이용한 삭제/수정 -->
-                           <a href="#" class="commentRemove" th:attr="data-no=${comment.commentNo}">삭제</a>
-                           <a href="#" class="commentCancel" th:attr="data-no=${comment.commentNo}" style="display:none;">취소</a>
-                           <a href="#" class="commentModify" th:attr="data-no=${comment.commentNo}">수정</a>
-                        </div>
-                     </th:block>
-               </article>
-
-            <th:block th:switch="${comments.size()}">
-               <p th:case="0">등록된 댓글이 없습니다.</p>
             </th:block>
+         </article>
 
-         </section>
+         <th:block th:switch="${comments.size()}">
+            <p th:case="0">등록된 댓글이 없습니다.</p>
+         </th:block>
 
          <!-- 댓글쓰기 -->
          <section class="commentForm">
@@ -249,5 +236,24 @@
         <!-- footer -->
    <th:block th:include ="/grid/_footer.html"/>
       </section>
-   </div>
+
+      <!-- 댓글쓰기 -->
+      <section class="commentForm">
+         <h3>댓글쓰기</h3>
+         <form th:action="@{/comment/write}" name="commentForm" method="post">
+            <input type="hidden" name="artNo" id="artNo" th:value="${articleDTO.artNo}"/>
+            <input type="hidden" name="writer" id="writer" th:value="${#authentication.principal.user.userUid}" readonly>
+            <textarea name="content">댓글내용 입력</textarea>
+            <div>
+               <a th:href="@{#}" class="btn btnCancel">취소</a>
+               <input type="submit" value="작성완료" id="btnComplete" class="btn btnComplete"/>
+            </div>
+         </form>
+      </section>
+
+      </main><!-- #main -->
+      <!-- footer -->
+      <th:block th:include ="/grid/_footer.html"/>
+   </section>
+</div>
 </body>
