@@ -4,6 +4,8 @@ package com.farmstory.service;
 import com.farmstory.dto.*;
 import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
+import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.Article;
 
 import com.farmstory.entity.FileEntity;
@@ -74,12 +76,12 @@ public class ArticleService {
         return articleDTO;
     }
 
-    public ArticlePageResponseDTO selectProductAll(ArticlePageRequestDTO articlePageRequestDTO, String catetype){
-        Pageable pageable = articlePageRequestDTO.getPageable("artNo");
+    public PageResponseDTO selectProductAll(PageRequestDTO pageRequestDTO, String catetype){
+        Pageable pageable = pageRequestDTO.getPageable("artNo",true);
 
-        articlePageRequestDTO.setCate(catetype);
+        pageRequestDTO.setArtcateType(catetype);
 
-        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(articlePageRequestDTO, pageable, catetype);
+        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(pageRequestDTO, pageable, catetype);
 
         List<ArticleDTO> articleList = pageArticle.getContent().stream().map(tuple -> {
 
@@ -91,8 +93,8 @@ public class ArticleService {
 
         int total = (int) pageArticle.getTotalElements();
 
-        return ArticlePageResponseDTO.builder()
-                .articlePageRequestDTO(articlePageRequestDTO)
+        return PageResponseDTO.<ArticleDTO>builder()
+                .pageRequestDTO(pageRequestDTO)
                 .dtoList(articleList)
                 .total(total)
                 .build();
