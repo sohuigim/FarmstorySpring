@@ -2,7 +2,6 @@ logging:
     file:
         name: /logs/FarmStory.log
     level:
-        org.springframework.security: DEBUG
         jdbc:
             resultsettable: debug
             sqlonly: debug
@@ -21,7 +20,7 @@ spring:
         name: FarmStory
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: 1234
+        password: Choasa15!
         url: jdbc:mysql://localhost:3306/farmstory
         username: root
     devtools:

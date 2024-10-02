@@ -26,8 +26,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CropController {
     private final ArticleService articleService;
+
     private final FileService fileService;
     private final ArticleRepository articleRepository;
+
     private final CommentService commentService;
 
     @GetMapping("/crop/{cate}")

@@ -32,7 +32,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     @Override
     public Product selectProduct(int prodNo) {
-        return null;
+        return queryFactory.select(qProduct).from(qProduct).where(qProduct.prodNo.eq(prodNo)).fetchOne();
     }
 
     @Override
