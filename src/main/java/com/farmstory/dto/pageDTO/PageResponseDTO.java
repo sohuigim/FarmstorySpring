@@ -22,7 +22,7 @@ public class PageResponseDTO<T> {
     private boolean prev, next;
 
     private int cateType;
-
+    private String artcateType;
     @Builder
     public PageResponseDTO(PageRequestDTO pageRequestDTO, List<T> dtoList, int total) {
         this.pg = pageRequestDTO.getPg();

@@ -1,7 +1,7 @@
 package com.farmstory.repository.article;
 
 
-import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
+import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.entity.Article;
 import com.farmstory.entity.QArticle;
 import com.querydsl.core.Tuple;
@@ -39,7 +39,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Page<Tuple> selectArticleAllForList(ArticlePageRequestDTO articlePageRequestDTO, Pageable pageable, String catetype) {
+    public Page<Tuple> selectArticleAllForList(PageRequestDTO pageRequestDTO, Pageable pageable, String catetype) {
         List<Tuple> content = null;
         long total = 0;
 
