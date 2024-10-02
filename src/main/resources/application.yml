@@ -21,7 +21,7 @@ spring:
         name: FarmStory
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: 1234
+        password: Choasa15!
         url: jdbc:mysql://localhost:3306/farmstory
         username: root
     devtools:
@@ -75,7 +75,7 @@ spring:
                     google:
                         client-id: 60431749569-m5e000jb59uqkinlqo5udh3m54d5mlgk.apps.googleusercontent.com
                         client-secret: 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
-                        redirect-uri: "{baseUrl}/login/oauth2/code/google"
+                        redirect-uri: "http://ec2-52-79-243-108.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/google"
                         scope:
                             - email
                             - profile
