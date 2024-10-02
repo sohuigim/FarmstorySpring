@@ -5,6 +5,46 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Administrator</title>
 	<link rel="stylesheet" th:href="@{/css/style_admin.css}">
+	<script>
+		// 모달 상세보기 스크립트
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelectorAll('.detail_btn').forEach(button => {
+				button.addEventListener('click', function(event) {
+					event.preventDefault(); // 기본 동작 방지
+
+					// 버튼의 data-order-no 속성에서 주문 번호를 가져옴
+					const userUid = this.getAttribute('data-user-uid');
+					// AJAX 요청 보내기
+					fetch(`/admin/UserList/${userUid}`)
+							.then(response => {
+								if (!response.ok) {
+									throw new Error('네트워크 오류: ' + response.status);
+								}
+								return response.json();
+							})
+							.then(userData => {
+								// 모달에 데이터를 채우기
+								document.querySelector('.modal_userZip').textContent = userData.userZip;
+								document.querySelector('.modal_userAddr1').textContent = userData.userAddr1;
+								document.querySelector('.modal_userAddr2').textContent = userData.userAddr2;
+								document.querySelector('.modal_userRegDate').textContent = userData.userRegDate;
+								document.querySelector('.modal_userLeaveDate').textContent = userData.userLeaveDate;
+								document.querySelector('.modal_userTotalPoint').textContent = userData.userTotalPoint;
+								document.querySelector('.modal').style.display = 'block';
+							})
+							.catch(err => {
+								console.error('Error fetching order details:', err);
+								alert('주문 정보를 가져오는 데 오류가 발생했습니다.');
+							});
+				});
+			});
+
+			// 모달 닫기 버튼 처리
+			document.querySelector('.close_btn').addEventListener('click', function() {
+				document.querySelector('.modal').style.display = 'none';
+			});
+		});
+	</script>
 </head>
 <body>
 <div id="wrap">
@@ -19,27 +59,39 @@
 			<div>
 				<table class="modal_table">
 					<tr>
-						<td>이름</td>
+						<td>우편번호</td>
 						<td>
-							<p><span class="modal_name"></span></p>
+							<p><span class="modal_userZip"></span></p>
 						</td>
 					</tr>
 					<tr>
-						<td>아이디</td>
+						<td>주소</td>
 						<td>
-							<p><span class="modal_uid"></span></p>
+							<p><span class="modal_userAddr1"></span></p>
 						</td>
 					</tr>
 					<tr>
-						<td>이메일</td>
+						<td>상세주소</td>
 						<td>
-							<p><span class="modal_email"></span></p>
+							<p><span class="modal_userAddr2"></span></p>
 						</td>
 					</tr>
 					<tr>
 						<td>가입일</td>
 						<td>
-							<p><span class="modal_rdate"></span></p>
+							<p><span class="modal_userRegDate"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>탈퇴일</td>
+						<td>
+							<p><span class="modal_userLeaveDate"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>총포인트</td>
+						<td>
+							<p><span class="modal_userTotalPoint"></span></p>
 						</td>
 					</tr>
 				</table>
@@ -90,7 +142,7 @@
 								</select>
 							</td>
 							<td>[[${user.date}]] [[${user.timeDate}]]</td>
-							<td><a href="#" class="detail_btn" >[상세확인]</a></td>
+							<td><a href="#" class="detail_btn" th:data-user-uid="${user.userUid}">[상세확인]</a></td>
 						</tr>
 						</tbody>
 					</table>
