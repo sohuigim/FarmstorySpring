@@ -1,5 +1,6 @@
 package com.farmstory.service;
 
+import com.farmstory.dto.OrderDTO;
 import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.dto.pageDTO.MarketPageResponseDTO;
 import com.farmstory.dto.ProductDTO;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +58,17 @@ public class ProductService {
                 .stream()
                 .map(entity -> entity.toDTO())
                 .collect(Collectors.toList());
-
+        for(ProductDTO product : productDTOS) {
+            LocalDateTime productDateTime = product.getProdRegDate();
+            if(productDateTime != null) {
+                String fullDateTime = productDateTime.toString();
+                String[] split = fullDateTime.split("T");
+                if(split.length == 2) {
+                    product.setDate(split[0]);
+                    product.setTimeDate(split[1]);
+                }
+            }
+        }
         return productDTOS;
     }
 
@@ -74,7 +86,17 @@ public class ProductService {
             return modelMapper.map(product, ProductDTO.class);
 
         }).toList();
-
+        for(ProductDTO product : productList) {
+            LocalDateTime productDateTime = product.getProdRegDate();
+            if(productDateTime != null) {
+                String fullDateTime = productDateTime.toString();
+                String[] split = fullDateTime.split("T");
+                if(split.length == 2) {
+                    product.setDate(split[0]);
+                    product.setTimeDate(split[1]);
+                }
+            }
+        }
         int total = (int) pageProduct.getTotalElements();
 
         return PageResponseDTO.<ProductDTO>builder()
@@ -84,7 +106,7 @@ public class ProductService {
                 .build();
     }
 
-    public void insertProduct(ProductDTO productDTO) {
+    public boolean insertProduct(ProductDTO productDTO) {
 
         // 파일 업로드 경로 파일 객체 생성
         File fileUploadPath = new File(uploadPath);
@@ -106,6 +128,7 @@ public class ProductService {
         files.add(productDTO.getProdImageName3());
 
         int i = 1;  // 이미지 번호를 매기기 위한 인덱스
+        boolean isUploadSuccessful = true;
         for(MultipartFile file : files){
             if(!file.isEmpty()){
                 // 원본 파일명 가져오기
@@ -131,14 +154,18 @@ public class ProductService {
                     }
                 } catch (IOException e) {
                     log.error(e);
+                    isUploadSuccessful = false;
                 }
             }
             i++;
         }
-
-        Product product = modelMapper.map(productDTO, Product.class);
-
-        productRepository.save(product);
+        if (isUploadSuccessful) {
+            Product product = modelMapper.map(productDTO, Product.class);
+            productRepository.save(product);
+            return true;
+        } else {
+            return false;
+        }
     }
     public void DeleteProduct(List<String> productIds) {
         for (String id : productIds) {

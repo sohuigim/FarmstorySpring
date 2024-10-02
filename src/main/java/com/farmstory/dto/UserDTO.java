@@ -30,6 +30,8 @@ public class UserDTO {
 
     private LocalDateTime userRegDate;
     private LocalDateTime userLeaveDate; // 탈퇴 버튼이 후 떠나는 일자를 확정가능
+    private String Date;
+    private String timeDate;
     private int userTotalPoint;
 
 

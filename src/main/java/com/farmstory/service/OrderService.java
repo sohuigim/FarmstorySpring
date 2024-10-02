@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -36,6 +37,11 @@ public class OrderService {
         // OrderDTO -> Order 엔티티로 변환할 때 Product 객체를 전달
         Order entity = orderDTO.toEntity(product);
         orderRepository.save(entity);
+    }
+    public OrderDTO selectOrderbyId(String orderno){
+        int ordernumber = Integer.parseInt(orderno);
+        Optional<Order> order = orderRepository.findById(ordernumber);
+        return modelMapper.map(order, OrderDTO.class);
     }
 
     public List<OrderDTO> selectOrders() {

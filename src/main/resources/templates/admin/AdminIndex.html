@@ -40,7 +40,7 @@
                         <td>[[${product.prodCateType}]]</td>
                         <td class="price" >[[${product.prodPrice}]]원</td>
                         <td>[[${product.prodStock}]]</td>
-                        <td>[[${product.prodRegDate}]]</td>
+                        <td>[[${product.Date}]]</td>
                     </tr>
                     </tbody>
                 </table>
@@ -75,7 +75,7 @@
                         <td class="price">[[${order.orderDeliveryFee}]]</td>
                         <td class="price">합계</td>
                         <td>[[${order.orderSendName}]]</td>
-                        <td>[[${order.Date}]]<br>[[${order.timeDate}]]</td>
+                        <td>[[${order.Date}]]</td>
                     </tr>
                     </tbody>
                 </table>
@@ -108,7 +108,7 @@
                         <td th:text="${user.userHp}"></td>
                         <td th:text="${user.userEmail}"></td>
                         <td th:text="${user.userRole}"></td>
-                        <td th:text="${user.userRegDate}"></td>
+                        <td th:text="${user.date}"></td>
                     </tr>
                     </tbody>
                 </table>
