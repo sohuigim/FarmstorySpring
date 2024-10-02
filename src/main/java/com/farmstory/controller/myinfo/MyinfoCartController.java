@@ -10,10 +10,13 @@ import com.farmstory.service.OrderService;
 import com.farmstory.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -58,6 +61,18 @@ public class MyinfoCartController {
         model.addAttribute("OrderPageResponseDTO", OrderPageResponseDTO);
 
         return "user/UserMyinfoOrder";
+    }
+
+    @GetMapping("/userInfo/UserMyinfoOrder/{orderNo}")
+    @ResponseBody
+    public ResponseEntity<OrderDTO> getOrderDetail(@PathVariable String orderNo) {
+        OrderDTO orderDetail = orderService.selectOrderbyId(orderNo);
+
+        if (orderDetail != null) {
+            return ResponseEntity.ok(orderDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

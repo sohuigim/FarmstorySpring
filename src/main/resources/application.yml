@@ -2,7 +2,6 @@ logging:
     file:
         name: /logs/FarmStory.log
     level:
-        org.springframework.security: DEBUG
         jdbc:
             resultsettable: debug
             sqlonly: debug
