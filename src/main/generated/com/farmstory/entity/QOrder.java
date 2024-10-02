@@ -36,6 +36,10 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
 
+    public final NumberPath<Integer> orderPay = createNumber("orderPay", Integer.class);
+
+    public final NumberPath<Integer> orderPlusPoint = createNumber("orderPlusPoint", Integer.class);
+
     public final NumberPath<Integer> orderPrice = createNumber("orderPrice", Integer.class);
 
     public final StringPath orderReceiveHp = createString("orderReceiveHp");
@@ -49,6 +53,10 @@ public class QOrder extends EntityPathBase<Order> {
     public final NumberPath<Integer> ordersGroup = createNumber("ordersGroup", Integer.class);
 
     public final NumberPath<Integer> orderStock = createNumber("orderStock", Integer.class);
+
+    public final NumberPath<Integer> orderTotalPrice = createNumber("orderTotalPrice", Integer.class);
+
+    public final NumberPath<Integer> orderUsePoint = createNumber("orderUsePoint", Integer.class);
 
     public final QProduct product;
 

@@ -1,4 +1,4 @@
-<th:block th:include="user/User_myinfo_header.html"/>
+<th:block th:include="/user/User_myinfo_header.html"/>
 <title>MyInfo</title>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script th:src="@{/js/postcode.js}"></script>
@@ -356,9 +356,9 @@
 					<div class="aside_bg">
 						<ul class="cate_lnb_real">
 
-							<li> <a th:href="@{/userinfo/UserMyinfoCart12(userId=${#authentication.principal.user.userUid})}">장바구니</a></li>
-							<li> <a th:href="@{/userinfo/UserMyinfoOrder}">주문정보</a></li>
-							<li> <a th:href="@{/userinfo/UserMyinfo}">정보수정</a></li>
+							<li> <a th:href="@{/userInfo/UserMyinfoCart(userId=${#authentication.principal.user.userUid})}">장바구니</a></li>
+							<li> <a th:href="@{/userInfo/UserMyinfoOrder(userId=${#authentication.principal.user.userUid})}">주문정보</a></li>
+							<li> <a th:href="@{/userInfo/UserMyinfo}">정보수정</a></li>
 
 						</ul><!-- .cate_lnb -->
 					</div><!-- .aside_bg -->

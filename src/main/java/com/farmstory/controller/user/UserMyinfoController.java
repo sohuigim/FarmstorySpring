@@ -88,13 +88,4 @@ public class UserMyinfoController {
         return result;
     }
 
-        @GetMapping("userInfo/UserMyinfoCart")
-    public String UserMyinfoCart(){
-        return "user/UserMyinfoCart";
-    }
-
-    @GetMapping("userInfo/UserMyinfoOrder")
-    public String UserMyinfoOrder(){
-        return "user/UserMyinfoOrder";
-    }
 }

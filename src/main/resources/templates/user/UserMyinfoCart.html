@@ -82,36 +82,36 @@
 
         btnSd.addEventListener('click', function (e) {
             e.preventDefault();
+            if (confirm("삭제하시겠습니까?")) {
+                setDelete.forEach(value => {
+                    arr.push(value);
+                });
 
-            setDelete.forEach(value => {
-                arr.push(value);
-            });
+                let formData = new FormData();
 
-            let formData = new FormData();
-
-            arr.forEach(val => {
-                formData.append("cart", val);
-            });
-            formData.append("action", "delete");
-            fetch('/market/MarketCart', {
-                method: 'POST',
-                body: formData
-            })
-                .then(resp => resp.json())
-                .then(data => {
-                    console.log("확인해보기" + data);
-                    if (data.success) {
-                        alert('삭제되었습니다!');
-                        location.reload();
-                    } else {
-                        alert('실패하였습니다!');
-                    }
-
+                arr.forEach(val => {
+                    formData.append("cart", val);
+                });
+                formData.append("action", "delete");
+                fetch('/market/MarketCart', {
+                    method: 'POST',
+                    body: formData
                 })
-                .catch(err => {
-                    console.log(err);
-                })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log("확인해보기" + data);
+                        if (data.success) {
+                            alert('삭제되었습니다!');
+                            location.reload();
+                        } else {
+                            alert('실패하였습니다!');
+                        }
 
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
         });
 
         btnOrder.addEventListener('click', function (e) {
@@ -149,9 +149,9 @@
                 </div><!-- .aside_cate -->
                 <div class="aside_bg">
                     <ul class="cate_lnb_real">
-                        <li> <a href="#">장바구니</a></li>
-                        <li> <a href="#">주문정보</a></li>
-                        <li> <a href="#">정보수정</a></li>
+                        <li> <a th:href="@{/userInfo/UserMyinfoCart(userId=${#authentication.principal.user.userUid})}">장바구니</a></li>
+                        <li> <a th:href="@{/userInfo/UserMyinfoOrder(userId=${#authentication.principal.user.userUid})}">주문정보</a></li>
+                        <li> <a th:href="@{/userInfo/UserMyinfo}">정보수정</a></li>
                     </ul><!-- .cate_lnb -->
                 </div><!-- .aside_bg -->
             </div><!-- .sidebar -->

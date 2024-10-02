@@ -48,6 +48,8 @@
 .order_tb .point{float:left;}
 .order_tb .point_btn{float:left; display: block; width: 52px; line-height: 21px; height: 21px; border: 1px solid #767676;  border-radius: 2.5px; background: #efefef; text-align: center; margin: -1px 0 0 3px;}
 
+.order_tb .rec_hp{float:left;}
+.order_tb .user_btn{float:left; display: block; width: 52px; line-height: 21px; height: 21px; border: 1px solid #767676;  border-radius: 2.5px; background: #efefef; text-align: center; margin: -1px 0 0 3px;}
 /* 배송주소 */
 .order_tb .delivery_addr{height: 85.75px;}
 .order_tb .post_sch{float: left;}

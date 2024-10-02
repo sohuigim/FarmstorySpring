@@ -33,7 +33,7 @@
 
                 totalCount += count;
                 totalDiscount += prodDiscount;
-                totalPoint += point * count ;
+                totalPoint += point * count;
                 totalPrice += price;
                 totalOrderPrice += orderPrice - prodDiscount;
                 totalNoDiscount += price * count;
@@ -43,9 +43,9 @@
             document.getElementById('total_price').innerText = totalNoDiscount + "원";
             document.getElementById('total_discount').innerText = totalDiscount + "원";
             document.getElementById('total_point').innerText = totalPoint + "P";
-            if(totalOrderPrice > 30000){
+            if (totalOrderPrice > 30000) {
                 document.getElementById('total_delivery').innerText = 0 + "원";
-            }else{
+            } else {
                 document.getElementById('total_delivery').innerText = maxDelivery + "원";
             }
             document.getElementById('total_orderPrice').innerText = totalOrderPrice + "원";
@@ -81,36 +81,38 @@
 
         btnSd.addEventListener('click', function (e) {
             e.preventDefault();
+            if (confirm("삭제하시겠습니까?")) {
+                setDelete.forEach(value => {
+                    arr.push(value);
+                });
 
-            setDelete.forEach(value => {
-                arr.push(value);
-            });
+                let formData = new FormData();
 
-            let formData = new FormData();
-
-            arr.forEach(val => {
-                formData.append("cart", val);
-            });
-            formData.append("action", "delete");
-            fetch('/market/MarketCart', {
-                method: 'POST',
-                body: formData
-            })
-                .then(resp => resp.json())
-                .then(data => {
-                    console.log("확인해보기" + data);
-                    if (data.success) {
-                        alert('삭제되었습니다!');
-                        location.reload();
-                    } else {
-                        alert('실패하였습니다!');
-                    }
-
+                arr.forEach(val => {
+                    formData.append("cart", val);
+                });
+                formData.append("action", "delete");
+                fetch('/market/MarketCart', {
+                    method: 'POST',
+                    body: formData
                 })
-                .catch(err => {
-                    console.log(err);
-                })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log("확인해보기" + data);
+                        if (data.success) {
+                            alert('삭제되었습니다!');
+                            location.reload();
+                        } else {
+                            alert('실패하였습니다!');
+                        }
 
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            } else{
+                alert('삭제되지 않았습니다.')
+            }
         });
 
         btnOrder.addEventListener('click', function (e) {

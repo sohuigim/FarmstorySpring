@@ -6,8 +6,10 @@ import com.farmstory.dto.pageDTO.OrderPageResponseDTO;
 import com.farmstory.dto.pageDTO.PageResponseDTO;
 import com.farmstory.entity.Order;
 import com.farmstory.entity.Product;
+import com.farmstory.entity.User;
 import com.farmstory.repository.order.OrderRepository;
 import com.farmstory.repository.product.ProductRepository;
+import com.farmstory.repository.user.UserRepository;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,14 +30,28 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
-    public void insertOrder(OrderDTO orderDTO) {
-        Product product = productRepository.findById(orderDTO.getProdNo())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
+    public int insertOrder(OrderDTO orderDTO) {
 
-        // OrderDTO -> Order 엔티티로 변환할 때 Product 객체를 전달
-        Order entity = orderDTO.toEntity(product);
-        orderRepository.save(entity);
+
+        Order order = modelMapper.map(orderDTO, Order.class);
+
+        User user = userRepository.findById(orderDTO.getOrderuserUid()).orElseThrow();
+        Product product = productRepository.findById(orderDTO.getProdNo()).orElseThrow();
+
+        order.setUser(user);
+        order.setProduct(product);
+        log.info(order);
+        userRepository.updateUserPoint(orderDTO.getOrderUsePoint(),orderDTO.getOrderPlusPoint(),orderDTO.getOrderuserUid());
+        log.info(user);
+
+        userRepository.save(user);
+
+        Order savedOrder = orderRepository.save(order);
+
+        return savedOrder.getOrderNo();
+
     }
 
     public List<OrderDTO> selectOrders() {
@@ -71,6 +87,7 @@ public class OrderService {
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
             if(order.getProduct() != null) {
                 orderDTO.setProdName(order.getProduct().getProdName());
+                orderDTO.setProdNo(order.getProduct().getProdNo());
             }
             LocalDateTime orderDateTime = order.getOrderDate();
             if (orderDateTime != null) {

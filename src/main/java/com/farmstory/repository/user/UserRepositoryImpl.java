@@ -2,8 +2,11 @@ package com.farmstory.repository.user;
 
 import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.entity.QUser;
+import com.farmstory.entity.User;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +19,8 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepositoryCustom {
     private final JPAQueryFactory queryFactory;
+
+    private final EntityManager entityManager;
 
     private QUser qUser = QUser.user;
     @Override
@@ -34,4 +39,25 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchOne();
         return new PageImpl<Tuple>(content, pageable, total);
     }
+
+    @Override
+    @Transactional
+    public long updateUserPoint(int usePoint, int plusPoint , String userId) {
+
+        System.out.println("point값은?" + (plusPoint-usePoint));
+        System.out.println("uid값은?" + userId);
+
+        long result = 0;
+
+        result = queryFactory.update(qUser)
+                .set(qUser.userTotalPoint, qUser.userTotalPoint.add(plusPoint-usePoint))
+                .where(qUser.userUid.eq(userId))
+                .execute();
+
+
+        entityManager.flush();
+        return result;
+
+    }
+
 }
