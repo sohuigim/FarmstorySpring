@@ -281,6 +281,8 @@ window.onload=function () {
         const leavePass = quitPass.value;
 
         if(leavePass==null || leavePass == ''){
+
+            alert('소셜 유저는 비밀번호 재설정 후 탈퇴하실 수 있습니다.')
             quitPass.style.display='block';
             quit_result.innerText = '비밀번호 입력 후 탈퇴 버튼을 눌러주세요.'
             console.log("console.log(leavePass) 1 "+leavePass)
