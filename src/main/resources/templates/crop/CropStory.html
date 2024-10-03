@@ -10,8 +10,16 @@
     <script th:inline="javascript">
         var cate = /*[[${cate}]]*/ 'b201'
         console.log(cate)
-    </script>
 
+    </script>
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.aside_bg .cate_lnb1 li .lnb1');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
+    </script>
 </head>
 <body>
 <div id="container">

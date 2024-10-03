@@ -3,7 +3,12 @@
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/user/myInfoCart.css}">
 <script>
+
     window.onload = function () {
+        const now = document.querySelector('.aside_bg .cate_lnb_real li:nth-child(1) a');
+        if (now) {
+        now.classList.add("now");
+        }
         let setDelete = new Set();
         const btnSd = document.getElementsByClassName('btnSD')[0];
         const btnOrder = document.getElementsByClassName('btn_order')[0];

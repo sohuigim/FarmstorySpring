@@ -3,6 +3,12 @@
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/user/myInfoOrder.css}">
 <script>
+        window.onload = function() {
+            const now = document.querySelector('.aside_bg .cate_lnb_real li:nth-child(2) a');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
         // 모달 상세보기 스크립트
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.detail_btn').forEach(button => {

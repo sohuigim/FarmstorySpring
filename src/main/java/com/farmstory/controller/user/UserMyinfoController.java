@@ -37,6 +37,10 @@ public class UserMyinfoController {
         }
 
     }
+    @GetMapping("userInfo/UserMyinfo1")
+    public String UserMyinfo1(){
+        return "user/UserMyinfo1";
+    }
 
     @ResponseBody
     @PostMapping("userInfo/UserMyinfo")
