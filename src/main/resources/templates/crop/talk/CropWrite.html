@@ -7,36 +7,6 @@
 <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 <link rel="stylesheet" th:href="@{/css/community.css}">
     <link rel="stylesheet" th:href="@{/css/croptalk.css}">
-    <script>
-        window.onload = function() {
-            // name 속성으로 hidden input에서 artCate 값 가져오기
-            const artCate = document.querySelector('input[name="artCate"]').value;
-            let now;
-            // 카테고리 기반으로 특정 요소 선택
-            if (artCate === 'CropStory') {
-                now = document.querySelector('.aside_bg .cate_lnb1 li .lnb1');
-            } else if (artCate === 'CropGarden') {
-                now = document.querySelector('.aside_bg .cate_lnb1 li .lnb2');
-            } else if (artCate === 'CropReturnfarm') {
-                now = document.querySelector('.aside_bg .cate_lnb1 li .lnb3');
-            }
-            // 해당 요소에 "now" 클래스 추가
-            if (now) {
-                now.classList.add("now");
-            }
-        };
-    </script>
-<!--<c:choose>-->
-<!--	<c:when test="${group eq 'croptalk'}">-->
-<!--		<%@ include file="../../_aside_ct.jsp" %>-->
-<!--		<link rel="stylesheet" th:href="@{/css/croptalk.css}">-->
-<!--	</c:when>-->
-<!--	<c:when test="${group eq 'event'}">-->
-<!--		<%@ include file="../../_aside_et.jsp" %>-->
-<!--		<link rel="stylesheet" href="../../css/event.css">-->
-<!--	</c:when>-->
-<!--	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>-->
-<!--</c:choose>-->
 </head>
 <body>
     <div id="container">
@@ -54,21 +24,14 @@
                         <table>
                             <tr>
                                 <td>제목</td>
-<!--&lt;!&ndash;                    <input type="hidden" name="b_cateNo" value="${cate}"/>&ndash;&gt;-->
-<!--                                <input type="hidden" name="artCate" id="artCate" value="${artCate}"/>-->
                                 <td><input type="text" name="artTitle" id="artTitle" placeholder="제목을 입력하세요."/></td>
 
                             </tr>
-<!--                            <tr>-->
-<!--                                <td>카테고리</td>-->
-<!--                                <td><input type="text" name="artCate" id="artCate" value="${artCate}"/></td>-->
-<!--                            </tr>-->
                             <tr>
                                 <td>내용</td>
                                 <td>
-
                                     <textarea name="artContent"></textarea>
-                </td>
+                                </td>
                             </tr>
                             <tr>
                                 <td>첨부</td>

@@ -188,7 +188,7 @@ public class CommunityController {
 
         // 게시물 정보 업데이트
         articleDTO.setArtNo(artNo); // 게시물 번호 설정
-        articleService.updateArticle(articleDTO); // DB 업데이트
+        articleService.updateArticle(artNo, articleDTO); // DB 업데이트
 
         model.addAttribute("str1", str1);
 

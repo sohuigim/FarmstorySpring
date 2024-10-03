@@ -6,6 +6,7 @@ import com.farmstory.entity.Article;
 import com.farmstory.entity.FileEntity;
 import com.farmstory.repository.FileRepository;
 import com.farmstory.repository.article.ArticleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class FileService {
 
     private final FileRepository fileRepository;
@@ -141,6 +143,12 @@ public class FileService {
 
     public void insertFile(FileDTO fileDTO) {
         FileEntity fileEntity = modelMapper.map(fileDTO, FileEntity.class);
+
+        Article article = new Article();
+        article.setArtNo(fileDTO.getArtNo());
+
+        fileEntity.setArticle(article);
+        log.info("FileEntity with artNo: " + fileEntity.getArticle().getArtNo());
         fileRepository.save(fileEntity);
     }
 
@@ -162,6 +170,8 @@ public class FileService {
         return null;
     }
     public void updateFile(FileDTO fileDTO){}
-    public void deleteFile(int fno){}
+    public void deleteFile(int fno){
+        fileRepository.deleteById(fno);
+    }
 
 }

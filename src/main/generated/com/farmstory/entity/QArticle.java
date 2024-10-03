@@ -42,6 +42,8 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final StringPath artWriter = createString("artWriter");
 
+    public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);
+
     public final ListPath<FileEntity, QFileEntity> fileList = this.<FileEntity, QFileEntity>createList("fileList", FileEntity.class, QFileEntity.class, PathInits.DIRECT2);
 
     public QArticle(String variable) {

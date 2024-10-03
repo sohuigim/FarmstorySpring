@@ -5,6 +5,7 @@ import com.farmstory.dto.*;
 import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
 import com.farmstory.entity.Article;
+import com.farmstory.entity.FileEntity;
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.CommentRepository;
 import com.farmstory.repository.article.ArticleRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -152,19 +154,23 @@ public class ArticleService {
 
 
     @Transactional
-    public void deleteArticle(int artNo) {
-        fileService.deleteFile(artNo);
-
-        commentRepository.deleteById(artNo);
-
-        articleRepository.deleteById(artNo);
-
-
+    public void deleteArticle(int no) {
+        articleRepository.deleteById(no);
+        log.info("Deleted Article with ID: " + no);
     }
 
-    public void updateArticle(ArticleDTO articleDTO) {
-        Article article = articleDTO.toEntity();
-        articleRepository.save(article);
+    public void updateArticle(int artNo, ArticleDTO articleDTO) {
+        Optional<Article> articleOpt = articleRepository.findById(artNo);
+        if (articleOpt.isPresent()) {
+            Article article = articleOpt.get();
+            article.setArtTitle(articleDTO.getArtTitle());
+            article.setArtContent(articleDTO.getArtContent());
+            article.setArtWriter(articleDTO.getArtWriter());
+            article.setArtNick(articleDTO.getArtNick());
+
+            // 기타 필요한 업데이트 로직 추가
+            articleRepository.save(article);
+        }
     }
 
 
