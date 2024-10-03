@@ -7,6 +7,16 @@
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/introduction/introduction.css}">
     <!-- 화면당 적용할 CSS만 추가하면됨 -->
+<!--    해당 페이지를 지정 하기 위한 script-->
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.aside_bg .cate_lnb1 li .lnb1');
+            if (now) {
+                // 클래스에 now를 추가
+                now.classList.add("now");
+            }
+        };
+    </script>
 </head>
 <body>
 <div id="wrapper">
