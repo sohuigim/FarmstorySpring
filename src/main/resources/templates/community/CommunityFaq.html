@@ -13,6 +13,7 @@
                 method: 'POST',
             }).then(function(response) {
                 if (response.ok) {
+                    alert("관리자 권한의 사용자만 접근가능합니다.")
                     window.location.href = redirectUrl;
                 } else {
                     console.error('Error increasing hit count');
