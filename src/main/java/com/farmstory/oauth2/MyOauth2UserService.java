@@ -3,14 +3,17 @@ package com.farmstory.oauth2;
 import com.farmstory.entity.User;
 import com.farmstory.repository.user.UserRepository;
 import com.farmstory.security.MyUserDetails;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MyOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final HttpServletRequest request;
 
 
     @Override
@@ -46,6 +50,8 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
         String uid = null;
         String name = null;
         String nick = null;
+        String role = "USER";
+
 
         if(provider.equals("google")) {
             //사용자 확인 및 회원가입 처리
@@ -85,11 +91,15 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
                     .attributes(attributes)
                     .build();
         }else{
+            String userip = getClientIpAddress(request);
             //회원이 존재하지 않으면 회원가입 처리
             user = User.builder()
                     .userUid(uid)
                     .userNick(nick)
                     .userEmail(email)
+                    .userRegDate(LocalDateTime.now())
+                    .userRegip(userip)
+                    .userRole(role)
                     .userName(name)
                     .build();
 
@@ -104,4 +114,20 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
 
         }
     }
+
+    private String getClientIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+
 }
