@@ -245,14 +245,14 @@ public class CropController {
 
 
 
-    @PostMapping("/increaseHit")
+    @PostMapping("/crop/increaseHit")
     @ResponseBody
     public ResponseEntity<Void> increaseHit(@RequestParam("artNo") int artNo) {
         articleService.increaseHit(artNo);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/file/delete/{fileNo}")
+    @DeleteMapping("/crop/file/delete/{fileNo}")
     @ResponseBody
     public ResponseEntity<String> deleteFile(@PathVariable("fileNo") int fileNo) {
         try {

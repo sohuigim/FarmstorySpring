@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/html">
+<html lang="ko" >
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +7,30 @@
 	<link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 	<link rel="stylesheet" th:href="@{/css/community.css}">
 	<link rel="stylesheet" th:href="@{/css/croptalk.css}">
+	<script>
+		window.onload = function() {
+			// name 속성으로 hidden input에서 artCate 값 가져오기
+			const artCate = document.querySelector('input[name="artCate"]').value;
+			let now;
+			// 카테고리 기반으로 특정 요소 선택
+			if (artCate === 'CropStory') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb1');
+			} else if (artCate === 'CropGarden') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb2');
+			} else if (artCate === 'CropReturnfarm') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb3');
+			}
+			// 해당 요소에 "now" 클래스 추가
+			if (now) {
+				now.classList.add("now");
+			}
+		};
+	</script>
 	<!-- 화면당 적용할 CSS만 추가하면됨 -->
 	<script>
 		function deleteFile(fileNo) {
 			if (confirm('이 파일을 삭제하시겠습니까?')) {
-				fetch(`/file/delete/${fileNo}`, {
+				fetch(`/crop/file/delete/${fileNo}`, {
 					method: 'DELETE',
 				})
 					.then(response => {
