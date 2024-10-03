@@ -23,7 +23,8 @@
 .cate_lnb li:nth-child(1) a{top:107px; background-image: url('../../images/sub_cate1_lnb1.png');}
 .cate_lnb li:nth-child(2) a{top:136px; background-image: url('../../images/sub_cate1_lnb2.png');}
 
-
+.cate_lnb li:nth-child(1) a.now{top:107px; background-image: url('../../images/sub_cate1_lnb1_ov.png');}
+.cate_lnb li:nth-child(2) a.now{top:136px; background-image: url('../../images/sub_cate1_lnb2_ov.png');}
 /* lnb a 마우스오버시 공통값 */
 .cate_lnb li a:hover{
     box-sizing: border-box;

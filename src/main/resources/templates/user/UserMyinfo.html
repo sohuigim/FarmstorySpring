@@ -7,12 +7,20 @@
 	const uid = [[${user.userUid}]];
 	const regDate = [[${user.userRegDate}]];
 </script>
-<script th:src="@{/js/MyinfoValidation.js}"></script>
 
+<script th:src="@{/js/MyinfoValidation.js}"></script>
+<script>
+	window.onload = function() {
+		const now = document.querySelector('.aside_bg .cate_lnb_real li:nth-child(3) a');
+		if (now) {
+			now.classList.add("now");
+		}
+	};
+</script>
 <link rel="stylesheet" th:href="@{/css/user/myinfo.css}">
 <link rel="stylesheet" th:href="@{/css/common_myinfo_modify.css}">
 <main>
-	<div class="mainIn">
+	<div class="mainIn cf">
 		<section class="infotable">
 			<div class="sub_bg">
 				<img th:src="@{/images/myinfo/myinfo_top_tit.png}" alt="MY INFO" class="sub_tit">
@@ -35,15 +43,16 @@
 				</div><!-- .sidebar -->
 			</aside><!-- .aside -->
 			<article class="article">
+				<p class="location">
+					<img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+					<span>HOME </span>
+					<span>나의정보 </span>
+					<strong>정보수정</strong>
+				</p><!-- .location -->
 				<div class="articleIn cf">
 					<nav>
 						<h2><img th:src="@{/images/myinfo/myinfo_nav_tit3.png}" alt="장보기"></h2>
-						<p class="location">
-							<img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
-							<span>HOME </span>
-							<span>나의정보 </span>
-							<strong>정보수정</strong>
-						</p><!-- .location -->
+
 					</nav>
 
 					<div class="form">
