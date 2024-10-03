@@ -4,9 +4,9 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>글보기</title>
-   <link rel="stylesheet" th:href="@{/css/community.css}">
    <link rel="stylesheet" th:href="@{/css/croptalk.css}">
-   <script src="/js/utils.js"></script>
+   <link rel="stylesheet" th:href="@{/css/community.css}">
+   <script th:src="@{/js/utils.js}"></script>
 </head>
 <body>
 <div id="container">
@@ -29,6 +29,7 @@
 
             const data = await fetchPost('/comment/write', jsonData);
             if (data != null) {
+               window.location.reload(true);
                alert('댓글이 등록되었습니다.');
                const commentArticle = `
                   <article>
@@ -71,6 +72,7 @@
                     .catch(err => {
                        console.error('삭제 요청 중 오류 발생:', err);
                     });
+            window.location.reload(true);
          }
 
          if (e.target.classList.contains('commentModify')) {
@@ -103,6 +105,7 @@
                              textarea.style.border = 'none';
                              e.target.innerText = '수정';
                              article.querySelector('.commentCancel').style.display = 'none';
+
                           } else {
                              alert('댓글 수정에 실패했습니다.');
                           }
@@ -110,6 +113,7 @@
                        .catch(err => {
                           console.error('수정 요청 중 오류 발생:', err);
                        });
+               window.location.reload(true);
             }
          }
 
@@ -127,11 +131,41 @@
       });
    </script>
 
+   <script>
+      document.addEventListener('DOMContentLoaded', function () {
+         const deleteButton = document.querySelector('.btnDelete');
+
+         deleteButton.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (confirm('정말 삭제하시겠습니까?')) {
+               const deleteUrl = deleteButton.getAttribute('href');
+               const cateValue = document.getElementById("cateValue").value; // cate 값을 가져옴
+
+               fetch(deleteUrl, {
+                  method: 'DELETE',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  },
+               })
+                       .then(response => {
+                          alert("게시글 삭제에 성공하였습니다.")
+                             window.location.href = `/crop/${cateValue}`;  // cate 값을 사용하여 리다이렉션
+                       })
+                       .catch(error => {
+                          console.error('삭제 요청 중 오류 발생:', error);
+                          alert('오류가 발생했습니다.');
+                       });
+            }
+         });
+      });
+   </script>
    <section class="view">
       <h3>글보기</h3>
       <table>
          <tr>
             <td>제목</td>
+            <p th:value="${#authentication.principal.user.userUid}"></p>
             <td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
          </tr>
          <tr th:if="${articleDTO.fileList.size() > 0}">
@@ -147,15 +181,12 @@
             <td><textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea></td>
          </tr>
       </table>
-
       <div>
-         <th:if test="${sessUser.uid eq articleDTO.artWriter}">
-            <a th:href="|/crop/${cate}/CropDelete/${artNo}|" class="btnDelete">삭제</a>
-            <a th:href="|/crop/${cate}/CropModify/${artNo}|" class="btnModify">수정</a>
-            <a th:href="|/crop/${cate}|" class="btnList">목록</a>
-         </th:if>
+         <input type="hidden" id="cateValue" th:value="${cate}" />
+         <a th:href="@{|/crop/${cate}/CropDelete/${articleDTO.artNo}|}" class="btnDelete">삭제</a>
+         <a th:href="|/crop/${cate}/CropModify/${artNo}|" class="btnModify">수정</a>
+         <a th:href="@{|/crop/${cate}|}" class="btnList">목록</a>
       </div>
-
       <section class="commentList">
          <h3>댓글목록</h3>
          <article th:each="comment : ${comments}" class="comment">
@@ -171,14 +202,11 @@
                   <a href="#" class="commentModify" th:attr="data-no=${comment.commentNo}">수정</a>
                </div>
             </th:block>
+            <div>
+            <a href="#" class="commentCancel" th:attr="data-no=${comment.commentNo}" style="display:none;">취소</a>
+            </div>
          </article>
-
-         <th:block th:switch="${comments.size()}">
-            <p th:case="0">등록된 댓글이 없습니다.</p>
-         </th:block>
-
       </section>
-
       <section class="commentForm">
          <h3>댓글쓰기</h3>
          <form th:action="@{/comment/write}" name="commentForm" method="post">

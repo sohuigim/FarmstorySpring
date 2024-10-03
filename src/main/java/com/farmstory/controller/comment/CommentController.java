@@ -43,20 +43,11 @@ public class CommentController {
     }
 
     @GetMapping("/delete")
-    public ResponseEntity<Map<String, Object>> deleteComment(@RequestParam("articleNo") int articleNo,
-                                                             @RequestParam("commentNo") int commentNo) {
-        int result = commentService.deleteComment(articleNo, commentNo);
+    public ResponseEntity<?> deleteComment(@RequestParam("articleNo") int articleNo,
+                                                @RequestParam("commentNo") int commentNo) {
+        commentService.deleteComment(articleNo, commentNo);
 
-        Map<String, Object> response = new HashMap<>();
-        if (result > 0) {
-            response.put("status", "success");
-            response.put("message", "댓글이 성공적으로 삭제되었습니다.");
-        } else {
-            response.put("status", "fail");
-            response.put("message", "댓글 삭제에 실패했습니다.");
-        }
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 
 

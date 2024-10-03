@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"article", "user"}) // 양방향 관계 필드를 제외
 @Builder
 @Entity                 // 엔티티 객체 정의
 @Table(name = "comment")

@@ -9,4 +9,5 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<FileEntity, Integer> {
     public List<FileEntity> findAllByArticle(Article article);
     List<FileEntity> findByArticle(Article article);
+    List<FileEntity> findByArticleArtNo(int artNo);
 }

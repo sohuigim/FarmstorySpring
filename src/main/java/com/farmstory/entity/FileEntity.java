@@ -23,7 +23,7 @@ public class FileEntity {
     private String filesName;
     private int fileDownload;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "artNo")
     private Article article;
 

@@ -7,13 +7,14 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"comments"}) // 양방향 관계 필드를 제외
 @Builder
 @Entity                 // 엔티티 객체 정의
 @Table(name = "article")
@@ -35,8 +36,12 @@ public class Article {
     private LocalDate artRdate;
     private String artNick;
 
-    @OneToMany(mappedBy = "fileNo")
+    @OneToMany(mappedBy = "fileNo", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> fileList;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
 
     public ArticleDTO toDTO(){
         return ArticleDTO.builder()

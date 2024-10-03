@@ -18,12 +18,15 @@ import com.farmstory.service.FileService;
 import com.farmstory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -102,10 +105,10 @@ public class CropController {
 
 
     @PostMapping("/crop/CropWrite")
-
     public String CropWrite(ArticleDTO articleDTO, String artCate, Principal principal) {
-        log.info("article info : "+articleDTO);
+        log.info("article info : " + articleDTO);
 
+        // 사용자 정보 설정
         if (principal != null) {
             String username = principal.getName();
             UserDTO userDTO = userService.selectUserById(username);
@@ -116,6 +119,7 @@ public class CropController {
             }
         }
 
+        // 카테고리 설정
         String str1 = "";
         if (artCate.equals("CropStory")) {
             str1 = "b201";
@@ -125,20 +129,23 @@ public class CropController {
             str1 = "b203";
         }
 
+        // 먼저 글을 저장하여 artNo 생성
+        int artNo = articleService.insertArticle(articleDTO);
+        log.info("Generated artNo : " + artNo);
+
+        // 생성된 artNo를 파일 DTO에 설정
         List<FileDTO> uploadedFiles = fileService.uploadFile(articleDTO);
-        articleDTO.setArtFile(uploadedFiles.size());
-
-        int ano = articleService.insertArticle(articleDTO);
-        log.info("ano : " + ano);
-
-        for (FileDTO fileDTO : uploadedFiles) {
-            fileDTO.setArtNo(ano);
-            fileService.insertFile(fileDTO);
+        if (!uploadedFiles.isEmpty()) {
+            for (FileDTO fileDTO : uploadedFiles) {
+                fileDTO.setArtNo(artNo);  // 파일에 artNo 할당
+                log.info("File with artNo: " + fileDTO); // 로그로 파일 정보 출력
+                fileService.insertFile(fileDTO);  // 파일 정보 저장
+            }
         }
 
         return "redirect:/crop/" + artCate;
-
     }
+
 
     //글보기
     @GetMapping("/crop/{cate}/CropView/{artNo}")
@@ -180,24 +187,59 @@ public class CropController {
             str1 = "b203";
         }
 
-        ArticleDTO articleDTO = articleService.getArticle(artNo);
-        model.addAttribute(articleDTO);
+        ArticleDTO articleDTO = articleService.selectArticle(artNo);
+        model.addAttribute("articleDTO", articleDTO);
+        log.info("articleDTO_modify_Conrtroller :" + articleDTO);
 
         model.addAttribute("str1", str1);
 
         return "/crop/talk/CropModify";
     }
 
+    @PostMapping("/crop/{cate}/CropModify/{artNo}")
+    public String updateCrop(@ModelAttribute ArticleDTO articleDTO, @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2, @PathVariable String cate, @PathVariable("artNo") int artNo) {
+        log.info("Modified article info : " + articleDTO);
+
+        // 기존 글 정보 불러오기
+        ArticleDTO existingArticle = articleService.selectArticle(artNo);
+
+        if (existingArticle == null) {
+            return "redirect:/crop/" + cate;  // 글이 없으면 다시 목록으로
+        }
+
+        // 업데이트할 내용 반영
+        existingArticle.setArtTitle(articleDTO.getArtTitle());
+        existingArticle.setArtContent(articleDTO.getArtContent());
+
+        // 파일 처리 (새 파일이 있을 경우 처리)
+        if (!file1.isEmpty() || !file2.isEmpty()) {
+            List<MultipartFile> files = new ArrayList<>();
+            if (!file1.isEmpty()) files.add(file1);
+            if (!file2.isEmpty()) files.add(file2);
+
+            articleDTO.setFiles(files);
+
+            // 파일 업로드 처리
+            List<FileDTO> uploadedFiles = fileService.uploadFile(articleDTO);
+            for (FileDTO fileDTO : uploadedFiles) {
+                fileDTO.setArtNo(artNo);  // 파일에 artNo 할당
+                log.info("File with artNo: " + fileDTO);
+                fileService.insertFile(fileDTO);  // 파일 정보 저장
+            }
+        }
+
+        // 수정된 글 정보 저장
+        articleService.updateArticle(artNo ,existingArticle);
+        log.info("Article updated: " + existingArticle);
+
+        return "redirect:/crop/" + cate;
+    }
+
 
     //삭제
-    @GetMapping("/crop/{cate}/CropDelete/{no}")
+    @DeleteMapping("/crop/{cate}/CropDelete/{no}")
     public String CropDelete(@PathVariable String cate, @PathVariable("no") int no) {
-
-        log.info("no : " + no);
-
         articleService.deleteArticle(no);
-
-        // cate 값을 사용하여 리디렉션 경로 설정
         return "redirect:/crop/" + cate;
     }
 
@@ -208,6 +250,21 @@ public class CropController {
     public ResponseEntity<Void> increaseHit(@RequestParam("artNo") int artNo) {
         articleService.increaseHit(artNo);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/file/delete/{fileNo}")
+    @ResponseBody
+    public ResponseEntity<String> deleteFile(@PathVariable("fileNo") int fileNo) {
+        try {
+            // 파일 삭제 로직 수행
+            fileService.deleteFile(fileNo);
+
+            // 파일 삭제 성공 시
+            return ResponseEntity.ok("파일이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            // 오류 발생 시
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 삭제 중 오류가 발생했습니다.");
+        }
     }
 
 }
