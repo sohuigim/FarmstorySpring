@@ -169,7 +169,7 @@ public class CommunityController {
 
         model.addAttribute("str1", str1);
         model.addAttribute("comments", comments);
-        model.addAttribute("artCate", cate);
+
         System.out.println("comments :" + comments);
         System.out.println(model);
         System.out.println(str1);
@@ -229,6 +229,7 @@ public class CommunityController {
         if (existingArticle == null) {
             return "redirect:/community/" + cate;  // 글이 없으면 다시 목록으로
         }
+
 
         // 업데이트할 내용 반영
         existingArticle.setArtTitle(articleDTO.getArtTitle());

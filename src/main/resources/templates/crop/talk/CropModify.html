@@ -10,7 +10,9 @@
 	<script>
 		window.onload = function() {
 			// name 속성으로 hidden input에서 artCate 값 가져오기
-			const artCate = document.querySelector('input[name="artCates"]').value;
+
+			const artCate = document.querySelector('input[name="artCate"]').value;
+
 			let now;
 			// 카테고리 기반으로 특정 요소 선택
 			if (artCate === 'CropStory') {
@@ -26,6 +28,7 @@
 			}
 		};
 	</script>
+
 	<script>
 		function deleteFile(fileNo) {
 			if (confirm('이 파일을 삭제하시겠습니까?')) {

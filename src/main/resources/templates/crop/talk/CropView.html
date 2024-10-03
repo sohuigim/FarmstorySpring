@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글보기</title>
-    <link rel="stylesheet" th:href="@{/css/croptalk.css}">
-    <link rel="stylesheet" th:href="@{/css/community.css}">
-    <script th:src="@{/js/utils.js}"></script>
+
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>글보기</title>
+   <link rel="stylesheet" th:href="@{/css/croptalk.css}">
+   <link rel="stylesheet" th:href="@{/css/community.css}">
+   <script th:src="@{/js/utils.js}"></script>
+</head>
+<body>
+<div id="container">
+   <th:block th:include="/grid/_header.html"/>
+   <th:block th:include="/grid/_aside_ct.html"/>
    <script>
       window.onload = function () {
          // name 속성으로 hidden input에서 artCate 값 가져오기

@@ -7,21 +7,9 @@
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/croptalk.css}">
 
-    <script th:inline="javascript">
-        var cate = /*[[${cate}]]*/ 'b202'
-        console.log(cate)
-    </script>
-    <script>
-        window.onload = function() {
-            const now = document.querySelector('.aside_bg .cate_lnb1 li .lnb2');
-            if (now) {
-                now.classList.add("now");
-            }
-        };
-    </script>
     <script>
         function increaseHitAndRedirect(artNo, redirectUrl) {
-            fetch('/increaseHit?artNo=' + artNo, {
+            fetch('/crop/increaseHit?artNo=' + artNo, {
 
                 method: 'POST',
             }).then(function(response) {
@@ -34,6 +22,15 @@
                 console.error('Error:', error);
             });
         }
+    </script>
+
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.cate_lnb li:nth-child(2) a');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
     </script>
 
 </head>
@@ -70,12 +67,13 @@
         </article>
 
         <form th:action="@{/crop/CropGarden}" class="search">
-<!--            <select name="type">-->
-<!--                <option value="title">제목</option>-->
-<!--                <option value="content">내용</option>-->
-<!--                <option value="title_content">제목+내용</option>-->
-<!--                <option value="writer">글쓴이</option>-->
-<!--            </select>-->
+            <select name="type">
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+                <option value="title_content">제목+내용</option>
+                <option value="writer">글쓴이</option>
+            </select>
+
 
             <input type="text" name="keyword" placeholder="제목 키워드, 글쓴이 검색">
             <input type="submit" value="검색">
@@ -97,6 +95,7 @@
         <!-- 글쓰기 버튼 -->
         <a th:href="@{/crop/CropGarden/CropWrite}" class="btnWrite" th:onclick="${#authentication == null or !#authentication.authenticated} ? 'return alertLogin()' : ''">글쓰기</a>
     </section>
+
     </main>
     <th:block th:include ="/grid/_footer.html"/>
 </div>
