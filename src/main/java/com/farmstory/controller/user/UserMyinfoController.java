@@ -37,6 +37,10 @@ public class UserMyinfoController {
         }
 
     }
+    @GetMapping("userInfo/UserMyinfo1")
+    public String UserMyinfo1(){
+        return "user/UserMyinfo1";
+    }
 
     @ResponseBody
     @PostMapping("userInfo/UserMyinfo")
@@ -88,13 +92,4 @@ public class UserMyinfoController {
         return result;
     }
 
-        @GetMapping("userInfo/UserMyinfoCart")
-    public String UserMyinfoCart(){
-        return "user/UserMyinfoCart";
-    }
-
-    @GetMapping("userInfo/UserMyinfoOrder")
-    public String UserMyinfoOrder(){
-        return "user/UserMyinfoOrder";
-    }
 }

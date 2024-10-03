@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/userinfo/**").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-
+                                   
                 .requestMatchers("/crop/*/CropWrite").authenticated()
                 .requestMatchers("/crop/*/CropView/*").authenticated()
 
@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("market/MarketView").permitAll()
                 .requestMatchers("market/MarketCart").authenticated()
                 .requestMatchers("market/MarketOrder12").authenticated()
+
 
                 .anyRequest().permitAll());
 

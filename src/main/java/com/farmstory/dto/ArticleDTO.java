@@ -3,6 +3,7 @@ package com.farmstory.dto;
 import com.farmstory.entity.Article;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,16 +26,24 @@ public class ArticleDTO {
     private String artTitle;
     private String artContent;
     private String artWriter;
-    private int artFile;
-    private int artHit;
+
+    private List<MultipartFile> files;
+
+    @Builder.Default
+    private int artFile = 0;
+    @Builder.Default
+    private int artHit = 0;
 
     private String artRegip;
 
     @CreationTimestamp
     private LocalDate artRdate;
     private String artNick;
-    @Builder.Default
-    private List<FileDTO> fileList=new ArrayList<>();
+
+    private List<FileDTO> fileList;
+
+
+
     public Article toEntity(){
         return Article.builder()
                 .artNo(artNo)

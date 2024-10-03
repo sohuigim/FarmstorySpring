@@ -5,12 +5,8 @@ import com.farmstory.dto.*;
 import com.farmstory.dto.pageDTO.ArticlePageRequestDTO;
 import com.farmstory.dto.pageDTO.ArticlePageResponseDTO;
 import com.farmstory.entity.Article;
-
-import com.farmstory.entity.FileEntity;
-
 import com.farmstory.entity.QArticle;
 import com.farmstory.repository.CommentRepository;
-import com.farmstory.repository.FileRepository;
 import com.farmstory.repository.article.ArticleRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,13 +30,49 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final FileRepository fileRepository;
     private final CommentRepository commentRepository;
+    private final FileService fileService;
 
     private final ModelMapper modelMapper;
     private JPAQueryFactory queryFactory;
     private QArticle article = QArticle.article;
 
+
+
+    public int insertArticle(ArticleDTO articleDTO) {
+
+        // ModelMapper를 이용해서 DTO를 Entity로 변환
+        Article article = modelMapper.map(articleDTO, Article.class);
+        log.info("articleDTO_toString : "+articleDTO.toString());
+
+        // 저장
+        Article savedArticle = articleRepository.save(article);
+        log.info("Saved Article ID: " + savedArticle.getArtNo());
+
+        // 저장된 글번호 리턴
+        return savedArticle.getArtNo();
+    }
+
+
+    //댓글 갯수
+    public int countCommentsForArticle(int artNo) {
+        int count = commentRepository.countByArticleNo(artNo);
+
+        log.info("count : " + count);
+
+        return count;
+    }
+
+
+    //조회수
+    public void increaseHit(int artNo) {
+        Article article = articleRepository.findById(artNo)
+                .orElseThrow(() -> new IllegalArgumentException("조회수가 올라가지 않았습니다."));
+
+        article.setArtHit(article.getArtHit() + 1);
+
+        articleRepository.save(article);
+    }
 
     public Article saveArticle(ArticleDTO articleDTO) {
 
@@ -59,34 +93,52 @@ public class ArticleService {
         return articleRepository.selectArticles(cate);
     }
 
-    public Article selectArticle(int artNo) {
-        return articleRepository.selectArticle(artNo);
+    public ArticleDTO selectArticle(int artNo) {
+        Article article = articleRepository.findById(artNo)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+        ArticleDTO articleDTO = article.toDTO();
+
+        List<FileDTO> fileList = fileService.getFilesByArtNo(artNo);
+        articleDTO.setFileList(fileList);
+
+        return articleDTO;
     }
 
 
     public ArticleDTO getArticle(int artNo) {
-        Optional<Article> articleOpt = articleRepository.findById(artNo);
-        ArticleDTO articleDTO = articleOpt.map(Article::toDTO).orElse(null);
-        List<FileEntity> files = fileRepository.findAllByArticle(articleOpt.get());
-        for (FileEntity file : files) {
-            articleDTO.getFileList().add(file.toDTO());
+        Optional<Article> optArticle = articleRepository.findById(artNo);
+        if(optArticle.isPresent()){
+            Article article = optArticle.get();
+            log.info(article.toString());
+
+            ArticleDTO dto = modelMapper.map(article, ArticleDTO.class);
+            return dto;
         }
-        return articleDTO;
+
+        return null;
     }
 
-    public ArticlePageResponseDTO selectProductAll(ArticlePageRequestDTO articlePageRequestDTO, String catetype){
-        Pageable pageable = articlePageRequestDTO.getPageable("artNo");
+    public ArticlePageResponseDTO selectArticleAll(ArticlePageRequestDTO articlePageRequestDTO, String catetype) {
+        int currentPage = (articlePageRequestDTO.getPg() <= 1) ? 0 : articlePageRequestDTO.getPg() - 1;
+        Pageable pageable = PageRequest.of(currentPage, 10, Sort.by("artNo").descending());
 
         articlePageRequestDTO.setCate(catetype);
 
-        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(articlePageRequestDTO, pageable, catetype);
+        Page<Tuple> pageArticle = null;
+
+//        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(articlePageRequestDTO, pageable, catetype);
+
+        if (articlePageRequestDTO.getKeyword() == null || articlePageRequestDTO.getKeyword().isEmpty()) {
+            pageArticle = articleRepository.selectArticleAllForList(articlePageRequestDTO, pageable, catetype);
+        } else {
+            pageArticle = articleRepository.selectArticleForSearch(articlePageRequestDTO, pageable);
+        }
+
 
         List<ArticleDTO> articleList = pageArticle.getContent().stream().map(tuple -> {
-
             Article article = tuple.get(0, Article.class);
-
             return modelMapper.map(article, ArticleDTO.class);
-
         }).toList();
 
         int total = (int) pageArticle.getTotalElements();
@@ -98,10 +150,16 @@ public class ArticleService {
                 .build();
     }
 
+
     @Transactional
     public void deleteArticle(int artNo) {
-        articleRepository.deleteById(artNo);
+        fileService.deleteFile(artNo);
+
         commentRepository.deleteById(artNo);
+
+        articleRepository.deleteById(artNo);
+
+
     }
 
     public void updateArticle(ArticleDTO articleDTO) {

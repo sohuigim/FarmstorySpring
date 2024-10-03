@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -44,6 +45,10 @@ public class Order {
     private int orderDeliveryFee;
     private int orderDiscount;
     private int ordersGroup;
+    private int orderTotalPrice;
+    private int orderUsePoint;
+    private int orderPlusPoint;
+    private int orderPay;
 
     public OrderDTO toDTO(){
         return OrderDTO.builder()
@@ -61,6 +66,10 @@ public class Order {
                 .orderDeliveryFee(orderDeliveryFee)
                 .orderDiscount(orderDiscount)
                 .ordersGroup(ordersGroup)
+                .orderTotalPrice(orderTotalPrice)
+                .orderUsePoint(orderUsePoint)
+                .orderPlusPoint(orderPlusPoint)
+                .orderPay(orderPay)
                 .build();
     }
 

@@ -7,6 +7,14 @@
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/community.css}">
     <!-- 화면당 적용할 CSS만 추가하면됨 -->
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.cate_lnb li:nth-child(2) a');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
+    </script>
 </head>
 <body>
 <div id="wrapper">

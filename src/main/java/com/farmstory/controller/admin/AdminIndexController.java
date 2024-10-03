@@ -34,6 +34,9 @@ public class AdminIndexController {
         model.addAttribute("productDTOs", productDTO);
         model.addAttribute("orderDTOs",orderDTO);
         model.addAttribute("userDtos", userDto);
-        return "/admin/AdminIndex";
+        log.info("productDTO"+ productDTO );
+        log.info("userDto"+ userDto );
+        log.info("orderDTO"+ orderDTO );
+        return "admin/AdminIndex";
     }
 }

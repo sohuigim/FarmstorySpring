@@ -25,6 +25,7 @@ public class PageRequestDTO {
     private int artsize = 10;
 
     private int cateType;
+    private String artcateType;
 
     public Pageable getPageable(String sort, boolean isOrderDTO) {
         int pageSize = isOrderDTO ? this.artsize : this.size;

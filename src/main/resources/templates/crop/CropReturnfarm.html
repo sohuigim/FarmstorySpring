@@ -7,6 +7,14 @@
 <!--    <link rel="sssashortcut icon" th:href="@{/images/fav.ico}" type="image/x-icon">-->
     <link rel="stylesheet" th:href="@{/css/croptalk.css}">
     <!-- 화면당 적용할 CSS만 추가하면됨 -->
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.aside_bg .cate_lnb1 li .lnb3');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
+    </script>
 </head>
 <body>
 <div id="container">
@@ -32,7 +40,14 @@
                                     </tr>
                                 </table>
                             </article>
-                            <form action="#">
+                            <form th:action="@{/crop/CropReturnfarm}" class="search">
+                                <select name="type">
+                                    <option value="title">제목</option>
+                                    <option value="content">내용</option>
+                                    <option value="title_content">제목+내용</option>
+                                    <option value="writer">글쓴이</option>
+                                </select>
+
                                 <input type="text" name="search" placeholder="제목 키워드, 글쓴이 검색">
                                 <input type="submit" value="검색">
                             </form>

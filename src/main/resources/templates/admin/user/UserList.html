@@ -5,10 +5,100 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Administrator</title>
 	<link rel="stylesheet" th:href="@{/css/style_admin.css}">
+	<script>
+		// 모달 상세보기 스크립트
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelectorAll('.detail_btn').forEach(button => {
+				button.addEventListener('click', function(event) {
+					event.preventDefault(); // 기본 동작 방지
+
+					// 버튼의 data-order-no 속성에서 주문 번호를 가져옴
+					const userUid = this.getAttribute('data-user-uid');
+					// AJAX 요청 보내기
+					fetch(`/admin/UserList/${userUid}`)
+							.then(response => {
+								if (!response.ok) {
+									throw new Error('네트워크 오류: ' + response.status);
+								}
+								return response.json();
+							})
+							.then(userData => {
+								// 모달에 데이터를 채우기
+								document.querySelector('.modal_userZip').textContent = userData.userZip;
+								document.querySelector('.modal_userAddr1').textContent = userData.userAddr1;
+								document.querySelector('.modal_userAddr2').textContent = userData.userAddr2;
+								document.querySelector('.modal_userRegDate').textContent = userData.userRegDate;
+								document.querySelector('.modal_userLeaveDate').textContent = userData.userLeaveDate;
+								document.querySelector('.modal_userTotalPoint').textContent = userData.userTotalPoint;
+								document.querySelector('.modal').style.display = 'block';
+							})
+							.catch(err => {
+								console.error('Error fetching order details:', err);
+								alert('주문 정보를 가져오는 데 오류가 발생했습니다.');
+							});
+				});
+			});
+
+			// 모달 닫기 버튼 처리
+			document.querySelector('.close_btn').addEventListener('click', function() {
+				document.querySelector('.modal').style.display = 'none';
+			});
+		});
+	</script>
 </head>
 <body>
 <div id="wrap">
+
 	<th:block th:include="/admin/Admin_header"/>
+	<link rel="stylesheet" th:href="@{/css/user/findidresult.css}">
+
+	<div class="modal">
+		<section class="modal_popup">
+			<div class="top_txt">
+			</div>
+			<div>
+				<table class="modal_table">
+					<tr>
+						<td>우편번호</td>
+						<td>
+							<p><span class="modal_userZip"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>주소</td>
+						<td>
+							<p><span class="modal_userAddr1"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>상세주소</td>
+						<td>
+							<p><span class="modal_userAddr2"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>가입일</td>
+						<td>
+							<p><span class="modal_userRegDate"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>탈퇴일</td>
+						<td>
+							<p><span class="modal_userLeaveDate"></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td>총포인트</td>
+						<td>
+							<p><span class="modal_userTotalPoint"></span></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<button type="button" class="close_btn">닫기</button>
+		</section><!-- section modal -->
+	</div>
 	<main>
 		<th:block th:include="/admin/Admin_aside"/>
 		<section class="userlist">
@@ -51,8 +141,8 @@
 									<option value="0" th:selected="${user.userRole}==0">0</option>
 								</select>
 							</td>
-							<td th:text="${user.userRegDate}"></td>
-							<td><a href="#">[상세확인]</a></td>
+							<td>[[${user.date}]] [[${user.timeDate}]]</td>
+							<td><a href="#" class="detail_btn" th:data-user-uid="${user.userUid}">[상세확인]</a></td>
 						</tr>
 						</tbody>
 					</table>
@@ -142,6 +232,34 @@
 					return;
 				}
 			});
+		});
+	});
+	document.addEventListener('DOMContentLoaded', function() {
+		// 모든 '상세확인' 버튼에 클릭 이벤트 리스너 추가
+		document.querySelectorAll('.detail_btn').forEach(button => {
+			button.addEventListener('click', function(event) {
+				event.preventDefault(); // 기본 동작 방지 (# 링크 클릭 방지)
+
+				// 모달에 사용자 정보 업데이트
+				const name = this.dataset.name;
+				const uid = this.dataset.uid;
+				const email = this.dataset.email;
+				const rdate = this.dataset.rdate;
+
+				document.querySelector('.modal_name').textContent = name;
+				document.querySelector('.modal_uid').textContent = uid;
+				document.querySelector('.modal_email').textContent = email;
+				document.querySelector('.modal_rdate').textContent = rdate;
+
+				// 모달을 보이게 설정
+				document.querySelector('.modal').style.display = 'block';
+			});
+		});
+
+		// 모달 닫기 버튼
+		document.querySelector('.close_btn').addEventListener('click', function() {
+			// 모달을 숨기기
+			document.querySelector('.modal').style.display = 'none';
 		});
 	});
 </script>

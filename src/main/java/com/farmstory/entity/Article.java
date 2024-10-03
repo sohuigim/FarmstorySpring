@@ -20,6 +20,7 @@ import java.util.List;
 public class Article {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int artNo;
     private int artComment;
     private String artCate;
@@ -34,6 +35,8 @@ public class Article {
     private LocalDate artRdate;
     private String artNick;
 
+    @OneToMany(mappedBy = "fileNo")
+    private List<FileEntity> fileList;
 
     public ArticleDTO toDTO(){
         return ArticleDTO.builder()

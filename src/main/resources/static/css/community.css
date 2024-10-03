@@ -51,7 +51,12 @@
 .cate_lnb li:nth-child(4) a:hover{top:194px; background-image: url('../images/sub_cate5_lnb4_ov.png'); }
 .cate_lnb li:nth-child(5) a:hover{top:223px; background-image: url('../images/sub_cate5_lnb5_ov.png'); }
 
-
+/* lnb a 현재페이지 공통값 */
+.cate_lnb li:nth-child(1) a.now{top:107px; background-image: url('../images/sub_cate5_lnb1_ov.png');}
+.cate_lnb li:nth-child(2) a.now{top:136px; background-image: url('../images/sub_cate5_lnb2_ov.png');}
+.cate_lnb li:nth-child(3) a.now{top:165px; background-image: url('../images/sub_cate5_lnb3_ov.png');}
+.cate_lnb li:nth-child(4) a.now{top:194px; background-image: url('../images/sub_cate5_lnb4_ov.png');}
+.cate_lnb li:nth-child(5) a.now{top:223px; background-image: url('../images/sub_cate5_lnb5_ov.png');}
 /* article 영역 (오른쪽)  ---------------------------------------------- */
 .article{position: relative; float:left; width: 802px; height: auto;}
 .articleIn{width: 802px; margin-left: 40px;}

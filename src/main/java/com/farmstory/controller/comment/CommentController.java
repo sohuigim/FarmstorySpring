@@ -28,27 +28,37 @@ public class CommentController {
 
 
     @PostMapping("/write")
-    public ResponseEntity<CommentDTO> write(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
-
+    public ResponseEntity<Map<String, Object>> write(@RequestBody CommentDTO commentDTO, HttpServletRequest request) {
         String regip = request.getRemoteAddr();
         commentDTO.setCommentRegIp(regip);
         log.info(commentDTO);
 
-        CommentDTO dto = commentService.insertComment(commentDTO);
+        CommentDTO savedComment = commentService.insertComment(commentDTO);
 
-        return ResponseEntity
-                .ok()
-                .body(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("comment", savedComment);
+
+        return ResponseEntity.ok(response);
     }
 
-    // 댓글 삭제
     @GetMapping("/delete")
-    public ResponseEntity<String> deleteComment(@RequestParam("articleNo") int articleNo,
-                                                @RequestParam("commentNo") int commentNo) {
-        commentService.deleteComment(articleNo, commentNo);
+    public ResponseEntity<Map<String, Object>> deleteComment(@RequestParam("articleNo") int articleNo,
+                                                             @RequestParam("commentNo") int commentNo) {
+        int result = commentService.deleteComment(articleNo, commentNo);
 
-        return ResponseEntity.ok().body("댓글 삭제 성공");
+        Map<String, Object> response = new HashMap<>();
+        if (result > 0) {
+            response.put("status", "success");
+            response.put("message", "댓글이 성공적으로 삭제되었습니다.");
+        } else {
+            response.put("status", "fail");
+            response.put("message", "댓글 삭제에 실패했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
     }
+
 
     // 댓글 수정
     @PutMapping("/modify")

@@ -20,4 +20,9 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
     @Query("DELETE FROM Comment c WHERE c.article.artNo = :articleNo AND c.commentNo = :commentNo")
     void deleteByArticleNoAndCommentNo(@Param("articleNo") int articleNo, @Param("commentNo") int commentNo);
 
+    @Query("SELECT COUNT(c) FROM Comment c WHERE c.article.artNo = :articleNo")
+    int countByArticleNo(@Param("articleNo") int articleNo);
+
+
+
 }
