@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ProductRepositoryCustom {
 
+    public long updateStock(int prodNo, int count);
+
     public List<Product> selectProducts();
     public Product selectProduct(int prodNo);
 
