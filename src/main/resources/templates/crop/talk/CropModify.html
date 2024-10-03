@@ -14,6 +14,26 @@
 	<th:block th:include ="/grid/_header.html"/>
 	<th:block th:include ="/grid/_aside_ct.html"/>
 
+	<script>
+		window.onload = function() {
+			// name 속성으로 hidden input에서 artCate 값 가져오기
+			const artCate = document.querySelector('input[name="artCate"]').value;
+			let now;
+			// 카테고리 기반으로 특정 요소 선택
+			if (artCate === 'CropStory') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb1');
+			} else if (artCate === 'CropGarden') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb2');
+			} else if (artCate === 'CropReturnfarm') {
+				now = document.querySelector('.aside_bg .cate_lnb1 li .lnb3');
+			}
+			// 해당 요소에 "now" 클래스 추가
+			if (now) {
+				now.classList.add("now");
+			}
+		};
+	</script>
+
                          <section class="modify">
 			                <h3>글수정</h3>
 			                <article>
@@ -35,7 +55,7 @@
 			                            </tr>
 										<tr>
 			                               	<td>첨부</td>
-			                                <td>
+											<td style="text-align: left;">
 			                               		<p style="margin-bottom: 6px; ">
 			                                		최대 2개 파일 첨부 가능, 각 파일당 최대 10MB 까지 업로드
 			                                	</p>
