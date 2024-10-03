@@ -6,7 +6,7 @@
    <title>글보기</title>
    <link rel="stylesheet" th:href="@{/css/community.css}">
    <link rel="stylesheet" th:href="@{/css/croptalk.css}">
-   <script th:src="@{/js/utils.js}"></script>
+   <script src="/js/utils.js"></script>
 </head>
 <body>
 <div id="container">
@@ -134,11 +134,27 @@
             <td>제목</td>
             <td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
          </tr>
+         <tr th:if="${articleDTO.fileList.size() > 0}">
+            <th>파일</th>
+            <td>
+               <th:block th:each="file:${articleDTO.fileList}">
+                  <a th:href="@{/file/download/{fno}(fno=${file.fileNo})}">[[${file.fileoName}]]</a>&nbsp;<span>[[${file.fileDownload}]]</span>회 다운로드<br>
+               </th:block>
+            </td>
+         </tr>
          <tr>
             <td>내용</td>
             <td><textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea></td>
          </tr>
       </table>
+
+      <div>
+         <th:if test="${sessUser.uid eq articleDTO.artWriter}">
+            <a th:href="|/crop/${cate}/CropDelete/${artNo}|" class="btnDelete">삭제</a>
+            <a th:href="|/crop/${cate}/CropModify/${artNo}|" class="btnModify">수정</a>
+            <a th:href="|/crop/${cate}|" class="btnList">목록</a>
+         </th:if>
+      </div>
 
       <section class="commentList">
          <h3>댓글목록</h3>
@@ -156,6 +172,11 @@
                </div>
             </th:block>
          </article>
+
+         <th:block th:switch="${comments.size()}">
+            <p th:case="0">등록된 댓글이 없습니다.</p>
+         </th:block>
+
       </section>
 
       <section class="commentForm">
