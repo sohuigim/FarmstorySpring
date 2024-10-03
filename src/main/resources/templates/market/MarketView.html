@@ -36,7 +36,10 @@
             formData.append("userId", userId);
 
             if(confirm("장바구니에 담으시겠습니까?")){
-
+                if([[${product.prodStock}]] < count){
+                    alert("상품의 재고가 모자랍니다. 남은재고 : " + [[${product.prodStock}]])
+                    return;
+                }
                 fetch('/market/MarketCart',{
                     method:'POST',
                     headers: {
@@ -72,6 +75,10 @@
                     return; // 요청을 보내지 않음
                 }
                 if(confirm("구매페이지로 이동하시겠습니까?")){
+                    if([[${product.prodStock}]] < count){
+                        alert("상품의 재고가 모자랍니다. 남은재고 : " + [[${product.prodStock}]])
+                        return;
+                    }
                     alert("구매페이지로 이동합니다.")
                     location.href="/market/MarketOrder?prodNo="+productNo+"&&cartProdCount="+count+"&&userId="+userId;
                 }else{

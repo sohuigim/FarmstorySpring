@@ -125,4 +125,10 @@ public class OrderService {
             }
         }
     }
+
+    public void updateProdStock(int prodNo, int count){
+
+        productRepository.updateStock(prodNo,count);
+
+    }
 }
