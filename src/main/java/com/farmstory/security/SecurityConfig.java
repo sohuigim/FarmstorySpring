@@ -50,11 +50,13 @@ public class SecurityConfig {
                 .requestMatchers("/crop/*/CropView/*").authenticated()
 
                 .requestMatchers("community/*/CommunityWrite/*").authenticated()
+
                 .requestMatchers("community/CommunityNotice/CommunityView/*").hasRole("ADMIN")
                 .requestMatchers("community/CommunityNotice/CommunityWrite").hasRole("ADMIN")
                 .requestMatchers("community/CommunityDiet/CommunityWrite").authenticated()
                 .requestMatchers("community/CommunityChef/CommunityWrite").authenticated()
                 .requestMatchers("community/CommunityCs/CommunityWrite").authenticated()
+
                 .requestMatchers("community/CommunityFaq/CommunityView/*").hasRole("ADMIN")
                 .requestMatchers("community/CommunityFaq/CommunityWrite").hasRole("ADMIN")
 
