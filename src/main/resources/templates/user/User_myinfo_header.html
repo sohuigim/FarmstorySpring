@@ -36,7 +36,7 @@
                         <a th:href="@{/user/UserLogin}" id="login">로그인</a>
                     </li>
                     <li th:if="${isAuthenticated == true && role == 'ADMIN'}">
-                        <a th:href="@{/admin/index}" id="register">관리자</a>
+                        <a th:href="@{/admin/AdminIndex}" id="register">관리자</a>
                     </li>
                     <li th:if="${isAuthenticated == true}">
                         <a th:href="@{/userInfo/UserMyinfo}" id="register">마이페이지</a>

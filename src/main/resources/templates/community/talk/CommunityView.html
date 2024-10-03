@@ -6,8 +6,9 @@
 	<title>글보기</title>
 	<link rel="stylesheet" th:href="@{/css/community.css}">
 	<script th:src="@{/js/utils.js}"></script>
+
 	<script>
-		window.onload = function() {
+		window.onload = function () {
 			// name 속성으로 hidden input에서 artCate 값 가져오기
 			const artCate = document.querySelector('input[name="artCate"]').value;
 
@@ -29,10 +30,6 @@
 			if (now) {
 				now.classList.add("now");
 			}
-		};
-	</script>
-	<script>
-		window.onload = function () {
 			const btnComplete = document.getElementById('btnComplete');
 			const commentForm = document.commentForm;
 			const commentList = document.getElementsByClassName('commentList')[0];
@@ -194,7 +191,8 @@
 				<tr>
 					<td>제목</td>
 					<p th:value="${#authentication.principal.user.userUid}"></p>
-					<td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
+					<td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/>
+						<input type="hidden" name="artCate" th:value="${artCate}"></td>
 				</tr>
 				<tr th:if="${articleDTO.fileList.size() > 0}">
 					<th>파일</th>

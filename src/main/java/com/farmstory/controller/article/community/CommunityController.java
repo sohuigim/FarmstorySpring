@@ -169,7 +169,7 @@ public class CommunityController {
 
         model.addAttribute("str1", str1);
         model.addAttribute("comments", comments);
-
+        model.addAttribute("artCate", cate);
         System.out.println("comments :" + comments);
         System.out.println(model);
         System.out.println(str1);

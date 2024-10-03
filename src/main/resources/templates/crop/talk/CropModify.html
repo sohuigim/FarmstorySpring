@@ -10,7 +10,7 @@
 	<script>
 		window.onload = function() {
 			// name 속성으로 hidden input에서 artCate 값 가져오기
-			const artCate = document.querySelector('input[name="artCate"]').value;
+			const artCate = document.querySelector('input[name="artCates"]').value;
 			let now;
 			// 카테고리 기반으로 특정 요소 선택
 			if (artCate === 'CropStory') {
@@ -57,7 +57,9 @@
 			                <h3>글수정</h3>
 			                <article>
 								<form th:action="@{|/crop/${cate}/CropModify/${articleDTO.artNo}|}" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="artCates" th:value="${artCate}">
 									<input type="hidden" name="artCate" th:value="${articleDTO.artCate}">
+
 									<table>
 										<tr>
 											<td>제목</td>
