@@ -6,17 +6,6 @@
 <title>글쓰기</title>
 <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
 <link rel="stylesheet" th:href="@{/css/community.css}">
-<!--<c:choose>-->
-<!--	<c:when test="${group eq 'croptalk'}">-->
-<!--		<%@ include file="../../_aside_ct.jsp" %>-->
-<!--		<link rel="stylesheet" th:href="@{/css/croptalk.css}">-->
-<!--	</c:when>-->
-<!--	<c:when test="${group eq 'event'}">-->
-<!--		<%@ include file="../../_aside_et.jsp" %>-->
-<!--		<link rel="stylesheet" href="../../css/event.css">-->
-<!--	</c:when>-->
-<!--	<c:otherwise><%@ include file="../../_aside_cm.jsp" %></c:otherwise>-->
-<!--</c:choose>-->
     <script>
         window.onload = function() {
             // 서버에서 전달된 카테고리 값을 JavaScript 변수로 가져오기
@@ -62,21 +51,13 @@
                         <table>
                             <tr>
                                 <td>제목</td>
-<!--&lt;!&ndash;                    <input type="hidden" name="b_cateNo" value="${cate}"/>&ndash;&gt;-->
-<!--                                <input type="hidden" name="artCate" id="artCate" value="${artCate}"/>-->
                                 <td><input type="text" name="artTitle" id="artTitle" placeholder="제목을 입력하세요."/></td>
-
-                            </tr>
-<!--                            <tr>-->
-<!--                                <td>카테고리</td>-->
-<!--                                <td><input type="text" name="artCate" id="artCate" value="${artCate}"/></td>-->
-<!--                            </tr>-->
                             <tr>
                                 <td>내용</td>
                                 <td>
 
                                     <textarea name="artContent"></textarea>
-                </td>
+                            </td>
                             </tr>
                             <tr>
                                 <td>첨부</td>
