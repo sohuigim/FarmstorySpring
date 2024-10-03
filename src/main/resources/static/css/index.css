@@ -262,7 +262,7 @@ font-family: Inter;
 }
 
 .del {
-    font: 400 6px/7.26px 'Inter' !important;
+    font: 400 8px/7.26px 'Inter' !important;
     text-align: center !important;
     text-decoration: line-through !important; 
 }
@@ -372,7 +372,7 @@ font-family: Inter;
 .discount {
 	color: #EB000A !important;
 	font-family: Inter;
-	font-size: 6px !important;
+	font-size: 8px !important;
 	font-weight: 400;
 	line-height: 7.26px;
 	text-align: center;

@@ -64,10 +64,10 @@
 
                 const count = document.getElementById('numberInput').value;
                 const productNo = document.getElementById('prodNo').value;
-
+                const userId = document.getElementById('userId').value;
                 if(confirm("구매페이지로 이동하시겠습니까?")){
                     alert("구매페이지로 이동합니다.")
-                    location.href="/market/MarketOrder?prodNo="+productNo+"&&cartProdCount="+count;
+                    location.href="/market/MarketOrder?prodNo="+productNo+"&&cartProdCount="+count+"&&userId="+userId;
                 }else{
                     alert("상품리스트로 돌아갑니다.")
                     location.href="/market/MarketList";

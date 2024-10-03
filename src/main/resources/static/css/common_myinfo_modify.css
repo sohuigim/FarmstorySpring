@@ -50,10 +50,13 @@
 .aside_bg .cate_lnb_real li:nth-child(2) a:hover{background: url('../images/myinfo/myinfo_menu2_ov.png') no-repeat; }
 .aside_bg .cate_lnb_real li:nth-child(3) a:hover{background: url('../images/myinfo/myinfo_menu3_ov.png') no-repeat; }
 
+.aside_bg .cate_lnb_real li:nth-child(1) a.now{background: url('../images/myinfo/myinfo_menu1_ov.png') no-repeat;}
+.aside_bg .cate_lnb_real li:nth-child(2) a.now{background: url('../images/myinfo/myinfo_menu2_ov.png') no-repeat;}
+.aside_bg .cate_lnb_real li:nth-child(3) a.now{background: url('../images/myinfo/myinfo_menu3_ov.png') no-repeat;}
 /* article 영역 (오른쪽)  ---------------------------------------------- */
 
 .article{
-    position: relative;
+    position: static;
     top: 0;
 }
 
@@ -78,7 +81,7 @@ position: relative;
 }
 
 /* location */
-.location{position: absolute; top: -50px; right:0; float:right; margin-top:51px; height: 17px; font-family: Inter; font-size: 12px; font-weight: 400; line-height: 14.52px; text-align: left;}
+.location{position: static; right:0; float:right; height: 17px; font-family: Inter; font-size: 12px; font-weight: 400; line-height: 14.52px; text-align: left;}
 .location img{margin-top: 5px;}
 .location span{color:#0a0101;}
 .location span:after{display: inline-block; content: ">" ; clear: both;}

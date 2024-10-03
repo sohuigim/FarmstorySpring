@@ -3,7 +3,9 @@ package com.farmstory.controller.market;
 import com.farmstory.dto.*;
 import com.farmstory.entity.Cart;
 import com.farmstory.service.CartService;
+import com.farmstory.service.OrderService;
 import com.farmstory.service.ProductService;
+import com.farmstory.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -26,7 +28,8 @@ public class MarketOrderController {
 
     private final ProductService productService;
     private final CartService cartService;
-
+    private final OrderService orderService;
+    private final UserService userService;
 
 
     @GetMapping("/market/MarketCart")
@@ -79,10 +82,10 @@ public class MarketOrderController {
 
             log.info("ordercontroller. proddto : " + product);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("cartItems", product);
-        response.put("success", true);
-        return ResponseEntity.ok(response);
+            Map<String, Object> response = new HashMap<>();
+            response.put("cartItems", product);
+            response.put("success", true);
+            return ResponseEntity.ok(response);
 
         }
 
@@ -95,6 +98,8 @@ public class MarketOrderController {
         List<CartDTO> carts = new ArrayList<>();
         log.info("123123123123"+cartId.toString());
 
+        String uid = null;
+
         for(int cart : cartId) {
             log.info(cart);
             CartDTO cartDTO = cartService.selectCart(cart);
@@ -102,16 +107,20 @@ public class MarketOrderController {
             ProductDTO product = cartDTO.getProdDTO();
             product.setCartProdCount(cartDTO.getCartProdCount());
             carts.add(cartDTO);
+            uid = cartDTO.getUserId();
         }
+        UserDTO user = userService.selectUserById(uid);
+
 
         model.addAttribute("carts", carts);
-
+        model.addAttribute("user", user);
         return "/market/MarketOrder";
     }
 
     @GetMapping("/market/MarketOrder")
-    public String MarketOrder(@RequestParam(required = false) int prodNo, @RequestParam(required = false) int cartProdCount, Model model){
+    public String MarketOrder(@RequestParam(required = false) int prodNo, @RequestParam(required = false) int cartProdCount,@RequestParam(required = false) String userId , Model model){
 
+        log.info(userId);
 
         List<CartDTO> carts = new ArrayList<>();
 
@@ -124,19 +133,43 @@ public class MarketOrderController {
         cart.setProdDTO(product);
 
         carts.add(cart);
+        log.info(userId);
 
+        UserDTO user = userService.selectUserById(userId);
+        log.info(user);
+
+        model.addAttribute("user", user);
         model.addAttribute("carts", carts);
 
         return "/market/MarketOrder";
     }
 
     @PostMapping("/market/MarketOrder")
-    public void MarketOrder(@ModelAttribute OrderDTO orderDTO, HttpServletRequest req, Model model){
+    public ResponseEntity<Map<String, Object>> MarketOrder(@ModelAttribute OrderDTO orderDTO, HttpServletRequest req, Model model){
         log.info(orderDTO);
-        String[] prodNos = req.getParameterValues("prodNo");
-        String[] prodCounts = req.getParameterValues("prodCount");
-        log.info(prodNos);
-        log.info(prodCounts);
+        String[] prodNos = req.getParameterValues("No");
+        String[] prodCounts = req.getParameterValues("Count");
+
+        int a = Integer.parseInt(prodNos[0]);
+
+        orderDTO.setProdNo(a);
+
+        log.info(orderDTO);
+        int result = orderService.insertOrder(orderDTO);
+
+        if(result > 0){
+
+
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            return ResponseEntity.ok(response);
+        }
+        else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("failed", false);
+            return ResponseEntity.ok(response);
+        }
 
     }
 

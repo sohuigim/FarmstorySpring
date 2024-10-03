@@ -51,6 +51,7 @@ public class User {
                 .userRegip(userRegip)
                 .userRole(userRole)
                 .userRegDate(userRegDate)
+                .userTotalPoint(userTotalPoint)
                 .build();
     }
 }

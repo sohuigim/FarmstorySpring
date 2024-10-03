@@ -1,5 +1,6 @@
 package com.farmstory.controller.admin;
 
+import com.farmstory.dto.OrderDTO;
 import com.farmstory.dto.UserDTO;
 import com.farmstory.dto.pageDTO.PageRequestDTO;
 import com.farmstory.dto.pageDTO.PageResponseDTO;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +32,18 @@ public class AdminUserListController {
         model.addAttribute("userDtos", userDto);
         return "/admin/user/UserList";
     }
+    @GetMapping("/admin/UserList/{userUid}")
+    @ResponseBody
+    public ResponseEntity<UserDTO> getOrderDetail(@PathVariable String userUid) {
+        UserDTO userDetail = userService.selectUserById(userUid);
+        log.info("userDetail" + userDetail);
+        if (userDetail != null) {
+            return ResponseEntity.ok(userDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/admin/UserList/Update")
     public ResponseEntity<Map<String, Object>> updateUserGrade(@RequestBody UserDTO userDto) {
         // 로그 찍기

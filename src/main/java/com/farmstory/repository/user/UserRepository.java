@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String> {
+public interface UserRepository extends JpaRepository<User,String>, UserRepositoryCustom {
     public int countByUserUid(String userUid);
     public int countByUserNick(String userNick);
     public int countByUserEmail(String userEmail);

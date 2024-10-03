@@ -46,7 +46,8 @@
 .cate_lnb li:nth-child(1) a:hover{top:107px; background-image: url('../images/sub_cate1_lnb1_ov.png'); }
 .cate_lnb li:nth-child(2) a:hover{top:136px; background-image: url('../images/sub_cate1_lnb2_ov.png'); }
 
-
+.cate_lnb li:nth-child(1) a.now{top:107px; background-image: url('../images/sub_cate1_lnb1_ov.png');}
+.cate_lnb li:nth-child(2) a.now{top:136px; background-image: url('../images/sub_cate1_lnb2_ov.png');}
 
 /* article 영역 (오른쪽)  ---------------------------------------------- */
 .article{position: relative; float:left; width: 802px; height: auto;}

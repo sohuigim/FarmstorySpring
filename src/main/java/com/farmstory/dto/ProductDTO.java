@@ -31,7 +31,8 @@ public class ProductDTO {
 
     @CreationTimestamp
     private LocalDateTime prodRegDate;
-
+    private String Date;
+    private String timeDate;
     // 추가 필드
     private int cartProdCount;
 

@@ -48,6 +48,8 @@ public class UserService {
         userRepository.save(entity);
     }
 
+
+
     //유저 정보 전체 가져오기
     public List<UserDTO> selectUsers(){
 
@@ -57,6 +59,17 @@ public class UserService {
                 .stream()
                 .map(entity -> entity.toDTO())
                 .collect(Collectors.toList());
+        for(UserDTO user : users) {
+            LocalDateTime userDateTime = user.getUserRegDate();
+            if(userDateTime != null) {
+                String fullDateTime = userDateTime.toString();
+                String[] split = fullDateTime.split("T");
+                if(split.length == 2) {
+                    user.setDate(split[0]);
+                    user.setTimeDate(split[1]);
+                }
+            }
+        }
         return users;
     }
     //원하는 유저
@@ -86,6 +99,17 @@ public class UserService {
             User user = tuple.get(0, User.class);
             return modelMapper.map(user, UserDTO.class);
         }).toList();
+        for(UserDTO user : userList) {
+            LocalDateTime userDateTime = user.getUserRegDate();
+            if(userDateTime != null) {
+                String fullDateTime = userDateTime.toString();
+                String[] split = fullDateTime.split("T");
+                if(split.length == 2) {
+                    user.setDate(split[0]);
+                    user.setTimeDate(split[1]);
+                }
+            }
+        }
         int total = (int) pageOrder.getTotalElements();
         return PageResponseDTO.<UserDTO>builder()
                 .pageRequestDTO(pageRequestDTO)
