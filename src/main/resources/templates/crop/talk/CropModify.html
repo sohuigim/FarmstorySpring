@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/html">
+<html lang="ko" >
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,11 +26,10 @@
 			}
 		};
 	</script>
-
 	<script>
 		function deleteFile(fileNo) {
 			if (confirm('이 파일을 삭제하시겠습니까?')) {
-				fetch(`/file/delete/${fileNo}`, {
+				fetch(`/crop/file/delete/${fileNo}`, {
 					method: 'DELETE',
 				})
 					.then(response => {

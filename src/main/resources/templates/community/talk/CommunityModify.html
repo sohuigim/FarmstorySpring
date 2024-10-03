@@ -32,6 +32,27 @@
             }
         };
     </script>
+    <script>
+        function deleteFile(fileNo) {
+            if (confirm('이 파일을 삭제하시겠습니까?')) {
+                fetch(`/community/file/delete/${fileNo}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('파일이 삭제되었습니다.');
+                            location.reload();
+                        } else {
+                            alert('파일 삭제에 실패했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('파일 삭제 중 오류 발생:', error);
+                        alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    });
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="container">
@@ -41,12 +62,10 @@
     <section class="modify">
         <h3>글수정</h3>
         <article>
-            <form th:action="@{|/community/${cate}/CommunityModify/${artNo}|}" method="post"
+            <form th:action="@{|/community/${cate}/CommunityModify/${articleDTO.artNo}|}" method="post" enctype="multipart/form-data">
                   enctype="multipart/form-data">
                 <!-- db 카테고리 저장 -->
                 <input type="hidden" name="artCate" th:value="${articleDTO.artCate}">
-
-                <input type="hidden" name="artWriter" value="${sessUser.uid}">
                 <table>
                     <tr>
                         <td>제목</td>
@@ -60,26 +79,23 @@
                     </tr>
                     <tr>
                         <td>첨부</td>
-                        <td style="text-align: left;">
-                            <p style="margin-bottom: 6px; ">
-                                최대 2개 파일 첨부 가능, 각 파일당 최대 10MB 까지 업로드
+                        <td>
+                            <p th:if="${articleDTO.fileList.size() > 0}" style="margin-bottom: 6px;">
+													<span th:each="file : ${articleDTO.fileList}">
+														업로드된 파일 : [[${file.fileoName}]]
+                                                        <!-- 삭제 버튼 -->
+														<a href="javascript:void(0);" style="color:red;" th:onclick="deleteFile([[${file.fileNo}]])">X</a>
+													</span><br>
+                                최대 2개 파일 첨부 가능, 각 파일당 최대 10MB 까지 업로드<br>
                             </p>
-                            <!-- 첨부파일이 있으면 나타나게끔  -->
-                            <div th:if="${articleDTO.artFile > 0}">
-                                <div th:each="file : ${articleDTO.fileList}">
-                                    <p style="margin: 4px 0">
-                                        <span th:text="${file.fileoName}">File Name</span>
-                                        <a th:href="@{#}" style="color:red;">X</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <input type="file" name="file1"/>
-                            <input type="file" name="file2"/>
+                            <p>
+                                <input type="file" name="file1"/>
+                                <input type="file" name="file2"/>
+                            </p>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <!-- db 날짜 저장 -->
                             <input type="hidden" name="artRdate" th:value="${articleDTO.artRdate}">
                         </td>
                     </tr>

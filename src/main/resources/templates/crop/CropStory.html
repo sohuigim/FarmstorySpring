@@ -6,6 +6,7 @@
     <title>농작물이야기</title>
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/croptalk.css}">
+
     <script th:inline="javascript">
         var cate = /*[[${cate}]]*/ 'b201'
         console.log(cate)
@@ -18,9 +19,10 @@
             }
         };
     </script>
+
     <script>
         function increaseHitAndRedirect(artNo, redirectUrl) {
-            fetch('/increaseHit?artNo=' + artNo, {
+            fetch('/crop/increaseHit?artNo=' + artNo, {
                 method: 'POST',
             }).then(function(response) {
                 if (response.ok) {
@@ -32,6 +34,14 @@
                 console.error('Error:', error);
             });
         }
+    </script>
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.cate_lnb li:nth-child(1) a');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
     </script>
 </head>
 <body>
