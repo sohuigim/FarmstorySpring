@@ -43,18 +43,27 @@ public class SecurityConfig {
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/user/**").permitAll()
-                .requestMatchers("/introduction/**").permitAll()
                 .requestMatchers("/userinfo/**").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/crop/**").permitAll()
-                .requestMatchers("/community/**").permitAll()
-                .requestMatchers("/crop/CropWrite").authenticated()
+
+                .requestMatchers("/crop/*/CropWrite").authenticated()
+                .requestMatchers("/crop/*/CropView/*").authenticated()
+
+                .requestMatchers("community/*/CommunityWrite/*").authenticated()
+                .requestMatchers("community/CommunityNotice/CommunityWrite").hasRole("ADMIN")
+                .requestMatchers("community/CommunityDiet/CommunityWrite").authenticated()
+                .requestMatchers("community/CommunityChef/CommunityWrite").authenticated()
+                .requestMatchers("community/CommunityCs/CommunityWrite").authenticated()
+                .requestMatchers("community/CommunityFaq/CommunityWrite").hasRole("ADMIN")
+
+                .requestMatchers("market/MarketView").permitAll()
+                .requestMatchers("market/MarketCart").authenticated()
+                .requestMatchers("market/MarketOrder12").authenticated()
+
                 .anyRequest().permitAll());
 
         //보안 설정
         http.csrf(configure -> configure.disable());
-
 
         return http.build();
     }
