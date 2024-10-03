@@ -250,6 +250,7 @@ h2::after{display: block; content: ""; clear: both; width: 762px; height: 1px; b
     margin-bottom: 16px;
 }
 .view > section > h3 {
+    border-bottom: 1px dotted #999;
     font-weight: bold;
 }
 .view > .commentList > article {

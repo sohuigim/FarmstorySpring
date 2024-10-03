@@ -6,10 +6,21 @@
     <title>귀농학교</title>
     <link rel="sssashortcut icon" href="/images/fav.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/croptalk.css}">
-
+    <script th:inline="javascript">
+        var cate = /*[[${cate}]]*/ 'b203'
+        console.log(cate)
+    </script>
+    <script>
+        window.onload = function() {
+            const now = document.querySelector('.aside_bg .cate_lnb1 li .lnb3');
+            if (now) {
+                now.classList.add("now");
+            }
+        };
+    </script>
     <script>
         function increaseHitAndRedirect(artNo, redirectUrl) {
-            fetch('crop/increaseHit?artNo=' + artNo, {
+            fetch('/increaseHit?artNo=' + artNo, {
                 method: 'POST',
             }).then(function(response) {
                 if (response.ok) {
