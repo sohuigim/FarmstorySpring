@@ -31,6 +31,10 @@
                 alert("로그인 후 장바구니에 추가할 수 있습니다.");
                 return; // 요청을 보내지 않음
             }
+            if(!count || count === "0"){
+                alert("상품 갯수를 다시 지정해주세요");
+                return;
+            }
             formData.append("cartProdCount", count);
             formData.append("prodNo", productNo);
             formData.append("userId", userId);
@@ -60,11 +64,8 @@
                     .catch(err =>{
                         console.log(err)
                     });
-
             }
-
         })
-
 
             order.addEventListener('click', ()=>{
 
@@ -74,6 +75,10 @@
                     alert("로그인 후 구매할 수 있습니다.");
                     return; // 요청을 보내지 않음
                 }
+                if(!count || count === "0"){
+                    alert("상품 갯수를 다시 지정해주세요");
+                    return;
+                }
                 if(confirm("구매페이지로 이동하시겠습니까?")){
                     if([[${product.prodStock}]] < count){
                         alert("상품의 재고가 모자랍니다. 남은재고 : " + [[${product.prodStock}]])
@@ -81,11 +86,7 @@
                     }
                     alert("구매페이지로 이동합니다.")
                     location.href="/market/MarketOrder?prodNo="+productNo+"&&cartProdCount="+count+"&&userId="+userId;
-                }else{
-                    alert("상품리스트로 돌아갑니다.")
-                    location.href="/market/MarketList";
                 }
-
             })
 
 
@@ -205,5 +206,18 @@
         </article><!-- .article -->
     </section>
 </main><!-- #main -->
+<script>
+    const numberInput = document.getElementById('numberInput');
+
+    numberInput.addEventListener('input', function () {
+        let value = numberInput.value;
+
+        // 첫 글자가 '0'인 경우 0을 제거
+        if (value.length > 1 && value[0] === '0') {
+            value = value.replace(/^0+/, '');  // 첫 0을 제거
+            numberInput.value = value;  // 수정된 값을 다시 설정
+        }
+    });
+</script>
 <th:block th:include ="grid/_footer.html"/>
 

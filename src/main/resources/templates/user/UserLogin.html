@@ -1,7 +1,5 @@
 <th:block th:include="user/User_header.html"/>
     <title>Login</title>
-
- 
         <main>
             <div class="mainIn">
                 <section class="login">
@@ -41,6 +39,67 @@
                 </section>
             </div>
         </main>
+<!-- 팝업 모달 -->
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p style="text-align: center;">로그인 실패: 아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.</p>
+    </div>
+</div>
+<style>
+    /* 모달 스타일 */
+    .modal {
+        display: none; /* 기본적으로 숨김 */
+        position: fixed; /* 화면에 고정 */
+        z-index: 1; /* 제일 위에 */
+        left: 0;
+        top: 0;
+        width: 100%; /* 전체 화면 */
+        height: 100%; /* 전체 화면 */
+        overflow: auto; /* 스크롤 가능 */
+        background-color: rgb(0, 0, 0); /* 검정 배경 */
+        background-color: rgba(0, 0, 0, 0.4); /* 투명한 검정 배경 */
+    }
 
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 상단에서 15%, 중앙 정렬 */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* 너비 80% */
+    }
+
+    .close {
+        color: #aaa;
+        float: right; /* 오른쪽 정렬 */
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black; /* 마우스 오버 시 색상 변경 */
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
 <th:block th:include = "user/User_footer.html"/>
+<script>
+    // 팝업 열기 함수
+    function openModal() {
+        document.getElementById('errorModal').style.display = 'block';
+    }
 
+    // 팝업 닫기 함수
+    function closeModal() {
+        document.getElementById('errorModal').style.display = 'none';
+    }
+
+    // 로그인 실패 시 모달 열기
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            openModal();
+        }
+    };
+</script>

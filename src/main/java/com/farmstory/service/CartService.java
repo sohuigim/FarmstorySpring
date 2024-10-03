@@ -28,7 +28,18 @@ public class CartService {
         Cart cart = modelMapper.map(cartDTO, Cart.class);
         cartRepository.save(cart);
     }
+    public void insertOrUpdateCart(CartDTO cartDTO) {
+        Cart existingCart = cartRepository.findByUserIdAndProdNo(cartDTO.getUserId(), cartDTO.getProdNo());
 
+        if (existingCart != null) {
+            // 기존 카트 항목이 있으면 수량만 업데이트
+            existingCart.setCartProdCount(existingCart.getCartProdCount() + cartDTO.getCartProdCount());
+            cartRepository.save(existingCart);
+        } else {
+            // 없으면 새로 삽입
+            cartRepository.save(cartDTO.toEntity());
+        }
+    }
     public CartDTO selectCart(int cartNo) {
         Cart cart = cartRepository.findCartByCartNo(cartNo);
         return modelMapper.map(cart, CartDTO.class);

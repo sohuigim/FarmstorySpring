@@ -71,7 +71,8 @@ public class MarketOrderController {
 
             log.info(cartDTO);
 
-            cartService.insertCart(cartDTO);
+            //새제품일 경우 추가 || 기존 제품 + 아이디 일 경우 수량만 증가
+            cartService.insertOrUpdateCart(cartDTO);
             cartDTO.setProdDTO(productService.selectProduct(cartDTO.getProdNo()));
 
             ProductDTO product = cartDTO.getProdDTO();
@@ -150,18 +151,13 @@ public class MarketOrderController {
 
         log.info("11111111"+ Arrays.toString(carts));
 
-        for(String cart : carts) {
-            cartService.deleteCart(Integer.parseInt(cart));
-        }
 
         for(int a = 0; a < prodNos.length; a++) {
             int no = Integer.parseInt(prodNos[a]);
             int count = Integer.parseInt(prodCounts[a]);
 
             log.info(no +""+ count);
-
             orderService.updateProdStock(no, count);
-
         }
 
         int a = Integer.parseInt(prodNos[0]);
@@ -171,10 +167,10 @@ public class MarketOrderController {
         log.info(orderDTO);
         int result = orderService.insertOrder(orderDTO);
 
+        for(String cart : carts) {
+            cartService.deleteCart(Integer.parseInt(cart));
+        }
         if(result > 0){
-
-
-
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             return ResponseEntity.ok(response);
