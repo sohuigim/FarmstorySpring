@@ -164,7 +164,7 @@ public class CropController {
         List<Comment> comments = commentService.selectCommentByArtNo(articleDTO.getArtNo());
         model.addAttribute(articleDTO);
 
-        model.addAttribute("str1", str1);
+        model.addAttribute("artCate", cate);
         model.addAttribute("comments", comments);
 
         System.out.println("comments :" + comments);
@@ -189,6 +189,7 @@ public class CropController {
 
         ArticleDTO articleDTO = articleService.selectArticle(artNo);
         model.addAttribute("articleDTO", articleDTO);
+        model.addAttribute("artCate", cate);
         log.info("articleDTO_modify_Conrtroller :" + articleDTO);
 
         model.addAttribute("str1", str1);

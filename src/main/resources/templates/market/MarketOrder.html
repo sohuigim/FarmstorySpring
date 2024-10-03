@@ -76,11 +76,32 @@
             let productNum = document.getElementById('productNum');
             let usePoint = document.getElementById('usePoint')
 
-            usePoint.value = point1.value;
+            usePoint.value = point1.value ? point1.value : 0;
             productNum.value = parseInt(document.getElementsByClassName('prodNo')[0].value.trim(), 10);
 
             console.log("123123123" + productNum.value)
             console.log("44444" + usePoint.value)
+
+            if (recepit.value.trim() === "") {
+                alert("받는분을 입력해 주세요.");
+                return;
+            }
+            if (recHp.value.trim() === "") {
+                alert("연락처를 입력해 주세요.");
+                return;
+            }
+            if (recZip.value.trim() === "") {
+                alert("우편번호를 입력해 주세요.");
+                return;
+            }
+            if (recAddr1.value.trim() === "") {
+                alert("기본주소를 입력해 주세요.");
+                return;
+            }
+            if (recAddr2.value.trim() === "") {
+                alert("상세주소를 입력해 주세요.");
+                return;
+            }
 
             // 받는사람
             ReceiveName.value = recepit.value;
@@ -116,6 +137,9 @@
             prodCount.forEach(value => {
                 formData.append("Count", value);
             })
+            cart.forEach(value => {
+                formData.append("cart", value);
+            })
             for (const [key, value] of formData.entries()) {
                 console.log("ddddddd" + key, value)
             }
@@ -146,6 +170,7 @@
 
     let prodNum = [];
     let prodCount = [];
+    let cart = [];
 
     function updateTotal() {
         let totalCount = 0;
@@ -165,6 +190,7 @@
             let price = parseInt(row.children[6].innerText.replace('원', '').trim(), 10);
             let delivery = parseInt(row.getElementsByClassName('prodDelivery')[0].value.trim(), 10);
             let prodNo = parseInt(row.getElementsByClassName('prodNo')[0].value.trim(), 10);
+            let cartNo = parseInt(row.getElementsByClassName('cartNum')[0].value.trim(), 10);
 
             console.log("321321" + prodNo);
 
@@ -181,6 +207,7 @@
 
             prodNum.push(prodNo);
             prodCount.push(count);
+            cart.push(cartNo);
 
         }
 
@@ -218,7 +245,7 @@
                 </div><!-- .aside_cate -->
                 <div class="aside_bg">
                     <ul class="cate_lnb_real">
-                        <li><a href="#">장보기</a></li>
+                        <li><a th:href="@{/market/MarketList}">장보기</a></li>
                     </ul><!-- .cate_lnb -->
                 </div><!-- .aside_bg -->
             </div><!-- .sidebar -->
@@ -282,6 +309,7 @@
                         <td class="prodPrice">[[${cart.prodDTO.prodPrice}]]원
                             <input type="hidden" class="prodDelivery" th:value="${cart.prodDTO.prodDelivery}">
                             <input type="hidden" class="prodNo" th:value="${cart.prodDTO.prodNo}"/>
+                            <input type="hidden" class="cartNum" th:value="${cart.cartNo}"/>
                         </td>
                         <td class="totalPrice"><strong>[[${(cart.prodDTO.prodPrice - (cart.prodDTO.prodPrice *
                             cart.prodDTO.prodDiscount / 100)) * cart.prodDTO.cartProdCount}]]</strong>원
@@ -415,6 +443,7 @@
                         <input type="hidden" name="orderDeliveryFee" value="" id="totalDelivery">
                         <input type="hidden" name="orderTotalPrice" value="" id="totalOrderPrice">
                         <input type="hidden" name="orderUsePoint" value="" id="usePoint">
+                        <input type="hidden" name="cartNo" value="" id="cartNo">
                     </form>
 
 

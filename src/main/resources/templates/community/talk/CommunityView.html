@@ -6,8 +6,9 @@
 	<title>글보기</title>
 	<link rel="stylesheet" th:href="@{/css/community.css}">
 	<script th:src="@{/js/utils.js}"></script>
+
 	<script>
-		window.onload = function() {
+		window.onload = function () {
 			// name 속성으로 hidden input에서 artCate 값 가져오기
 			const artCate = document.querySelector('input[name="artCate"]').value;
 
@@ -29,7 +30,37 @@
 			if (now) {
 				now.classList.add("now");
 			}
+			const btnComplete = document.getElementById('btnComplete');
+			const commentForm = document.commentForm;
+			const commentList = document.getElementsByClassName('commentList')[0];
+
+			btnComplete.onclick = async function (e) {
+				e.preventDefault();
+				const jsonData = {
+					"userUid": commentForm.writer.value,
+					"artNo": commentForm.artNo.value,
+					"content": commentForm.content.value
+				};
+
+				const data = await fetchPost('/comment/write', jsonData);
+				if (data != null) {
+					window.location.reload(true);
+					alert('댓글이 등록되었습니다.');
+					const commentArticle = `
+                  <article>
+                     <span class="nick">${data.user.userUid}</span>
+                     <span class="date">${data.commentRegDate}</span>
+                     <p class="content">${data.content}</p>
+                     <div>
+                        <a href="#" class="commentRemove" data-no="${data.commentNo}">삭제</a>
+                        <a href="#" class="commentModify" data-no="${data.commentNo}">수정</a>
+                     </div>
+                  </article>`;
+					commentList.insertAdjacentHTML('beforeend', commentArticle);
+				}
+			}
 		};
+
 	</script>
 	<script>
 		window.onload = function () {
@@ -160,6 +191,7 @@
 					const deleteUrl = deleteButton.getAttribute('href');
 					const cateValue = document.getElementById("cateValue").value; // cate 값을 가져옴
 
+
 					fetch(deleteUrl, {
 						method: 'DELETE',
 						headers: {
@@ -194,6 +226,7 @@
 				<tr>
 					<td>제목</td>
 					<p th:value="${#authentication.principal.user.userUid}"></p>
+
 					<td><input type="text" name="artTitle" id="artTitle" th:value="${articleDTO.artTitle}" readonly/></td>
 				</tr>
 				<tr th:if="${articleDTO.fileList.size() > 0}">
@@ -204,6 +237,7 @@
 						</th:block>
 					</td>
 				</tr>
+
 				<tr>
 					<td>내용</td>
 					<td><textarea name="content" readonly>[[${articleDTO.artContent}]]</textarea></td>

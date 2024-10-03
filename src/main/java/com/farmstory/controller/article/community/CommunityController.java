@@ -230,6 +230,7 @@ public class CommunityController {
             return "redirect:/community/" + cate;  // 글이 없으면 다시 목록으로
         }
 
+
         // 업데이트할 내용 반영
         existingArticle.setArtTitle(articleDTO.getArtTitle());
         existingArticle.setArtContent(articleDTO.getArtContent());

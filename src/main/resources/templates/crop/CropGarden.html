@@ -10,6 +10,7 @@
     <script>
         function increaseHitAndRedirect(artNo, redirectUrl) {
             fetch('/crop/increaseHit?artNo=' + artNo, {
+
                 method: 'POST',
             }).then(function(response) {
                 if (response.ok) {
@@ -22,6 +23,7 @@
             });
         }
     </script>
+
     <script>
         window.onload = function() {
             const now = document.querySelector('.cate_lnb li:nth-child(2) a');
@@ -30,6 +32,7 @@
             }
         };
     </script>
+
 </head>
 <body>
 <div id="container">
@@ -37,6 +40,7 @@
     <th:block th:include="/grid/_aside_ct.html"/>
 
     <section class="list">
+
         <h3>글목록</h3>
 
         <article>
@@ -61,6 +65,7 @@
                 </tr>
             </table>
         </article>
+
         <form th:action="@{/crop/CropGarden}" class="search">
             <select name="type">
                 <option value="title">제목</option>
@@ -68,6 +73,7 @@
                 <option value="title_content">제목+내용</option>
                 <option value="writer">글쓴이</option>
             </select>
+
 
             <input type="text" name="keyword" placeholder="제목 키워드, 글쓴이 검색">
             <input type="submit" value="검색">

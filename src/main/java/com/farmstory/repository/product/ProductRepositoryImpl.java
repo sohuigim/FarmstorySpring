@@ -5,6 +5,8 @@ import com.farmstory.entity.Product;
 import com.farmstory.entity.QProduct;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager entityManager;
 
     private QProduct qProduct = QProduct.product;
 
@@ -68,6 +71,22 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         }
         // 페이징 처리를 위해 page 객체 리턴
         return new PageImpl<Tuple>(content, pageable, total);
+    }
+
+    @Override
+    @Transactional
+    public long updateStock(int prodNo, int count) {
+
+        long result = 0;
+
+        result = queryFactory
+                .update(qProduct)
+                .set(qProduct.prodStock, qProduct.prodStock.add(-count))
+                .where(qProduct.prodNo.eq(prodNo))
+                .execute();
+
+        entityManager.flush();
+        return result;
     }
 
 }

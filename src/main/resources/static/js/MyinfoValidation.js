@@ -23,6 +23,12 @@ let isHpOk = true;
 
 window.onload=function () {
 
+    const now = document.querySelector('.aside_bg .cate_lnb_real li:nth-child(3) a');
+    if (now) {
+        now.classList.add("now");
+    }
+
+
     const modifyForm = document.getElementsByTagName('form')[0];
 
     const btn_modify = document.querySelector('.btn_modify');

@@ -25,7 +25,7 @@ public class SecurityConfig {
         http.formLogin(login -> login
                 .loginPage("/user/UserLogin")
                 .defaultSuccessUrl("/")//컨트롤러 요청 주소
-                .failureUrl("/user/UserLogin?success=100")
+                .failureHandler(new CustomAuthenticationFailureHandler()) // 실패 시 핸들러 추가
                 .usernameParameter("uid")
                 .passwordParameter("pass"));
 
@@ -50,13 +50,13 @@ public class SecurityConfig {
                 .requestMatchers("/crop/*/CropView/*").authenticated()
 
                 .requestMatchers("community/*/CommunityWrite/*").authenticated()
-                // 수정부분
+
                 .requestMatchers("community/CommunityNotice/CommunityView/*").hasRole("ADMIN")
                 .requestMatchers("community/CommunityNotice/CommunityWrite").hasRole("ADMIN")
                 .requestMatchers("community/CommunityDiet/CommunityWrite").authenticated()
                 .requestMatchers("community/CommunityChef/CommunityWrite").authenticated()
                 .requestMatchers("community/CommunityCs/CommunityWrite").authenticated()
-                // 수정부분
+
                 .requestMatchers("community/CommunityFaq/CommunityView/*").hasRole("ADMIN")
                 .requestMatchers("community/CommunityFaq/CommunityWrite").hasRole("ADMIN")
 
