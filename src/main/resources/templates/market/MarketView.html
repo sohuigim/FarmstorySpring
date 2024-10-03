@@ -9,7 +9,7 @@
         const totalPrice = document.getElementById('totalPrice');
         const cart = document.getElementsByClassName('add_to_cart')[0];
         const order = document.getElementsByClassName('buy_now')[0];
-
+        const userId = document.getElementById('userId').value;
 
         numberInput.addEventListener('input', () => {
 
@@ -25,36 +25,39 @@
             let formData = new FormData();
 
             const count = document.getElementById('numberInput').value;
-            const userId = document.getElementById('userId').value;
+
             const productNo = document.getElementById('prodNo').value;
+            if (!userId) {
+                alert("로그인 후 장바구니에 추가할 수 있습니다.");
+                return; // 요청을 보내지 않음
+            }
             formData.append("cartProdCount", count);
             formData.append("prodNo", productNo);
             formData.append("userId", userId);
 
-            if(confirm("장바구니로 이동하시겠습니까?")){
-                alert("장바구니로 이동합니다.")
+            if(confirm("장바구니에 담으시겠습니까?")){
 
-            fetch('/market/MarketCart',{
-                method:'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '${_csrf.token}'  // Spring Security 사용 시 필요
-                },
-                body: formData
-            })
-                .then(resp => resp.json())
-                .then(data => {
-                    console.log(data)
-                    if(data.success) {
-                        window.location.href = "/market/MarketCart?userId=" + userId;
-                    }
+                fetch('/market/MarketCart',{
+                    method:'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '${_csrf.token}'  // Spring Security 사용 시 필요
+                    },
+                    body: formData
                 })
-                .catch(err =>{
-                    console.log(err)
-                });
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log(data)
+                        if(data.success) {
+                            if(confirm("장바구니로 이동하시겠습니까?")) {
+                                alert("장바구니로 이동합니다.")
+                                window.location.href = "/market/MarketCart?userId=" + userId;
+                            }
+                        }
+                    })
+                    .catch(err =>{
+                        console.log(err)
+                    });
 
-            }else{
-                alert("상품리스트로 돌아갑니다.")
-                location.href="/market/MarketList";
             }
 
         })
@@ -64,7 +67,10 @@
 
                 const count = document.getElementById('numberInput').value;
                 const productNo = document.getElementById('prodNo').value;
-                const userId = document.getElementById('userId').value;
+                if (!userId) {
+                    alert("로그인 후 구매할 수 있습니다.");
+                    return; // 요청을 보내지 않음
+                }
                 if(confirm("구매페이지로 이동하시겠습니까?")){
                     alert("구매페이지로 이동합니다.")
                     location.href="/market/MarketOrder?prodNo="+productNo+"&&cartProdCount="+count+"&&userId="+userId;
@@ -92,7 +98,7 @@
                 </div><!-- .aside_cate -->
                 <div class="aside_bg">
                     <ul class="cate_lnb_real">
-                        <li> <a href="#">장보기</a></li>
+                        <li><a th:href="@{/market/MarketList}">장보기</a></li>
                     </ul><!-- .cate_lnb -->
                 </div><!-- .aside_bg -->
             </div><!-- .sidebar -->
@@ -156,9 +162,9 @@
                 </div>
 
 
-                    <input type="hidden" name="prodNo" id="prodNo" th:value="${product.prodNo}">
-                    <input type="hidden" name="uid" id="userId" th:value="${#authentication.principal.user.userUid}">
-                    <input type="hidden" name="qty" value="" id="qty">
+                <input type="hidden" name="prodNo" id="prodNo" th:value="${product.prodNo}">
+                <input type="hidden" name="uid" id="userId" th:value="${userId}">
+                <input type="hidden" name="qty" value="" id="qty">
 
                 <h3>상품설명</h3>+
                 <div class="sample"><img th:src="@{'/uploads/'+${product.prodImage3}}" alt="제품 이미지 3"></div>
